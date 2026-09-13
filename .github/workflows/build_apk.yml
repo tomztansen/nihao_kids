@@ -1,0 +1,60 @@
+﻿name: Build NiHao Kids (APK & AAB)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Compile Android Release APK & AAB
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java Development Kit (JDK 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'
+          channel: 'stable'
+          cache: true
+
+      - name: Configure Android Project Template
+        run: |
+          mkdir -p /tmp/android_backup
+          cp android/app/src/main/AndroidManifest.xml /tmp/android_backup/AndroidManifest.xml
+          cp -r android/app/src/main/res /tmp/android_backup/res
+          flutter create --platforms=android --org com.example .
+          cp /tmp/android_backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+          cp -r /tmp/android_backup/res/* android/app/src/main/res/
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Universal Release APK (For Direct Phone Install)
+        run: flutter build apk --release
+
+      - name: Build Android App Bundle (AAB for Google Play Store)
+        run: flutter build appbundle --release
+
+      - name: Upload APK Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NiHao-Kids-Installable-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14
+
+      - name: Upload Google Play AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NiHao-Kids-GooglePlay-AAB
+          path: build/app/outputs/bundle/release/app-release.aab
+          retention-days: 14

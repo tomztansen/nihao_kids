@@ -1,0 +1,4323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NiHao Kids - Belajar Mandarin Seru untuk Anak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-yellow: #FFCA28;
+      --secondary-green: #4CAF50;
+      --panda-black: #263238;
+      --sky-blue: #29B6F6;
+      --sweet-pink: #FF80AB;
+      --coral-orange: #FF7043;
+      --bg-cream: #F9FBE7;
+      --card-bg: #FFFFFF;
+      --tone-1: #E53935;
+      --tone-2: #FFA000;
+      --tone-3: #43A047;
+      --tone-4: #1E88E5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Fredoka', cursive, sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: linear-gradient(135deg, #E8F5E9 0%, #FFFDE7 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px;
+    }
+
+    /* Mobile Container Frame */
+    .phone-container {
+      width: 100%;
+      max-width: 400px;
+      height: 92vh;
+      max-height: 740px;
+      min-height: 520px;
+      background: var(--bg-cream);
+      border-radius: 36px;
+      box-shadow: 0 16px 36px -10px rgba(0,0,0,0.25), 0 0 0 8px #37474F;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Status Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px 8px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      border-bottom: 2px solid #E0E0E0;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: white;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 13px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      border: 2px solid #E0E0E0;
+    }
+
+    .badge-bamboo { border-color: var(--secondary-green); color: #2E7D32; }
+    .badge-stars { border-color: #FFB300; color: #F57F17; }
+
+    .ad-reward-btn {
+      background: linear-gradient(180deg, #FFE082, #FFB300);
+      border: none;
+      border-radius: 16px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #3E2723;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #FF8F00;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.1s;
+    }
+
+    .ad-reward-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #FF8F00;
+    }
+
+    /* Screen Views */
+    .screen {
+      display: none !important;
+      flex: 1;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 12px 14px 18px;
+    }
+
+    .screen.active {
+      display: flex !important;
+    }
+
+    /* Mascot Section */
+    .panda-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 2px 0 6px;
+      cursor: pointer;
+    }
+
+    .speech-bubble {
+      background: white;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--panda-black);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      margin-bottom: 6px;
+      position: relative;
+      text-align: center;
+      max-width: 270px;
+      border: 2px solid #C8E6C9;
+    }
+
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px 5px 0;
+      border-style: solid;
+      border-color: white transparent;
+    }
+
+    .panda-avatar {
+      width: 74px;
+      height: 74px;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12));
+      animation: float 3s ease-in-out infinite;
+      transition: transform 0.15s;
+    }
+
+    .panda-avatar:active {
+      transform: scale(0.92);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    /* Prominent Sound Button on Home Screen */
+    .sound-btn-main {
+      background: linear-gradient(180deg, #FFF176, #FDD835);
+      border: 3px solid #FBC02D;
+      padding: 10px 16px;
+      border-radius: 22px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #3E2723;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #F57F17, 0 6px 12px rgba(245, 127, 23, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 2px auto 10px;
+      width: 100%;
+      transition: all 0.1s;
+      animation: pulseBtn 2s infinite;
+    }
+
+    .sound-btn-main:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #F57F17;
+    }
+
+    @keyframes pulseBtn {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    /* Grade Selection Cards */
+    .app-heading {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .app-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--panda-black);
+      letter-spacing: 0.5px;
+    }
+
+    .app-subtitle {
+      font-size: 12px;
+      color: #78909C;
+    }
+
+    .grade-card {
+      background: white;
+      border-radius: 18px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      transition: all 0.15s ease;
+    }
+
+    .grade-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .grade-tk { border-color: #FFE082; }
+    .grade-sd1 { border-color: #A5D6A7; }
+    .grade-sd4 { border-color: #90CAF9; }
+
+    .grade-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .icon-tk { background: #FFF8E1; }
+    .icon-sd1 { background: #E8F5E9; }
+    .icon-sd4 { background: #E3F2FD; }
+
+    .grade-info h3 {
+      font-size: 15px;
+      color: var(--panda-black);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .age-pill {
+      font-size: 10px;
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-weight: 700;
+      background: #ECEFF1;
+      color: #455A64;
+    }
+
+    .grade-info p {
+      font-size: 11px;
+      color: #78909C;
+      margin-top: 2px;
+    }
+
+    /* Adventure Map */
+    .map-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      background: white;
+      border: 2px solid #CFD8DC;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .map-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--panda-black);
+    }
+
+    .path-node {
+      background: white;
+      border-radius: 16px;
+      padding: 10px 12px;
+      border: 2px solid var(--secondary-green);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.04);
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s;
+    }
+
+    .path-node-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .path-node:active {
+      transform: scale(0.98);
+    }
+
+    .path-node.locked {
+      background: #ECEFF1;
+      border-color: #B0BEC5;
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+
+    .node-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #E8F5E9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+    }
+
+    .node-locked-icon {
+      background: #CFD8DC;
+      color: #546E7A;
+    }
+
+    .node-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--panda-black);
+    }
+
+    .stars-row {
+      color: #FFB300;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .node-audio-btn {
+      background: #FFF9C4;
+      border: 2px solid #FBC02D;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    /* Flashcard View - Ultra Clear & Prominent Audio */
+    .flashcard {
+      background: white;
+      border-radius: 22px;
+      border: 3px solid var(--secondary-green);
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(102, 187, 106, 0.15);
+      margin: 4px 0 10px;
+      position: relative;
+      flex: 1;
+    }
+
+    .flash-emoji {
+      font-size: 42px;
+      margin-bottom: 2px;
+    }
+
+    .flash-hanzi {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-size: 54px;
+      font-weight: 900;
+      color: var(--panda-black);
+      line-height: 1;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .flash-hanzi:active {
+      transform: scale(0.95);
+    }
+
+    .pinyin-badge {
+      padding: 3px 14px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      border: 2px solid;
+      cursor: pointer;
+    }
+
+    /* BIG YELLOW SOUND BUTTON */
+    .sound-btn-flashcard {
+      background: linear-gradient(180deg, #FFEB3B 0%, #FDD835 100%);
+      border: 3px solid #FBC02D;
+      padding: 12px 20px;
+      border-radius: 24px;
+      font-size: 15px;
+      font-weight: 800;
+      color: #3E2723;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #F57F17, 0 6px 12px rgba(245, 127, 23, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 90%;
+      max-width: 270px;
+      margin: 6px 0;
+      transition: all 0.1s;
+      animation: pulseBtn 2s infinite;
+    }
+
+    .sound-btn-flashcard:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #F57F17;
+    }
+
+    .meaning-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--panda-black);
+      margin-top: 4px;
+    }
+
+    .action-btn {
+      background: var(--secondary-green);
+      color: white;
+      border: none;
+      border-radius: 18px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #388E3C, 0 6px 10px rgba(0,0,0,0.1);
+      transition: all 0.1s;
+    }
+
+    .action-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #388E3C;
+    }
+
+    /* Quiz View */
+    .quiz-box {
+      background: white;
+      border-radius: 18px;
+      padding: 12px 10px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      margin-bottom: 10px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .quiz-opt {
+      background: white;
+      border: 2px solid #E0E0E0;
+      border-radius: 16px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--panda-black);
+      cursor: pointer;
+      transition: all 0.12s;
+    }
+
+    .quiz-opt:hover {
+      border-color: var(--sky-blue);
+    }
+
+    .quiz-opt.correct {
+      background: #E8F5E9;
+      border-color: var(--secondary-green);
+      color: #2E7D32;
+    }
+
+    .quiz-opt.wrong {
+      background: #FFEBEE;
+      border-color: #EF5350;
+      color: #C62828;
+    }
+
+    /* Bottom AdMob Banner Bar */
+    .admob-banner-container {
+      background: #ECEFF1;
+      border-top: 2px solid #CFD8DC;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 5;
+    }
+
+    .admob-badge {
+      background: #455A64;
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .admob-banner-text {
+      font-size: 11px;
+      font-weight: 600;
+      color: #37474F;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* FULL REALISTIC GOOGLE ADMOB REWARDED TEST AD PLAYER */
+    .admob-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #121212;
+      display: none;
+      flex-direction: column;
+      z-index: 999;
+      color: white;
+      overflow: hidden;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .admob-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 14px;
+      background: rgba(0,0,0,0.85);
+      border-bottom: 1px solid #333;
+    }
+
+    .admob-test-pill {
+      background: #FBC02D;
+      color: #212121;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .admob-timer {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ECEFF1;
+      background: rgba(255,255,255,0.15);
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    .admob-close-btn {
+      background: #E53935;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
+
+    .admob-video-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      text-align: center;
+      background: radial-gradient(circle at center, #263238 0%, #000000 100%);
+      position: relative;
+    }
+
+    .admob-video-box {
+      width: 100%;
+      max-width: 300px;
+      height: 260px;
+      background: linear-gradient(135deg, #1E88E5 0%, #7E57C2 100%);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admob-watermark {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      font-size: 9px;
+      color: rgba(255,255,255,0.8);
+      background: rgba(0,0,0,0.5);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .ad-game-char {
+      font-size: 56px;
+      animation: bounceChar 0.8s infinite alternate ease-in-out;
+    }
+
+    @keyframes bounceChar {
+      from { transform: translateY(0); }
+      to { transform: translateY(-14px); }
+    }
+
+    .ad-game-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #FFF;
+      margin-top: 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .ad-game-tagline {
+      font-size: 11px;
+      color: #E0E0E0;
+      margin-top: 2px;
+    }
+
+    .admob-progress-bar {
+      width: 80%;
+      height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .admob-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #FFCA28;
+      transition: width 0.2s linear;
+    }
+
+    .admob-reward-card {
+      display: none;
+      background: white;
+      color: var(--panda-black);
+      border-radius: 22px;
+      padding: 18px;
+      margin-top: 14px;
+      text-align: center;
+      width: 90%;
+      max-width: 300px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .admob-footer {
+      padding: 8px 12px;
+      background: #1E1E1E;
+      font-size: 10px;
+      color: #9E9E9E;
+      text-align: center;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone-container">
+    <!-- Top Status Bar -->
+    <div class="top-bar">
+      <div class="badge badge-bamboo">
+        <span>🎋</span>
+        <span id="bamboo-count">10</span>
+      </div>
+
+      <!-- CLICK TO WATCH REWARDED AD -->
+      <button class="ad-reward-btn" onclick="startAdMobVideoAd()">
+        <span>🎬</span>
+        <span>Tonton Iklan (Hadiah)</span>
+      </button>
+
+      <div class="badge badge-stars">
+        <span>⭐</span>
+        <span id="stars-count">15</span>
+      </div>
+    </div>
+
+    <!-- SCREEN 1: GRADE SELECTION (HOME) -->
+    <div id="screen-grades" class="screen active">
+      <div class="panda-wrapper" onclick="speakText('Nǐ hǎo! Wǒ shì Bǎobao!')">
+        <div class="speech-bubble">
+          Ni Hao! Aku Bao Bao si Panda! 🐼<br>
+          <span style="font-size:11px; color:#2E7D32;">(Sentuh aku atau tombol kuning untuk suara!)</span>
+        </div>
+        <svg class="panda-avatar" viewBox="0 0 100 100">
+          <circle cx="20" cy="22" r="14" fill="#263238"/>
+          <circle cx="80" cy="22" r="14" fill="#263238"/>
+          <circle cx="50" cy="55" r="42" fill="#FFFFFF" stroke="#263238" stroke-width="4"/>
+          <!-- Eye patches -->
+          <ellipse cx="33" cy="50" rx="11" ry="14" fill="#263238" transform="rotate(-15 33 50)"/>
+          <ellipse cx="67" cy="50" rx="11" ry="14" fill="#263238" transform="rotate(15 67 50)"/>
+          <!-- Pupils -->
+          <circle cx="35" cy="48" r="4" fill="#FFFFFF"/>
+          <circle cx="65" cy="48" r="4" fill="#FFFFFF"/>
+          <!-- Blush -->
+          <circle cx="24" cy="65" r="7" fill="#FF80AB" opacity="0.6"/>
+          <circle cx="76" cy="65" r="7" fill="#FF80AB" opacity="0.6"/>
+          <!-- Nose & Smile -->
+          <ellipse cx="50" cy="62" rx="7" ry="5" fill="#263238"/>
+          <path d="M 44 70 Q 50 76 56 70" stroke="#263238" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- SOUND & WARDROBE BUTTONS ROW -->
+      <div style="display:flex; gap:8px; margin: 2px auto 10px; width: 100%;">
+        <button class="sound-btn-main" style="flex:1; margin:0; font-size:13px; padding:10px 8px;" onclick="speakText('Nǐ hǎo! Nǐ hǎo!')">
+          <span>🔊 "Ni Hao!"</span>
+        </button>
+        <button class="sound-btn-main" style="flex:1; margin:0; font-size:13px; padding:10px 8px; background:linear-gradient(180deg, #81D4FA, #29B6F6); border-color:#0288D1; box-shadow:0 4px 0 #0277BD; color:white;" onclick="openPandaWardrobe()">
+          <span>👗 Kostum Panda</span>
+        </button>
+      </div>
+
+      <div class="app-heading" style="display:flex; align-items:center; justify-content:center; gap:12px; margin: 6px 0 14px;">
+        <img src="images/app_icon.jpg" alt="NiHao Kids" style="width:48px; height:48px; border-radius:12px; box-shadow:0 3px 8px rgba(0,0,0,0.15); border: 2px solid #FFF;">
+        <div>
+          <h1 class="app-title" style="margin:0; text-align:left; font-size:22px;">NiHao Kids</h1>
+          <p class="app-subtitle" style="margin:0; text-align:left; font-size:12px;">Pilih Kelas Sekolahmu:</p>
+        </div>
+      </div>
+
+      <!-- Grade 1: PAUD & Nursery (Bintang Cilik) -->
+      <div class="grade-card grade-tk" onclick="selectGrade('paud', 'Bintang Cilik (PAUD)')">
+        <div class="grade-icon icon-tk">🐣</div>
+        <div class="grade-info" style="flex:1;">
+          <h3>Bintang Cilik (PAUD) <span class="age-pill">3 - 4 Thn</span></h3>
+          <p>Piktogram Visual, Bunyi Nada & Angka Jari</p>
+        </div>
+        <span style="font-size:18px; color:#B0BEC5;">➔</span>
+      </div>
+
+      <!-- Grade 2: TK-A & TK-B (Tunas Ceria) -->
+      <div class="grade-card grade-sd1" onclick="selectGrade('tk', 'Tunas Ceria (TK A/B)')">
+        <div class="grade-icon icon-sd1">🎈</div>
+        <div class="grade-info" style="flex:1;">
+          <h3>Tunas Ceria (TK A/B) <span class="age-pill">5 - 6 Thn</span></h3>
+          <p>Pinyin, Buah, Sayur, Hewan & Perintah Kelas</p>
+        </div>
+        <span style="font-size:18px; color:#B0BEC5;">➔</span>
+      </div>
+
+      <!-- Grade 3: SD Kelas 1 - 3 (Penjelajah) -->
+      <div class="grade-card grade-sd1" style="border-color:#29B6F6;" onclick="selectGrade('sdLower', 'Penjelajah (SD 1 - 3)')">
+        <div class="grade-icon" style="background:#E1F5FE;">🐼</div>
+        <div class="grade-info" style="flex:1;">
+          <h3>Penjelajah (SD 1 - 3) <span class="age-pill" style="background:#E1F5FE; color:#0288D1;">7 - 9 Thn</span></h3>
+          <p>Kurikulum SD: Jam, Hari, Benda Kelas & YCT 1</p>
+        </div>
+        <span style="font-size:18px; color:#B0BEC5;">➔</span>
+      </div>
+
+      <!-- Grade 4: SD Kelas 4 - 6 (Pendekar YCT) -->
+      <div class="grade-card grade-sd4" onclick="selectGrade('sdUpper', 'Pendekar YCT (SD 4 - 6)')">
+        <div class="grade-icon icon-sd4">🐉</div>
+        <div class="grade-info" style="flex:1;">
+          <h3>Pendekar YCT (SD 4 - 6) <span class="age-pill">10 - 12 Thn</span></h3>
+          <p>Percakapan Harian, Hobi, Arah, Belanja & YCT 2</p>
+        </div>
+        <span style="font-size:18px; color:#B0BEC5;">➔</span>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: ADVENTURE MAP -->
+    <div id="screen-map" class="screen">
+      <div class="map-header">
+        <button class="back-btn" onclick="showScreen('screen-grades')">⬅️</button>
+        <span class="map-title" id="map-grade-title">Peta Petualangan</span>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div id="map-nodes-container" style="display:flex; flex-direction:column; gap:12px;">
+        <!-- Generated dynamically by selectGrade() -->
+      </div>
+    </div>
+
+    <!-- SCREEN 3: FLASHCARD -->
+    <div id="screen-flashcard" class="screen">
+      <div class="map-header">
+        <button class="back-btn" onclick="showScreen('screen-map')">⬅️</button>
+        <span class="map-title" id="fc-counter">1 / 4</span>
+        <button class="node-audio-btn" onclick="speakCurrent()">🔊</button>
+      </div>
+
+      <div class="flashcard">
+        <div class="flash-emoji" id="fc-emoji">🤝</div>
+        <div class="flash-hanzi" id="fc-hanzi" onclick="speakCurrent()" title="Klik untuk mendengar suara">你好</div>
+        <div class="pinyin-badge" id="fc-pinyin" onclick="speakCurrent()" style="color: var(--tone-3); border-color: var(--tone-3); background: #E8F5E9;">
+          nǐ hǎo
+        </div>
+
+        <!-- BIG ULTRA PROMINENT SOUND BUTTON -->
+        <button class="sound-btn-flashcard" onclick="speakCurrent()">
+          <span style="font-size: 24px;">🔊</span>
+          <span>DENGARKAN SUARA</span>
+        </button>
+
+        <div class="meaning-text" id="fc-meaning">Halo</div>
+      </div>
+
+      <div style="display:flex; gap:10px;">
+        <button class="action-btn" style="background:#FFA726; box-shadow:0 4px 0 #F57C00;" onclick="prevCard()">◀ Sebelumnya</button>
+        <button class="action-btn" id="next-fc-btn" onclick="nextCard()">Berikutnya ▶</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: QUIZ -->
+    <div id="screen-quiz" class="screen">
+      <div class="map-header">
+        <button class="back-btn" onclick="showScreen('screen-map')">⬅️</button>
+        <span class="map-title">Kuis NiHao Kids 🎯</span>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div class="quiz-box">
+        <div style="font-size:13px; color:#78909C; margin-bottom:4px;">Apa arti kata ini?</div>
+        <div id="quiz-hanzi" style="font-family:'Noto Sans SC'; font-size:52px; font-weight:900; margin:6px 0; color:var(--panda-black); cursor:pointer;" onclick="speakCurrentQuiz()">
+          你好
+        </div>
+        <button class="sound-btn-flashcard" style="margin: 4px auto; font-size:14px; padding:10px 16px;" onclick="speakCurrentQuiz()">
+          <span style="font-size: 18px;">🔊</span>
+          <span>Putar Suara Mandarin</span>
+        </button>
+      </div>
+
+      <div class="quiz-options" id="quiz-options-container">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- SCREEN 5: PANDA WARDROBE / BAMBOO SHOP -->
+    <div id="screen-wardrobe" class="screen">
+      <div class="map-header">
+        <button class="back-btn" onclick="showScreen('screen-grades')">⬅️</button>
+        <span class="map-title">Lemari Kostum Panda 🐼</span>
+        <div style="width:36px;"></div>
+      </div>
+
+      <!-- Panda with equipped hat preview -->
+      <div class="flashcard" style="margin: 0 0 12px; padding: 14px; min-height: 140px; flex: initial;">
+        <div style="position:relative; width:80px; height:80px; margin: 0 auto;">
+          <div id="wardrobe-hat-display" style="position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-size:42px; z-index:2;"></div>
+          <svg class="panda-avatar" viewBox="0 0 100 100" style="width:80px; height:80px;">
+            <circle cx="20" cy="22" r="14" fill="#263238"/>
+            <circle cx="80" cy="22" r="14" fill="#263238"/>
+            <circle cx="50" cy="55" r="42" fill="#FFFFFF" stroke="#263238" stroke-width="4"/>
+            <ellipse cx="33" cy="50" rx="11" ry="14" fill="#263238" transform="rotate(-15 33 50)"/>
+            <ellipse cx="67" cy="50" rx="11" ry="14" fill="#263238" transform="rotate(15 67 50)"/>
+            <circle cx="35" cy="48" r="4" fill="#FFFFFF"/>
+            <circle cx="65" cy="48" r="4" fill="#FFFFFF"/>
+            <circle cx="24" cy="65" r="7" fill="#FF80AB" opacity="0.6"/>
+            <circle cx="76" cy="65" r="7" fill="#FF80AB" opacity="0.6"/>
+            <ellipse cx="50" cy="62" rx="7" ry="5" fill="#263238"/>
+            <path d="M 44 70 Q 50 76 56 70" stroke="#263238" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div style="font-weight:bold; font-size:14px; margin-top:8px; color:var(--panda-black);">
+          Bao Bao siap bergaya! <span id="panda-premium-badge" style="display:none; background:#FF8F00; color:white; font-size:10px; padding:2px 6px; border-radius:8px; vertical-align:middle;">PREMIUM 👑</span>
+        </div>
+      </div>
+
+      <!-- PARENT CORNER BUTTON -->
+      <button class="sound-btn-main" style="margin: 0 0 12px; width: 100%; font-size: 12px; padding: 10px; background: linear-gradient(180deg, #FFF8E1, #FFECB3); border-color: #FFB300; box-shadow: 0 3px 0 #FFA000; color: #4E342E;" onclick="openParentalGate()">
+        <span>👨‍👩‍👧 Pojok Orang Tua (Bebas Iklan & Top Up) ➔</span>
+      </button>
+
+      <!-- Wardrobe Items List -->
+      <div id="wardrobe-items-list" style="display:flex; flex-direction:column; gap:10px;">
+        <!-- Generated by JS -->
+      </div>
+    </div>
+
+    <!-- BOTTOM PERMANENT ADMOB TEST BANNER (Rating G - COPPA Compliant) -->
+    <div class="admob-banner-container" id="main-admob-banner">
+      <div class="admob-banner-text">
+        <span class="admob-badge">Test Ad</span>
+        <span>Google AdMob Banner (Rating G)</span>
+      </div>
+      <button onclick="startAdMobVideoAd()" style="background:#FFF9C4; border:1px solid #FBC02D; border-radius:10px; padding:2px 8px; font-size:10px; font-weight:bold; cursor:pointer;">
+        🎬 Tes Video
+      </button>
+    </div>
+
+    <!-- FULL SCREEN GOOGLE ADMOB REWARDED VIDEO TEST AD OVERLAY -->
+    <div id="admob-video-overlay" class="admob-overlay">
+      <!-- Ad Top Bar -->
+      <div class="admob-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="admob-test-pill">AdMob Test Ad</span>
+          <span style="font-size:11px; color:#B0BEC5;">Rewarded Video (COPPA)</span>
+        </div>
+        <div id="admob-timer-display" class="admob-timer">Hadiah dalam 5d...</div>
+        <button id="admob-close-btn" class="admob-close-btn" onclick="closeAdMobVideo(true)">✕</button>
+      </div>
+
+      <!-- Ad Video Content Canvas -->
+      <div class="admob-video-stage">
+        <div class="admob-video-box">
+          <span class="admob-watermark">Official Ad Unit: ca-app-pub-8640638285279807/7637956984</span>
+          <div class="ad-game-char">🐼✨</div>
+          <div class="ad-game-title">Panda Hero Adventure!</div>
+          <div class="ad-game-tagline">Contoh Iklan Ramah Keluarga (Rating G)</div>
+
+          <div class="admob-progress-bar">
+            <div id="admob-progress-fill" class="admob-progress-fill"></div>
+          </div>
+        </div>
+
+        <!-- Reward Card (Appears after countdown) -->
+        <div id="admob-reward-card" class="admob-reward-card">
+          <div style="font-size:36px; margin-bottom:6px;">🎉</div>
+          <h3 style="font-size:18px; margin-bottom:4px;">Video Iklan Selesai!</h3>
+          <p style="font-size:12px; color:#546E7A; margin-bottom:12px;">
+            Kamu telah menonton iklan uji coba Google AdMob secara lengkap.
+          </p>
+          <div style="font-size:22px; font-weight:800; color:#2E7D32; margin-bottom:14px;">
+            +5 Bambu 🎋 & +3 Bintang ⭐
+          </div>
+          <button class="action-btn" onclick="claimAdMobReward()">Ambil Hadiah Sekarang!</button>
+        </div>
+      </div>
+
+      <div class="admob-footer">
+        Aplikasi Mematuhi Google Play Families Policy • Iklan Non-Personalized
+      </div>
+    </div>
+
+    <!-- PARENTAL GATE MODAL (COPPA & Play Families Policy) -->
+    <div id="parental-gate-modal" class="admob-overlay" style="background: rgba(0,0,0,0.7); display: none; z-index: 1000;">
+      <div style="background: white; border-radius: 24px; padding: 22px; width: 90%; max-width: 320px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;">
+        <div style="font-size: 32px; margin-bottom: 6px;">👨‍👩‍👧</div>
+        <h3 style="margin: 0 0 6px; font-size: 17px; color: #263238;">Kunci Orang Tua</h3>
+        <p style="font-size: 11px; color: #78909C; margin: 0 0 14px;">
+          Khusus untuk orang dewasa. Selesaikan soal matematika berikut untuk membuka menu pembelian:
+        </p>
+        <div id="gate-math-display" style="background: #FFF8E1; border: 2px solid #FFE082; border-radius: 14px; padding: 10px; font-size: 24px; font-weight: 900; color: #37474F; margin-bottom: 12px; letter-spacing: 2px;">
+          24 + 17 = ?
+        </div>
+        <input type="number" id="gate-math-input" placeholder="Tulis jawaban" style="width: 80%; padding: 10px; border-radius: 12px; border: 2px solid #CFD8DC; font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 12px; outline: none;" onkeydown="if(event.key==='Enter') verifyParentalGate()">
+        <div id="gate-error-msg" style="color: #E53935; font-size: 11px; font-weight: bold; min-height: 16px; margin-bottom: 8px;"></div>
+        <div style="display: flex; gap: 8px;">
+          <button onclick="closeParentalGate()" style="flex: 1; padding: 10px; border: none; background: #ECEFF1; border-radius: 12px; font-weight: bold; color: #546E7A; cursor: pointer;">Batal</button>
+          <button onclick="verifyParentalGate()" style="flex: 1; padding: 10px; border: none; background: var(--secondary-green); border-radius: 12px; font-weight: bold; color: white; cursor: pointer;">Lanjutkan ➔</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARENT STORE MODAL (GOOGLE PLAY IAP SIMULATOR) -->
+    <div id="parent-store-modal" class="admob-overlay" style="background: rgba(0,0,0,0.7); display: none; z-index: 1000; overflow-y: auto;">
+      <div style="background: white; border-radius: 28px; padding: 20px; width: 92%; max-width: 360px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 24px;">👨‍👩‍👧</span>
+            <span style="font-weight: 800; font-size: 16px; color: #263238;">Pojok Orang Tua</span>
+          </div>
+          <button onclick="closeParentStore()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #90A4AE;">✕</button>
+        </div>
+
+        <!-- Bao Bao Premium Hero Card -->
+        <div style="background: linear-gradient(135deg, #FFF8E1, #FFECB3); border: 2px solid #FFB300; border-radius: 20px; padding: 14px; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div style="font-weight: 900; font-size: 15px; color: #4E342E;">👑 Bao Bao Premium</div>
+            <span style="background: #FF8F00; color: white; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px;">Sekali Bayar</span>
+          </div>
+          <div style="font-size: 11px; color: #5D4037; line-height: 1.4; margin-bottom: 10px;">
+            • 🚫 Bebas semua iklan selamanya<br>
+            • 🎋 Bonus langsung +100 Bambu<br>
+            • 👑 Mahkota Kaisar Emas Eksklusif<br>
+            • ⚡ +20% Bonus XP Belajar & Lencana Emas
+          </div>
+          <div id="premium-status-btn-container">
+            <button onclick="simulateBuyPremium()" style="width: 100%; padding: 10px; border: none; background: #D84315; border-radius: 12px; color: white; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 3px 0 #BF360C;">
+              Beli Rp49.000 (Launch Special)
+            </button>
+          </div>
+        </div>
+
+        <!-- Top Up Bambu Header -->
+        <div style="font-size: 13px; font-weight: 800; color: #263238; margin-bottom: 8px;">🎋 Paket Top Up Bambu Panda</div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #F5F5F5; padding: 8px 12px; border-radius: 12px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 700;">Mini: 100 Bambu</div>
+              <div style="font-size: 9px; color: #78909C;">Rp100/bambu</div>
+            </div>
+            <button onclick="simulateBuyBamboo(100, 'Rp10.000')" style="background: #81C784; border: none; color: white; font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 8px; cursor: pointer;">Rp10.000</button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #F5F5F5; padding: 8px 12px; border-radius: 12px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 700;">Small: 250 Bambu</div>
+              <div style="font-size: 9px; color: #78909C;">Rp80/bambu</div>
+            </div>
+            <button onclick="simulateBuyBamboo(250, 'Rp20.000')" style="background: #4CAF50; border: none; color: white; font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 8px; cursor: pointer;">Rp20.000</button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #E8F5E9; border: 1px solid #A5D6A7; padding: 8px 12px; border-radius: 12px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 700; color: #1B5E20;">Large: 600 Bambu (Populer)</div>
+              <div style="font-size: 9px; color: #388E3C;">Rp75/bambu</div>
+            </div>
+            <button onclick="simulateBuyBamboo(600, 'Rp45.000')" style="background: #2E7D32; border: none; color: white; font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 8px; cursor: pointer;">Rp45.000</button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #F5F5F5; padding: 8px 12px; border-radius: 12px;">
+            <div>
+              <div style="font-size: 12px; font-weight: 700;">Mega: 1.500 Bambu</div>
+              <div style="font-size: 9px; color: #78909C;">Rp66/bambu (Hemat)</div>
+            </div>
+            <button onclick="simulateBuyBamboo(1500, 'Rp99.000')" style="background: #1B5E20; border: none; color: white; font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 8px; cursor: pointer;">Rp99.000</button>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 8px;">
+          <button onclick="simulateRestore()" style="background: none; border: none; color: #546E7A; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: underline;">
+            🔄 Pulihkan Pembelian (Restore Purchases)
+          </button>
+        </div>
+        <div style="font-size: 9px; color: #90A4AE; text-align: center; line-height: 1.3;">
+          🔒 Pembayaran resmi via Google Play Billing. Materi belajar 100% gratis tanpa pembelian ini.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let audioCtx = null;
+    function getAudioCtx() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    function playTone(freq, duration, type='sine') {
+      try {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.2, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    let currentVoiceAudio = null;
+
+    function playSfx(filename, fallbackFn) {
+      try {
+        const audio = new Audio(`audio/sfx/${filename}`);
+        audio.play().catch(() => {
+          if (fallbackFn) fallbackFn();
+        });
+      } catch (e) {
+        if (fallbackFn) fallbackFn();
+      }
+    }
+
+    function playSuccessChime() {
+      playSfx('success.wav', () => {
+        playTone(523.25, 0.12);
+        setTimeout(() => playTone(659.25, 0.12), 80);
+        setTimeout(() => playTone(783.99, 0.25), 160);
+      });
+    }
+
+    function playPop() {
+      // Suara klik tombol dinonaktifkan sesuai permintaan pengguna
+    }
+
+    function playVocabAudio(vocabId, fallbackText) {
+      if (vocabId) {
+        try {
+          if (currentVoiceAudio) {
+            currentVoiceAudio.pause();
+            currentVoiceAudio.currentTime = 0;
+          }
+          const audio = new Audio(`audio/words/${vocabId}.mp3`);
+          currentVoiceAudio = audio;
+          audio.play().catch(e => {
+            console.log('Audio file playback fallback to Web Speech:', e);
+            if (fallbackText) fallbackSpeak(fallbackText);
+          });
+          return;
+        } catch (e) {
+          if (fallbackText) fallbackSpeak(fallbackText);
+          return;
+        }
+      }
+      if (fallbackText) fallbackSpeak(fallbackText);
+    }
+
+    function fallbackSpeak(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'zh-CN';
+        utterance.rate = 0.82;
+        utterance.pitch = 1.1;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function speakText(text) {
+      fallbackSpeak(text);
+    }
+
+    // Anti-Tamper & Persistent Local Storage for NiHao Kids
+    function getStoredNum(key, fallback) {
+      try {
+        const val = localStorage.getItem(key);
+        return val !== null ? parseInt(val, 10) : fallback;
+      } catch(e) {
+        return fallback;
+      }
+    }
+
+    let bamboo = getStoredNum('nh_bamboo', 10);
+    let stars = getStoredNum('nh_stars', 15);
+    let isPremium = localStorage.getItem('nh_is_premium') === 'true';
+
+    function persistRewards() {
+      try {
+        localStorage.setItem('nh_bamboo', bamboo);
+        localStorage.setItem('nh_stars', stars);
+        localStorage.setItem('nh_is_premium', isPremium);
+      } catch(e) {}
+      const bEl = document.getElementById('bamboo-count');
+      const sEl = document.getElementById('stars-count');
+      if (bEl) bEl.textContent = bamboo;
+      if (sEl) sEl.textContent = stars;
+
+      // Update UI for Premium
+      const bannerEl = document.getElementById('main-admob-banner');
+      const badgeEl = document.getElementById('panda-premium-badge');
+      if (isPremium) {
+        if (bannerEl) bannerEl.style.display = 'none';
+        if (badgeEl) badgeEl.style.display = 'inline-block';
+      } else {
+        if (bannerEl) bannerEl.style.display = 'flex';
+        if (badgeEl) badgeEl.style.display = 'none';
+      }
+    }
+
+    // Inisialisasi tampilan saldo dari penyimpanan lokal
+    document.addEventListener('DOMContentLoaded', persistRewards);
+    setTimeout(persistRewards, 100);
+
+    let currentGradeKey = 'paud';
+    let activeLessons = [];
+    let currentLessonIndex = 0;
+    let currentCardIndex = 0;
+
+    // DATABASE KURIKULUM LENGKAP (45 UNIT, 260 KATA)
+    const gradeCurriculum = {
+      "paud": {
+            "title": "Bintang Cilik (PAUD & Nursery)",
+            "lessons": [
+                  {
+                        "id": "xx_num1",
+                        "title": "Angka Jari (1 - 5)",
+                        "subtitle": "Berhitung seru bareng Bao Bao!",
+                        "emoji": "🔢",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "p1",
+                                    "hanzi": "一",
+                                    "pinyin": "yī",
+                                    "meaning": "Satu",
+                                    "tone": 1,
+                                    "emoji": "1️⃣"
+                              },
+                              {
+                                    "id": "p2",
+                                    "hanzi": "二",
+                                    "pinyin": "èr",
+                                    "meaning": "Dua",
+                                    "tone": 4,
+                                    "emoji": "2️⃣"
+                              },
+                              {
+                                    "id": "p3",
+                                    "hanzi": "三",
+                                    "pinyin": "sān",
+                                    "meaning": "Tiga",
+                                    "tone": 1,
+                                    "emoji": "3️⃣"
+                              },
+                              {
+                                    "id": "p4",
+                                    "hanzi": "四",
+                                    "pinyin": "sì",
+                                    "meaning": "Empat",
+                                    "tone": 4,
+                                    "emoji": "4️⃣"
+                              },
+                              {
+                                    "id": "p5",
+                                    "hanzi": "五",
+                                    "pinyin": "wǔ",
+                                    "meaning": "Lima",
+                                    "tone": 3,
+                                    "emoji": "5️⃣"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_pets",
+                        "title": "Hewan Peliharaan",
+                        "subtitle": "Kucing, anjing, ikan & burung!",
+                        "emoji": "🐾",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "p6",
+                                    "hanzi": "猫",
+                                    "pinyin": "māo",
+                                    "meaning": "Kucing",
+                                    "tone": 1,
+                                    "emoji": "🐱"
+                              },
+                              {
+                                    "id": "p7",
+                                    "hanzi": "狗",
+                                    "pinyin": "gǒu",
+                                    "meaning": "Anjing",
+                                    "tone": 3,
+                                    "emoji": "🐶"
+                              },
+                              {
+                                    "id": "p8",
+                                    "hanzi": "鸟",
+                                    "pinyin": "niǎo",
+                                    "meaning": "Burung",
+                                    "tone": 3,
+                                    "emoji": "🐦"
+                              },
+                              {
+                                    "id": "p9",
+                                    "hanzi": "鱼",
+                                    "pinyin": "yú",
+                                    "meaning": "Ikan",
+                                    "tone": 2,
+                                    "emoji": "🐟"
+                              },
+                              {
+                                    "id": "p10",
+                                    "hanzi": "兔",
+                                    "pinyin": "tù",
+                                    "meaning": "Kelinci",
+                                    "tone": 4,
+                                    "emoji": "🐰"
+                              },
+                              {
+                                    "id": "p11",
+                                    "hanzi": "鸭",
+                                    "pinyin": "yā",
+                                    "meaning": "Bebek",
+                                    "tone": 1,
+                                    "emoji": "🦆"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_nature",
+                        "title": "Piktogram Alam",
+                        "subtitle": "Matahari, bulan, gunung & air",
+                        "emoji": "🌞",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "p12",
+                                    "hanzi": "日",
+                                    "pinyin": "rì",
+                                    "meaning": "Matahari",
+                                    "tone": 4,
+                                    "emoji": "☀️"
+                              },
+                              {
+                                    "id": "p13",
+                                    "hanzi": "月",
+                                    "pinyin": "yuè",
+                                    "meaning": "Bulan",
+                                    "tone": 4,
+                                    "emoji": "🌙"
+                              },
+                              {
+                                    "id": "p14",
+                                    "hanzi": "山",
+                                    "pinyin": "shān",
+                                    "meaning": "Gunung",
+                                    "tone": 1,
+                                    "emoji": "⛰️"
+                              },
+                              {
+                                    "id": "p15",
+                                    "hanzi": "水",
+                                    "pinyin": "shuǐ",
+                                    "meaning": "Air",
+                                    "tone": 3,
+                                    "emoji": "💧"
+                              },
+                              {
+                                    "id": "p16",
+                                    "hanzi": "木",
+                                    "pinyin": "mù",
+                                    "meaning": "Pohon / Kayu",
+                                    "tone": 4,
+                                    "emoji": "🪵"
+                              },
+                              {
+                                    "id": "p17",
+                                    "hanzi": "火",
+                                    "pinyin": "huǒ",
+                                    "meaning": "Api",
+                                    "tone": 3,
+                                    "emoji": "🔥"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_colors1",
+                        "title": "Warna Dasar Ceria",
+                        "subtitle": "Merah, kuning, biru, putih, hitam",
+                        "emoji": "🎨",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "p18",
+                                    "hanzi": "红",
+                                    "pinyin": "hóng",
+                                    "meaning": "Merah",
+                                    "tone": 2,
+                                    "emoji": "🔴"
+                              },
+                              {
+                                    "id": "p19",
+                                    "hanzi": "黄",
+                                    "pinyin": "huáng",
+                                    "meaning": "Kuning",
+                                    "tone": 2,
+                                    "emoji": "🟡"
+                              },
+                              {
+                                    "id": "p20",
+                                    "hanzi": "蓝",
+                                    "pinyin": "lán",
+                                    "meaning": "Biru",
+                                    "tone": 2,
+                                    "emoji": "🔵"
+                              },
+                              {
+                                    "id": "p21",
+                                    "hanzi": "白",
+                                    "pinyin": "bái",
+                                    "meaning": "Putih",
+                                    "tone": 2,
+                                    "emoji": "⚪"
+                              },
+                              {
+                                    "id": "p22",
+                                    "hanzi": "黑",
+                                    "pinyin": "hēi",
+                                    "meaning": "Hitam",
+                                    "tone": 1,
+                                    "emoji": "⚫"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_body",
+                        "title": "Wajah & Anggota Tubuh",
+                        "subtitle": "Mata, hidung, mulut, telinga",
+                        "emoji": "👀",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "p23",
+                                    "hanzi": "眼睛",
+                                    "pinyin": "yǎnjīng",
+                                    "meaning": "Mata",
+                                    "tone": 3,
+                                    "emoji": "👁️"
+                              },
+                              {
+                                    "id": "p24",
+                                    "hanzi": "鼻子",
+                                    "pinyin": "bízi",
+                                    "meaning": "Hidung",
+                                    "tone": 2,
+                                    "emoji": "👃"
+                              },
+                              {
+                                    "id": "p25",
+                                    "hanzi": "嘴巴",
+                                    "pinyin": "zuǐba",
+                                    "meaning": "Mulut",
+                                    "tone": 3,
+                                    "emoji": "👄"
+                              },
+                              {
+                                    "id": "p26",
+                                    "hanzi": "耳朵",
+                                    "pinyin": "ěrduo",
+                                    "meaning": "Telinga",
+                                    "tone": 3,
+                                    "emoji": "👂"
+                              },
+                              {
+                                    "id": "p27",
+                                    "hanzi": "手",
+                                    "pinyin": "shǒu",
+                                    "meaning": "Tangan",
+                                    "tone": 3,
+                                    "emoji": "✋"
+                              },
+                              {
+                                    "id": "p28",
+                                    "hanzi": "脚",
+                                    "pinyin": "jiǎo",
+                                    "meaning": "Kaki",
+                                    "tone": 3,
+                                    "emoji": "🦶"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_toys",
+                        "title": "Mainan Kesayangan",
+                        "subtitle": "Bola, mobil, boneka & layangan",
+                        "emoji": "🧸",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "p29",
+                                    "hanzi": "球",
+                                    "pinyin": "qiú",
+                                    "meaning": "Bola",
+                                    "tone": 2,
+                                    "emoji": "⚽"
+                              },
+                              {
+                                    "id": "p30",
+                                    "hanzi": "玩具",
+                                    "pinyin": "wánjù",
+                                    "meaning": "Mainan",
+                                    "tone": 2,
+                                    "emoji": "🧸"
+                              },
+                              {
+                                    "id": "p31",
+                                    "hanzi": "车",
+                                    "pinyin": "chē",
+                                    "meaning": "Mobil-mobilan",
+                                    "tone": 1,
+                                    "emoji": "🚗"
+                              },
+                              {
+                                    "id": "p32",
+                                    "hanzi": "娃娃",
+                                    "pinyin": "wáwa",
+                                    "meaning": "Boneka",
+                                    "tone": 2,
+                                    "emoji": "🪆"
+                              },
+                              {
+                                    "id": "p33",
+                                    "hanzi": "风筝",
+                                    "pinyin": "fēngzheng",
+                                    "meaning": "Layang-layang",
+                                    "tone": 1,
+                                    "emoji": "🪁"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_actions1",
+                        "title": "Aksi Bayi Panda",
+                        "subtitle": "Tertawa, menangis, makan & tidur",
+                        "emoji": "👶",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "p34",
+                                    "hanzi": "笑",
+                                    "pinyin": "xiào",
+                                    "meaning": "Tertawa / Senyum",
+                                    "tone": 4,
+                                    "emoji": "😄"
+                              },
+                              {
+                                    "id": "p35",
+                                    "hanzi": "哭",
+                                    "pinyin": "kū",
+                                    "meaning": "Menangis",
+                                    "tone": 1,
+                                    "emoji": "😢"
+                              },
+                              {
+                                    "id": "p36",
+                                    "hanzi": "吃",
+                                    "pinyin": "chī",
+                                    "meaning": "Makan",
+                                    "tone": 1,
+                                    "emoji": "🥣"
+                              },
+                              {
+                                    "id": "p37",
+                                    "hanzi": "喝",
+                                    "pinyin": "hē",
+                                    "meaning": "Minum",
+                                    "tone": 1,
+                                    "emoji": "🥛"
+                              },
+                              {
+                                    "id": "p38",
+                                    "hanzi": "睡",
+                                    "pinyin": "shuì",
+                                    "meaning": "Tidur",
+                                    "tone": 4,
+                                    "emoji": "😴"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_greetings1",
+                        "title": "Salam Pertama",
+                        "subtitle": "Menyapa Halo & Sampai Jumpa",
+                        "emoji": "👋",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "p39",
+                                    "hanzi": "你好",
+                                    "pinyin": "nǐ hǎo",
+                                    "meaning": "Halo",
+                                    "tone": 3,
+                                    "emoji": "🤝"
+                              },
+                              {
+                                    "id": "p40",
+                                    "hanzi": "再见",
+                                    "pinyin": "zàijiàn",
+                                    "meaning": "Sampai Jumpa",
+                                    "tone": 4,
+                                    "emoji": "👋"
+                              },
+                              {
+                                    "id": "p41",
+                                    "hanzi": "早",
+                                    "pinyin": "zǎo",
+                                    "meaning": "Selamat Pagi",
+                                    "tone": 3,
+                                    "emoji": "🌅"
+                              },
+                              {
+                                    "id": "p42",
+                                    "hanzi": "好",
+                                    "pinyin": "hǎo",
+                                    "meaning": "Bagus / Baik",
+                                    "tone": 3,
+                                    "emoji": "👍"
+                              }
+                        ]
+                  }
+            ]
+      },
+      "tk": {
+            "title": "Tunas Ceria (TK-A & TK-B)",
+            "lessons": [
+                  {
+                        "id": "xx_num2",
+                        "title": "Angka Lanjutan (6 - 10)",
+                        "subtitle": "Genapkan hitungan sampai sepuluh!",
+                        "emoji": "🔟",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "t1",
+                                    "hanzi": "六",
+                                    "pinyin": "liù",
+                                    "meaning": "Enam",
+                                    "tone": 4,
+                                    "emoji": "6️⃣"
+                              },
+                              {
+                                    "id": "t2",
+                                    "hanzi": "七",
+                                    "pinyin": "qī",
+                                    "meaning": "Tujuh",
+                                    "tone": 1,
+                                    "emoji": "7️⃣"
+                              },
+                              {
+                                    "id": "t3",
+                                    "hanzi": "八",
+                                    "pinyin": "bā",
+                                    "meaning": "Delapan",
+                                    "tone": 1,
+                                    "emoji": "8️⃣"
+                              },
+                              {
+                                    "id": "t4",
+                                    "hanzi": "九",
+                                    "pinyin": "jiǔ",
+                                    "meaning": "Sembilan",
+                                    "tone": 3,
+                                    "emoji": "9️⃣"
+                              },
+                              {
+                                    "id": "t5",
+                                    "hanzi": "十",
+                                    "pinyin": "shí",
+                                    "meaning": "Sepuluh",
+                                    "tone": 2,
+                                    "emoji": "🔟"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_fruits",
+                        "title": "Buah-buahan Manis",
+                        "subtitle": "Apel, pisang, semangka & anggur",
+                        "emoji": "🍎",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "t6",
+                                    "hanzi": "苹果",
+                                    "pinyin": "píngguǒ",
+                                    "meaning": "Apel",
+                                    "tone": 2,
+                                    "emoji": "🍎"
+                              },
+                              {
+                                    "id": "t7",
+                                    "hanzi": "香蕉",
+                                    "pinyin": "xiāngjiāo",
+                                    "meaning": "Pisang",
+                                    "tone": 1,
+                                    "emoji": "🍌"
+                              },
+                              {
+                                    "id": "t8",
+                                    "hanzi": "西瓜",
+                                    "pinyin": "xīguā",
+                                    "meaning": "Semangka",
+                                    "tone": 1,
+                                    "emoji": "🍉"
+                              },
+                              {
+                                    "id": "t9",
+                                    "hanzi": "草莓",
+                                    "pinyin": "cǎoméi",
+                                    "meaning": "Stroberi",
+                                    "tone": 3,
+                                    "emoji": "🍓"
+                              },
+                              {
+                                    "id": "t10",
+                                    "hanzi": "葡萄",
+                                    "pinyin": "pútao",
+                                    "meaning": "Anggur",
+                                    "tone": 2,
+                                    "emoji": "🍇"
+                              },
+                              {
+                                    "id": "t11",
+                                    "hanzi": "橘子",
+                                    "pinyin": "júzi",
+                                    "meaning": "Jeruk",
+                                    "tone": 2,
+                                    "emoji": "🍊"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_veg",
+                        "title": "Sayuran Sehat",
+                        "subtitle": "Wortel, tomat & kentang",
+                        "emoji": "🥕",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t12",
+                                    "hanzi": "菜",
+                                    "pinyin": "cài",
+                                    "meaning": "Sayur",
+                                    "tone": 4,
+                                    "emoji": "🥗"
+                              },
+                              {
+                                    "id": "t13",
+                                    "hanzi": "胡萝卜",
+                                    "pinyin": "húluóbo",
+                                    "meaning": "Wortel",
+                                    "tone": 2,
+                                    "emoji": "🥕"
+                              },
+                              {
+                                    "id": "t14",
+                                    "hanzi": "西红柿",
+                                    "pinyin": "xīhóngshì",
+                                    "meaning": "Tomat",
+                                    "tone": 1,
+                                    "emoji": "🍅"
+                              },
+                              {
+                                    "id": "t15",
+                                    "hanzi": "土豆",
+                                    "pinyin": "tǔdòu",
+                                    "meaning": "Kentang",
+                                    "tone": 3,
+                                    "emoji": "🥔"
+                              },
+                              {
+                                    "id": "t16",
+                                    "hanzi": "青菜",
+                                    "pinyin": "qīngcài",
+                                    "meaning": "Sawi Hijau",
+                                    "tone": 1,
+                                    "emoji": "🥬"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_family",
+                        "title": "Keluarga Intiku",
+                        "subtitle": "Ayah, ibu, kakak & adik",
+                        "emoji": "👨‍👩‍👧",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t17",
+                                    "hanzi": "爸爸",
+                                    "pinyin": "bàba",
+                                    "meaning": "Ayah",
+                                    "tone": 4,
+                                    "emoji": "👨"
+                              },
+                              {
+                                    "id": "t18",
+                                    "hanzi": "妈妈",
+                                    "pinyin": "māma",
+                                    "meaning": "Ibu",
+                                    "tone": 1,
+                                    "emoji": "👩"
+                              },
+                              {
+                                    "id": "t19",
+                                    "hanzi": "哥哥",
+                                    "pinyin": "gēge",
+                                    "meaning": "Kakak Laki-laki",
+                                    "tone": 1,
+                                    "emoji": "👦"
+                              },
+                              {
+                                    "id": "t20",
+                                    "hanzi": "姐姐",
+                                    "pinyin": "jiějie",
+                                    "meaning": "Kakak Perempuan",
+                                    "tone": 3,
+                                    "emoji": "👧"
+                              },
+                              {
+                                    "id": "t21",
+                                    "hanzi": "弟弟",
+                                    "pinyin": "dìdi",
+                                    "meaning": "Adik Laki-laki",
+                                    "tone": 4,
+                                    "emoji": "👶"
+                              },
+                              {
+                                    "id": "t22",
+                                    "hanzi": "妹妹",
+                                    "pinyin": "mèimei",
+                                    "meaning": "Adik Perempuan",
+                                    "tone": 4,
+                                    "emoji": "👧"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_food",
+                        "title": "Makanan & Minuman",
+                        "subtitle": "Nasi, mie, roti, susu & telur",
+                        "emoji": "🍚",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t23",
+                                    "hanzi": "米饭",
+                                    "pinyin": "mǐfàn",
+                                    "meaning": "Nasi",
+                                    "tone": 3,
+                                    "emoji": "🍚"
+                              },
+                              {
+                                    "id": "t24",
+                                    "hanzi": "面条",
+                                    "pinyin": "miàntiáo",
+                                    "meaning": "Mie",
+                                    "tone": 4,
+                                    "emoji": "🍜"
+                              },
+                              {
+                                    "id": "t25",
+                                    "hanzi": "面包",
+                                    "pinyin": "miànbāo",
+                                    "meaning": "Roti",
+                                    "tone": 4,
+                                    "emoji": "🍞"
+                              },
+                              {
+                                    "id": "t26",
+                                    "hanzi": "牛奶",
+                                    "pinyin": "niúnǎi",
+                                    "meaning": "Susu Sapi",
+                                    "tone": 2,
+                                    "emoji": "🥛"
+                              },
+                              {
+                                    "id": "t27",
+                                    "hanzi": "水",
+                                    "pinyin": "shuǐ",
+                                    "meaning": "Air Minum",
+                                    "tone": 3,
+                                    "emoji": "💧"
+                              },
+                              {
+                                    "id": "t28",
+                                    "hanzi": "鸡蛋",
+                                    "pinyin": "jīdàn",
+                                    "meaning": "Telur Ayam",
+                                    "tone": 1,
+                                    "emoji": "🥚"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_zoo",
+                        "title": "Kebun Binatang",
+                        "subtitle": "Gajah, singa, monyet & panda",
+                        "emoji": "🦁",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t29",
+                                    "hanzi": "大象",
+                                    "pinyin": "dàxiàng",
+                                    "meaning": "Gajah",
+                                    "tone": 4,
+                                    "emoji": "🐘"
+                              },
+                              {
+                                    "id": "t30",
+                                    "hanzi": "猴子",
+                                    "pinyin": "hóuzi",
+                                    "meaning": "Monyet",
+                                    "tone": 2,
+                                    "emoji": "🐒"
+                              },
+                              {
+                                    "id": "t31",
+                                    "hanzi": "狮子",
+                                    "pinyin": "shīzi",
+                                    "meaning": "Singa",
+                                    "tone": 1,
+                                    "emoji": "🦁"
+                              },
+                              {
+                                    "id": "t32",
+                                    "hanzi": "老虎",
+                                    "pinyin": "lǎohǔ",
+                                    "meaning": "Harimau",
+                                    "tone": 3,
+                                    "emoji": "🐯"
+                              },
+                              {
+                                    "id": "t33",
+                                    "hanzi": "熊猫",
+                                    "pinyin": "xióngmāo",
+                                    "meaning": "Panda",
+                                    "tone": 2,
+                                    "emoji": "🐼"
+                              },
+                              {
+                                    "id": "t34",
+                                    "hanzi": "长颈鹿",
+                                    "pinyin": "chángjǐnglù",
+                                    "meaning": "Jerapah",
+                                    "tone": 2,
+                                    "emoji": "🦒"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_shapes",
+                        "title": "Warna & Bentuk Indah",
+                        "subtitle": "Hijau, ungu, lingkaran & bintang",
+                        "emoji": "⭐",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t35",
+                                    "hanzi": "绿",
+                                    "pinyin": "lǜ",
+                                    "meaning": "Hijau",
+                                    "tone": 4,
+                                    "emoji": "🟢"
+                              },
+                              {
+                                    "id": "t36",
+                                    "hanzi": "粉色",
+                                    "pinyin": "fěnsè",
+                                    "meaning": "Merah Muda",
+                                    "tone": 3,
+                                    "emoji": "🌸"
+                              },
+                              {
+                                    "id": "t37",
+                                    "hanzi": "紫色",
+                                    "pinyin": "zǐsè",
+                                    "meaning": "Ungu",
+                                    "tone": 3,
+                                    "emoji": "🟣"
+                              },
+                              {
+                                    "id": "t38",
+                                    "hanzi": "圆",
+                                    "pinyin": "yuán",
+                                    "meaning": "Lingkaran",
+                                    "tone": 2,
+                                    "emoji": "⚪"
+                              },
+                              {
+                                    "id": "t39",
+                                    "hanzi": "方",
+                                    "pinyin": "fāng",
+                                    "meaning": "Kotak / Persegi",
+                                    "tone": 1,
+                                    "emoji": "⬛"
+                              },
+                              {
+                                    "id": "t40",
+                                    "hanzi": "星星",
+                                    "pinyin": "xīngxing",
+                                    "meaning": "Bintang",
+                                    "tone": 1,
+                                    "emoji": "⭐"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_opposites1",
+                        "title": "Lawan Kata Seru",
+                        "subtitle": "Besar-kecil, banyak-sedikit, panjang-pendek",
+                        "emoji": "⚖️",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t41",
+                                    "hanzi": "大",
+                                    "pinyin": "dà",
+                                    "meaning": "Besar",
+                                    "tone": 4,
+                                    "emoji": "🐘"
+                              },
+                              {
+                                    "id": "t42",
+                                    "hanzi": "小",
+                                    "pinyin": "xiǎo",
+                                    "meaning": "Kecil",
+                                    "tone": 3,
+                                    "emoji": "🐜"
+                              },
+                              {
+                                    "id": "t43",
+                                    "hanzi": "多",
+                                    "pinyin": "duō",
+                                    "meaning": "Banyak",
+                                    "tone": 1,
+                                    "emoji": "🍎🍎"
+                              },
+                              {
+                                    "id": "t44",
+                                    "hanzi": "少",
+                                    "pinyin": "shǎo",
+                                    "meaning": "Sedikit",
+                                    "tone": 3,
+                                    "emoji": "🍏"
+                              },
+                              {
+                                    "id": "t45",
+                                    "hanzi": "长",
+                                    "pinyin": "cháng",
+                                    "meaning": "Panjang",
+                                    "tone": 2,
+                                    "emoji": "📏"
+                              },
+                              {
+                                    "id": "t46",
+                                    "hanzi": "短",
+                                    "pinyin": "duǎn",
+                                    "meaning": "Pendek",
+                                    "tone": 3,
+                                    "emoji": "📐"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_health",
+                        "title": "Kegiatan Anak Sehat",
+                        "subtitle": "Cuci tangan, sikat gigi, jalan & lari",
+                        "emoji": "🏃‍♂️",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t47",
+                                    "hanzi": "洗手",
+                                    "pinyin": "xǐshǒu",
+                                    "meaning": "Cuci Tangan",
+                                    "tone": 3,
+                                    "emoji": "🧼"
+                              },
+                              {
+                                    "id": "t48",
+                                    "hanzi": "刷牙",
+                                    "pinyin": "shuāyá",
+                                    "meaning": "Sikat Gigi",
+                                    "tone": 1,
+                                    "emoji": "🪥"
+                              },
+                              {
+                                    "id": "t49",
+                                    "hanzi": "走",
+                                    "pinyin": "zǒu",
+                                    "meaning": "Berjalan",
+                                    "tone": 3,
+                                    "emoji": "🚶"
+                              },
+                              {
+                                    "id": "t50",
+                                    "hanzi": "跑",
+                                    "pinyin": "pǎo",
+                                    "meaning": "Berlari",
+                                    "tone": 3,
+                                    "emoji": "🏃"
+                              },
+                              {
+                                    "id": "t51",
+                                    "hanzi": "跳",
+                                    "pinyin": "tiào",
+                                    "meaning": "Melompat",
+                                    "tone": 4,
+                                    "emoji": "🦘"
+                              },
+                              {
+                                    "id": "t52",
+                                    "hanzi": "玩",
+                                    "pinyin": "wán",
+                                    "meaning": "Bermain",
+                                    "tone": 2,
+                                    "emoji": "🎮"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "xx_class",
+                        "title": "Tata Tertib di Kelas",
+                        "subtitle": "Berdiri, duduk, dengar, lihat & bicara",
+                        "emoji": "🏫",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "t53",
+                                    "hanzi": "起立",
+                                    "pinyin": "qǐlì",
+                                    "meaning": "Berdiri",
+                                    "tone": 3,
+                                    "emoji": "🧍"
+                              },
+                              {
+                                    "id": "t54",
+                                    "hanzi": "请坐",
+                                    "pinyin": "qǐngzuò",
+                                    "meaning": "Silakan Duduk",
+                                    "tone": 3,
+                                    "emoji": "🪑"
+                              },
+                              {
+                                    "id": "t55",
+                                    "hanzi": "听",
+                                    "pinyin": "tīng",
+                                    "meaning": "Mendengarkan",
+                                    "tone": 1,
+                                    "emoji": "👂"
+                              },
+                              {
+                                    "id": "t56",
+                                    "hanzi": "看",
+                                    "pinyin": "kàn",
+                                    "meaning": "Melihat",
+                                    "tone": 4,
+                                    "emoji": "👀"
+                              },
+                              {
+                                    "id": "t57",
+                                    "hanzi": "说",
+                                    "pinyin": "shuō",
+                                    "meaning": "Berbicara",
+                                    "tone": 1,
+                                    "emoji": "🗣️"
+                              }
+                        ]
+                  }
+            ]
+      },
+      "sdLower": {
+            "title": "Penjelajah (SD Kelas 1 - 3)",
+            "lessons": [
+                  {
+                        "id": "mh1_intro",
+                        "title": "Level 1: Perkenalan & Kesantunan",
+                        "subtitle": "Menyapa & berkenalan dengan teman baru",
+                        "emoji": "🤝",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "m1",
+                                    "hanzi": "我",
+                                    "pinyin": "wǒ",
+                                    "meaning": "Saya / Aku",
+                                    "tone": 3,
+                                    "emoji": "🙋‍♂️",
+                                    "sentence": "我是小学生。",
+                                    "sentencePy": "Wǒ shì xiǎoxuéshēng.",
+                                    "sentenceId": "Saya adalah murid SD."
+                              },
+                              {
+                                    "id": "m2",
+                                    "hanzi": "你",
+                                    "pinyin": "nǐ",
+                                    "meaning": "Kamu",
+                                    "tone": 3,
+                                    "emoji": "👉",
+                                    "sentence": "你好吗？",
+                                    "sentencePy": "Nǐ hǎo ma?",
+                                    "sentenceId": "Apa kabarmu?"
+                              },
+                              {
+                                    "id": "m3",
+                                    "hanzi": "他",
+                                    "pinyin": "tā",
+                                    "meaning": "Dia (Laki-laki)",
+                                    "tone": 1,
+                                    "emoji": "👦",
+                                    "sentence": "他是我的同学。",
+                                    "sentencePy": "Tā shì wǒ de tóngxué.",
+                                    "sentenceId": "Dia adalah teman sekelasku."
+                              },
+                              {
+                                    "id": "m4",
+                                    "hanzi": "她",
+                                    "pinyin": "tā",
+                                    "meaning": "Dia (Perempuan)",
+                                    "tone": 1,
+                                    "emoji": "👧",
+                                    "sentence": "她是我的朋友。",
+                                    "sentencePy": "Tā shì wǒ de péngyou.",
+                                    "sentenceId": "Dia adalah temanku."
+                              },
+                              {
+                                    "id": "m5",
+                                    "hanzi": "叫",
+                                    "pinyin": "jiào",
+                                    "meaning": "Bernama / Dipanggil",
+                                    "tone": 4,
+                                    "emoji": "📛",
+                                    "sentence": "我叫大生。",
+                                    "sentencePy": "Wǒ jiào Dàshēng.",
+                                    "sentenceId": "Nama saya Da Sheng."
+                              },
+                              {
+                                    "id": "m6",
+                                    "hanzi": "什么",
+                                    "pinyin": "shénme",
+                                    "meaning": "Apa",
+                                    "tone": 2,
+                                    "emoji": "❓",
+                                    "sentence": "你叫什么名字？",
+                                    "sentencePy": "Nǐ jiào shénme míngzi?",
+                                    "sentenceId": "Siapa namamu?"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh1_age",
+                        "title": "Level 2: Hitungan & Umur",
+                        "subtitle": "Menyebut umur dan angka belasan",
+                        "emoji": "🎂",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "m7",
+                                    "hanzi": "十一",
+                                    "pinyin": "shíyī",
+                                    "meaning": "Sebelas",
+                                    "tone": 2,
+                                    "emoji": "1️⃣1️⃣"
+                              },
+                              {
+                                    "id": "m8",
+                                    "hanzi": "二十",
+                                    "pinyin": "èrshí",
+                                    "meaning": "Dua Puluh",
+                                    "tone": 4,
+                                    "emoji": "2️⃣0️⃣"
+                              },
+                              {
+                                    "id": "m9",
+                                    "hanzi": "岁",
+                                    "pinyin": "suì",
+                                    "meaning": "Tahun (Umur)",
+                                    "tone": 4,
+                                    "emoji": "🎂",
+                                    "sentence": "我今年七岁。",
+                                    "sentencePy": "Wǒ jīnnián qī suì.",
+                                    "sentenceId": "Saya tahun ini berumur 7 tahun."
+                              },
+                              {
+                                    "id": "m10",
+                                    "hanzi": "几",
+                                    "pinyin": "jǐ",
+                                    "meaning": "Berapa",
+                                    "tone": 3,
+                                    "emoji": "🔢",
+                                    "sentence": "你几岁？",
+                                    "sentencePy": "Nǐ jǐ suì?",
+                                    "sentenceId": "Berapa umurmu?"
+                              },
+                              {
+                                    "id": "m11",
+                                    "hanzi": "今年",
+                                    "pinyin": "jīnnián",
+                                    "meaning": "Tahun Ini",
+                                    "tone": 1,
+                                    "emoji": "📅"
+                              },
+                              {
+                                    "id": "m12",
+                                    "hanzi": "百",
+                                    "pinyin": "bǎi",
+                                    "meaning": "Ratus / Ratusan",
+                                    "tone": 3,
+                                    "emoji": "💯"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh1_stationery",
+                        "title": "Level 3: Alat Tulis & Kelas",
+                        "subtitle": "Tas, buku, pensil, penggaris & penghapus",
+                        "emoji": "🎒",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m13",
+                                    "hanzi": "书包",
+                                    "pinyin": "shūbāo",
+                                    "meaning": "Tas Sekolah",
+                                    "tone": 1,
+                                    "emoji": "🎒",
+                                    "sentence": "这是我的书包。",
+                                    "sentencePy": "Zhè shì wǒ de shūbāo.",
+                                    "sentenceId": "Ini adalah tas sekolahku."
+                              },
+                              {
+                                    "id": "m14",
+                                    "hanzi": "书",
+                                    "pinyin": "shū",
+                                    "meaning": "Buku",
+                                    "tone": 1,
+                                    "emoji": "📖"
+                              },
+                              {
+                                    "id": "m15",
+                                    "hanzi": "本子",
+                                    "pinyin": "běnzi",
+                                    "meaning": "Buku Tulis",
+                                    "tone": 3,
+                                    "emoji": "📓"
+                              },
+                              {
+                                    "id": "m16",
+                                    "hanzi": "笔",
+                                    "pinyin": "bǐ",
+                                    "meaning": "Pena / Pensil",
+                                    "tone": 3,
+                                    "emoji": "✏️"
+                              },
+                              {
+                                    "id": "m17",
+                                    "hanzi": "尺子",
+                                    "pinyin": "chǐzi",
+                                    "meaning": "Penggaris",
+                                    "tone": 3,
+                                    "emoji": "📏"
+                              },
+                              {
+                                    "id": "m18",
+                                    "hanzi": "橡皮",
+                                    "pinyin": "xiàngpí",
+                                    "meaning": "Penghapus",
+                                    "tone": 4,
+                                    "emoji": "🧹"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh1_family",
+                        "title": "Level 4: Keluarga Besar",
+                        "subtitle": "Kakek, nenek & sanak saudara",
+                        "emoji": "👨‍👩‍👧‍👦",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m19",
+                                    "hanzi": "爷爷",
+                                    "pinyin": "yéye",
+                                    "meaning": "Kakek (dari Ayah)",
+                                    "tone": 2,
+                                    "emoji": "👴"
+                              },
+                              {
+                                    "id": "m20",
+                                    "hanzi": "奶奶",
+                                    "pinyin": "nǎinai",
+                                    "meaning": "Nenek (dari Ayah)",
+                                    "tone": 3,
+                                    "emoji": "👵"
+                              },
+                              {
+                                    "id": "m21",
+                                    "hanzi": "外公",
+                                    "pinyin": "wàigōng",
+                                    "meaning": "Kakek (dari Ibu)",
+                                    "tone": 4,
+                                    "emoji": "👴"
+                              },
+                              {
+                                    "id": "m22",
+                                    "hanzi": "外婆",
+                                    "pinyin": "wàipó",
+                                    "meaning": "Nenek (dari Ibu)",
+                                    "tone": 4,
+                                    "emoji": "👵"
+                              },
+                              {
+                                    "id": "m23",
+                                    "hanzi": "家",
+                                    "pinyin": "jiā",
+                                    "meaning": "Rumah / Keluarga",
+                                    "tone": 1,
+                                    "emoji": "🏠",
+                                    "sentence": "我家有五口人。",
+                                    "sentencePy": "Wǒ jiā yǒu wǔ kǒu rén.",
+                                    "sentenceId": "Keluargaku ada lima orang."
+                              },
+                              {
+                                    "id": "m24",
+                                    "hanzi": "有",
+                                    "pinyin": "yǒu",
+                                    "meaning": "Punya / Ada",
+                                    "tone": 3,
+                                    "emoji": "🤲"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh2_week",
+                        "title": "Level 5: Hari dalam Seminggu",
+                        "subtitle": "Senin sampai Minggu lengkap!",
+                        "emoji": "📅",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m25",
+                                    "hanzi": "星期一",
+                                    "pinyin": "xīngqīyī",
+                                    "meaning": "Senin",
+                                    "tone": 1,
+                                    "emoji": "1️⃣"
+                              },
+                              {
+                                    "id": "m26",
+                                    "hanzi": "星期二",
+                                    "pinyin": "xīngqī\\",
+                                    "meaning": "Selasa",
+                                    "tone": 1,
+                                    "emoji": "2️⃣"
+                              },
+                              {
+                                    "id": "m27",
+                                    "hanzi": "星期三",
+                                    "pinyin": "xīngqīsān",
+                                    "meaning": "Rabu",
+                                    "tone": 1,
+                                    "emoji": "3️⃣"
+                              },
+                              {
+                                    "id": "m28",
+                                    "hanzi": "星期四",
+                                    "pinyin": "xīngqīsì",
+                                    "meaning": "Kamis",
+                                    "tone": 1,
+                                    "emoji": "4️⃣"
+                              },
+                              {
+                                    "id": "m29",
+                                    "hanzi": "星期五",
+                                    "pinyin": "xīngqīwǔ",
+                                    "meaning": "Jumat",
+                                    "tone": 1,
+                                    "emoji": "5️⃣"
+                              },
+                              {
+                                    "id": "m30",
+                                    "hanzi": "星期六",
+                                    "pinyin": "xīngqīliù",
+                                    "meaning": "Sabtu",
+                                    "tone": 1,
+                                    "emoji": "6️⃣"
+                              },
+                              {
+                                    "id": "m31",
+                                    "hanzi": "星期日",
+                                    "pinyin": "xīngqīrì",
+                                    "meaning": "Minggu",
+                                    "tone": 1,
+                                    "emoji": "☀️",
+                                    "sentence": "今天星期日。",
+                                    "sentencePy": "Jīntiān xīngqīrì.",
+                                    "sentenceId": "Hari ini hari Minggu."
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh2_clothes",
+                        "title": "Level 6: Pakaian Sehari-hari",
+                        "subtitle": "Baju, celana, rok & sepatu",
+                        "emoji": "👕",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m32",
+                                    "hanzi": "衣服",
+                                    "pinyin": "yīfu",
+                                    "meaning": "Pakaian / Baju",
+                                    "tone": 1,
+                                    "emoji": "👕",
+                                    "sentence": "我穿新衣服。",
+                                    "sentencePy": "Wǒ chuān xīn yīfu.",
+                                    "sentenceId": "Saya memakai baju baru."
+                              },
+                              {
+                                    "id": "m33",
+                                    "hanzi": "裤子",
+                                    "pinyin": "kùzi",
+                                    "meaning": "Celana",
+                                    "tone": 4,
+                                    "emoji": "👖"
+                              },
+                              {
+                                    "id": "m34",
+                                    "hanzi": "裙子",
+                                    "pinyin": "qúnzi",
+                                    "meaning": "Rok",
+                                    "tone": 2,
+                                    "emoji": "👗"
+                              },
+                              {
+                                    "id": "m35",
+                                    "hanzi": "鞋子",
+                                    "pinyin": "xiézi",
+                                    "meaning": "Sepatu",
+                                    "tone": 2,
+                                    "emoji": "👟"
+                              },
+                              {
+                                    "id": "m36",
+                                    "hanzi": "袜子",
+                                    "pinyin": "wàzi",
+                                    "meaning": "Kaos Kaki",
+                                    "tone": 4,
+                                    "emoji": "🧦"
+                              },
+                              {
+                                    "id": "m37",
+                                    "hanzi": "穿",
+                                    "pinyin": "chuān",
+                                    "meaning": "Memakai (Baju/Sepatu)",
+                                    "tone": 1,
+                                    "emoji": "🦺"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh2_food",
+                        "title": "Level 7: Hidangan Lezat",
+                        "subtitle": "Daging, ayam, ikan & sup hangat",
+                        "emoji": "🍗",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m38",
+                                    "hanzi": "鱼",
+                                    "pinyin": "yú",
+                                    "meaning": "Ikan",
+                                    "tone": 2,
+                                    "emoji": "🐟"
+                              },
+                              {
+                                    "id": "m39",
+                                    "hanzi": "肉",
+                                    "pinyin": "ròu",
+                                    "meaning": "Daging",
+                                    "tone": 4,
+                                    "emoji": "🥩"
+                              },
+                              {
+                                    "id": "m40",
+                                    "hanzi": "鸡肉",
+                                    "pinyin": "jīròu",
+                                    "meaning": "Daging Ayam",
+                                    "tone": 1,
+                                    "emoji": "🍗",
+                                    "sentence": "我喜欢吃鸡肉。",
+                                    "sentencePy": "Wǒ xǐhuan chī jīròu.",
+                                    "sentenceId": "Saya suka makan daging ayam."
+                              },
+                              {
+                                    "id": "m41",
+                                    "hanzi": "汤",
+                                    "pinyin": "tāng",
+                                    "meaning": "Sup / Kuah",
+                                    "tone": 1,
+                                    "emoji": "🍲"
+                              },
+                              {
+                                    "id": "m42",
+                                    "hanzi": "好吃",
+                                    "pinyin": "hǎochī",
+                                    "meaning": "Enak / Lezat",
+                                    "tone": 3,
+                                    "emoji": "😋"
+                              },
+                              {
+                                    "id": "m43",
+                                    "hanzi": "喜欢",
+                                    "pinyin": "xǐhuan",
+                                    "meaning": "Suka / Senang",
+                                    "tone": 3,
+                                    "emoji": "❤️"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh2_drinks",
+                        "title": "Level 8: Minuman Segar",
+                        "subtitle": "Teh, jus, kopi & susu",
+                        "emoji": "🧃",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m44",
+                                    "hanzi": "茶",
+                                    "pinyin": "chá",
+                                    "meaning": "Teh",
+                                    "tone": 2,
+                                    "emoji": "🍵",
+                                    "sentence": "爸爸喝热茶。",
+                                    "sentencePy": "Bàba hē rè chá.",
+                                    "sentenceId": "Ayah minum teh panas."
+                              },
+                              {
+                                    "id": "m45",
+                                    "hanzi": "果汁",
+                                    "pinyin": "guǒzhī",
+                                    "meaning": "Jus Buah",
+                                    "tone": 3,
+                                    "emoji": "🧃"
+                              },
+                              {
+                                    "id": "m46",
+                                    "hanzi": "咖啡",
+                                    "pinyin": "kāfēi",
+                                    "meaning": "Kopi",
+                                    "tone": 1,
+                                    "emoji": "☕"
+                              },
+                              {
+                                    "id": "m47",
+                                    "hanzi": "可乐",
+                                    "pinyin": "kělè",
+                                    "meaning": "Kola",
+                                    "tone": 3,
+                                    "emoji": "🥤"
+                              },
+                              {
+                                    "id": "m48",
+                                    "hanzi": "渴",
+                                    "pinyin": "kě",
+                                    "meaning": "Haus",
+                                    "tone": 3,
+                                    "emoji": "🥵"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh3_time",
+                        "title": "Level 9: Jam & Waktu",
+                        "subtitle": "Pukul, menit, sekarang & waktu",
+                        "emoji": "⏰",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m49",
+                                    "hanzi": "点",
+                                    "pinyin": "diǎn",
+                                    "meaning": "Jam / Pukul",
+                                    "tone": 3,
+                                    "emoji": "🕐",
+                                    "sentence": "现在七点。",
+                                    "sentencePy": "Xiànzài qī diǎn.",
+                                    "sentenceId": "Sekarang pukul tujuh."
+                              },
+                              {
+                                    "id": "m50",
+                                    "hanzi": "分",
+                                    "pinyin": "fēn",
+                                    "meaning": "Menit",
+                                    "tone": 1,
+                                    "emoji": "⏱️"
+                              },
+                              {
+                                    "id": "m51",
+                                    "hanzi": "半",
+                                    "pinyin": "bàn",
+                                    "meaning": "Setengah (30 Menit)",
+                                    "tone": 4,
+                                    "emoji": "🕧"
+                              },
+                              {
+                                    "id": "m52",
+                                    "hanzi": "现在",
+                                    "pinyin": "xiànzài",
+                                    "meaning": "Sekarang",
+                                    "tone": 4,
+                                    "emoji": "⌚"
+                              },
+                              {
+                                    "id": "m53",
+                                    "hanzi": "早上",
+                                    "pinyin": "zǎoshang",
+                                    "meaning": "Pagi Hari",
+                                    "tone": 3,
+                                    "emoji": "🌅"
+                              },
+                              {
+                                    "id": "m54",
+                                    "hanzi": "晚上",
+                                    "pinyin": "wǎnshang",
+                                    "meaning": "Malam Hari",
+                                    "tone": 3,
+                                    "emoji": "🌃"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh3_routine",
+                        "title": "Level 10: Rutinitas Harian",
+                        "subtitle": "Bangun, sarapan, sekolah & tidur",
+                        "emoji": "🌅",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m55",
+                                    "hanzi": "起床",
+                                    "pinyin": "qǐchuáng",
+                                    "meaning": "Bangun Tidur",
+                                    "tone": 3,
+                                    "emoji": "⏰",
+                                    "sentence": "我早上六点起床。",
+                                    "sentencePy": "Wǒ zǎoshang liù diǎn qǐchuáng.",
+                                    "sentenceId": "Saya bangun tidur pukul 6 pagi."
+                              },
+                              {
+                                    "id": "m56",
+                                    "hanzi": "吃早饭",
+                                    "pinyin": "chī zǎofàn",
+                                    "meaning": "Sarapan Pagi",
+                                    "tone": 1,
+                                    "emoji": "🥪"
+                              },
+                              {
+                                    "id": "m57",
+                                    "hanzi": "去学校",
+                                    "pinyin": "qù xuéxiào",
+                                    "meaning": "Pergi ke Sekolah",
+                                    "tone": 4,
+                                    "emoji": "🏫"
+                              },
+                              {
+                                    "id": "m58",
+                                    "hanzi": "放学",
+                                    "pinyin": "fàngxué",
+                                    "meaning": "Pulang Sekolah",
+                                    "tone": 4,
+                                    "emoji": "🚶"
+                              },
+                              {
+                                    "id": "m59",
+                                    "hanzi": "做作业",
+                                    "pinyin": "zuò zuòyè",
+                                    "meaning": "Mengerjakan PR",
+                                    "tone": 4,
+                                    "emoji": "✍️"
+                              },
+                              {
+                                    "id": "m60",
+                                    "hanzi": "睡觉",
+                                    "pinyin": "shuìjiào",
+                                    "meaning": "Tidur Malam",
+                                    "tone": 4,
+                                    "emoji": "🛌"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh3_weather",
+                        "title": "Level 11: Cuaca & Suhu",
+                        "subtitle": "Cerah, hujan, panas & dingin",
+                        "emoji": "⛅",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m61",
+                                    "hanzi": "晴天",
+                                    "pinyin": "qíngtiān",
+                                    "meaning": "Cerah / Terang",
+                                    "tone": 2,
+                                    "emoji": "☀️",
+                                    "sentence": "今天天气很好，是晴天。",
+                                    "sentencePy": "Jīntiān tiānqì hěn hǎo, shì qíngtiān.",
+                                    "sentenceId": "Hari ini cuaca sangat bagus, hari cerah."
+                              },
+                              {
+                                    "id": "m62",
+                                    "hanzi": "下雨",
+                                    "pinyin": "xiàyǔ",
+                                    "meaning": "Turun Hujan",
+                                    "tone": 4,
+                                    "emoji": "🌧️"
+                              },
+                              {
+                                    "id": "m63",
+                                    "hanzi": "阴天",
+                                    "pinyin": "yīntiān",
+                                    "meaning": "Mendung",
+                                    "tone": 1,
+                                    "emoji": "☁️"
+                              },
+                              {
+                                    "id": "m64",
+                                    "hanzi": "刮风",
+                                    "pinyin": "guāfēng",
+                                    "meaning": "Berangin",
+                                    "tone": 1,
+                                    "emoji": "💨"
+                              },
+                              {
+                                    "id": "m65",
+                                    "hanzi": "热",
+                                    "pinyin": "rè",
+                                    "meaning": "Panas",
+                                    "tone": 4,
+                                    "emoji": "🔥"
+                              },
+                              {
+                                    "id": "m66",
+                                    "hanzi": "冷",
+                                    "pinyin": "lěng",
+                                    "meaning": "Dingin",
+                                    "tone": 3,
+                                    "emoji": "🥶"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh3_school",
+                        "title": "Level 12: Area Sekolah",
+                        "subtitle": "Kelas, lapangan, perpus & kantin",
+                        "emoji": "🏫",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m67",
+                                    "hanzi": "学校",
+                                    "pinyin": "xuéxiào",
+                                    "meaning": "Sekolah",
+                                    "tone": 2,
+                                    "emoji": "🏫"
+                              },
+                              {
+                                    "id": "m68",
+                                    "hanzi": "教室",
+                                    "pinyin": "jiàoshì",
+                                    "meaning": "Ruang Kelas",
+                                    "tone": 4,
+                                    "emoji": "🚪"
+                              },
+                              {
+                                    "id": "m69",
+                                    "hanzi": "操场",
+                                    "pinyin": "cāochǎng",
+                                    "meaning": "Lapangan Olahraga",
+                                    "tone": 1,
+                                    "emoji": "🏃‍♂️",
+                                    "sentence": "我们在操场做操。",
+                                    "sentencePy": "Wǒmen zài cāochǎng zuò cāo.",
+                                    "sentenceId": "Kami senam di lapangan olahraga."
+                              },
+                              {
+                                    "id": "m70",
+                                    "hanzi": "图书馆",
+                                    "pinyin": "túshūguǎn",
+                                    "meaning": "Perpustakaan",
+                                    "tone": 2,
+                                    "emoji": "📚"
+                              },
+                              {
+                                    "id": "m71",
+                                    "hanzi": "卫生间",
+                                    "pinyin": "wèishēngjiān",
+                                    "meaning": "Toilet / Kamar Mandi",
+                                    "tone": 4,
+                                    "emoji": "🚻"
+                              },
+                              {
+                                    "id": "m72",
+                                    "hanzi": "食堂",
+                                    "pinyin": "shítáng",
+                                    "meaning": "Kantin Sekolah",
+                                    "tone": 2,
+                                    "emoji": "🍽️"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh3_adjectives",
+                        "title": "Level 13: Kata Sifat Berlawanan",
+                        "subtitle": "Cepat-lambat, tinggi-pendek, baru-usang",
+                        "emoji": "🏃‍♀️",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "m73",
+                                    "hanzi": "快",
+                                    "pinyin": "kuài",
+                                    "meaning": "Cepat",
+                                    "tone": 4,
+                                    "emoji": "⚡"
+                              },
+                              {
+                                    "id": "m74",
+                                    "hanzi": "慢",
+                                    "pinyin": "màn",
+                                    "meaning": "Lambat / Pelan",
+                                    "tone": 4,
+                                    "emoji": "🐢"
+                              },
+                              {
+                                    "id": "m75",
+                                    "hanzi": "高",
+                                    "pinyin": "gāo",
+                                    "meaning": "Tinggi",
+                                    "tone": 1,
+                                    "emoji": "🦒",
+                                    "sentence": "长颈鹿很高。",
+                                    "sentencePy": "Chángjǐnglù hěn gāo.",
+                                    "sentenceId": "Jerapah sangat tinggi."
+                              },
+                              {
+                                    "id": "m76",
+                                    "hanzi": "矮",
+                                    "pinyin": "ǎi",
+                                    "meaning": "Pendek (Postur)",
+                                    "tone": 3,
+                                    "emoji": "🐧"
+                              },
+                              {
+                                    "id": "m77",
+                                    "hanzi": "新",
+                                    "pinyin": "xīn",
+                                    "meaning": "Baru",
+                                    "tone": 1,
+                                    "emoji": "✨"
+                              },
+                              {
+                                    "id": "m78",
+                                    "hanzi": "旧",
+                                    "pinyin": "jiù",
+                                    "meaning": "Lama / Usang",
+                                    "tone": 4,
+                                    "emoji": "📦"
+                              }
+                        ]
+                  }
+            ]
+      },
+      "sdUpper": {
+            "title": "Pendekar YCT (SD Kelas 4 - 6)",
+            "lessons": [
+                  {
+                        "id": "mh4_directions",
+                        "title": "Level 1: Arah & Posisi",
+                        "subtitle": "Atas, bawah, kiri, kanan, depan & belakang",
+                        "emoji": "🧭",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "u1",
+                                    "hanzi": "上面",
+                                    "pinyin": "shàngmiàn",
+                                    "meaning": "Sebelah Atas",
+                                    "tone": 4,
+                                    "emoji": "⬆️",
+                                    "sentence": "小猫在桌子上面。",
+                                    "sentencePy": "Xiǎomāo zài zhuōzi shàngmiàn.",
+                                    "sentenceId": "Kucing kecil ada di atas meja."
+                              },
+                              {
+                                    "id": "u2",
+                                    "hanzi": "下面",
+                                    "pinyin": "xiàmiàn",
+                                    "meaning": "Sebelah Bawah",
+                                    "tone": 4,
+                                    "emoji": "⬇️",
+                                    "sentence": "小狗在椅子下面。",
+                                    "sentencePy": "Xiǎogǒu zài yǐzi xiàmiàn.",
+                                    "sentenceId": "Anjing kecil ada di bawah kursi."
+                              },
+                              {
+                                    "id": "u3",
+                                    "hanzi": "左边",
+                                    "pinyin": "zuǒbian",
+                                    "meaning": "Sebelah Kiri",
+                                    "tone": 3,
+                                    "emoji": "⬅️"
+                              },
+                              {
+                                    "id": "u4",
+                                    "hanzi": "右边",
+                                    "pinyin": "yòubian",
+                                    "meaning": "Sebelah Kanan",
+                                    "tone": 4,
+                                    "emoji": "➡️"
+                              },
+                              {
+                                    "id": "u5",
+                                    "hanzi": "前面",
+                                    "pinyin": "qiánmiàn",
+                                    "meaning": "Sebelah Depan",
+                                    "tone": 2,
+                                    "emoji": "🔼"
+                              },
+                              {
+                                    "id": "u6",
+                                    "hanzi": "后面",
+                                    "pinyin": "hòumiàn",
+                                    "meaning": "Sebelah Belakang",
+                                    "tone": 4,
+                                    "emoji": "🔽"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh4_hobbies",
+                        "title": "Level 2: Hobi & Bakat",
+                        "subtitle": "Menggambar, menyanyi, menari & membaca",
+                        "emoji": "🎨",
+                        "starsEarned": 3,
+                        "locked": false,
+                        "cards": [
+                              {
+                                    "id": "u7",
+                                    "hanzi": "画画",
+                                    "pinyin": "huàhuà",
+                                    "meaning": "Menggambar / Melukis",
+                                    "tone": 4,
+                                    "emoji": "🎨",
+                                    "sentence": "我的爱好是画画。",
+                                    "sentencePy": "Wǒ de àihào shì huàhuà.",
+                                    "sentenceId": "Hobiku adalah menggambar."
+                              },
+                              {
+                                    "id": "u8",
+                                    "hanzi": "唱歌",
+                                    "pinyin": "chànggē",
+                                    "meaning": "Bernyanyi",
+                                    "tone": 4,
+                                    "emoji": "🎤"
+                              },
+                              {
+                                    "id": "u9",
+                                    "hanzi": "跳舞",
+                                    "pinyin": "tiàowǔ",
+                                    "meaning": "Menari",
+                                    "tone": 4,
+                                    "emoji": "💃"
+                              },
+                              {
+                                    "id": "u10",
+                                    "hanzi": "看书",
+                                    "pinyin": "kànshū",
+                                    "meaning": "Membaca Buku",
+                                    "tone": 4,
+                                    "emoji": "📚"
+                              },
+                              {
+                                    "id": "u11",
+                                    "hanzi": "玩游戏",
+                                    "pinyin": "wán yóuxì",
+                                    "meaning": "Bermain Game",
+                                    "tone": 2,
+                                    "emoji": "🎮"
+                              },
+                              {
+                                    "id": "u12",
+                                    "hanzi": "听音乐",
+                                    "pinyin": "tīng yīnyuè",
+                                    "meaning": "Mendengarkan Musik",
+                                    "tone": 1,
+                                    "emoji": "🎧"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh4_sports",
+                        "title": "Level 3: Olahraga Seru",
+                        "subtitle": "Sepak bola, basket, renang & lari",
+                        "emoji": "⚽",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u13",
+                                    "hanzi": "运动",
+                                    "pinyin": "yùndòng",
+                                    "meaning": "Olahraga",
+                                    "tone": 4,
+                                    "emoji": "🏃‍♂️"
+                              },
+                              {
+                                    "id": "u14",
+                                    "hanzi": "踢足球",
+                                    "pinyin": "tī zúqiú",
+                                    "meaning": "Main Sepak Bola",
+                                    "tone": 1,
+                                    "emoji": "⚽",
+                                    "sentence": "下午我们一起踢足球吧！",
+                                    "sentencePy": "Xiàwǔ wǒmen yīqǐ tī zúqiú ba!",
+                                    "sentenceId": "Sore ini mari kita main sepak bola bersama!"
+                              },
+                              {
+                                    "id": "u15",
+                                    "hanzi": "打篮球",
+                                    "pinyin": "dǎ lánqiú",
+                                    "meaning": "Main Bola Basket",
+                                    "tone": 3,
+                                    "emoji": "🏀"
+                              },
+                              {
+                                    "id": "u16",
+                                    "hanzi": "游泳",
+                                    "pinyin": "yóuyǒng",
+                                    "meaning": "Berenang",
+                                    "tone": 2,
+                                    "emoji": "🏊‍♂️"
+                              },
+                              {
+                                    "id": "u17",
+                                    "hanzi": "跑步",
+                                    "pinyin": "pǎobù",
+                                    "meaning": "Berlari",
+                                    "tone": 3,
+                                    "emoji": "👟"
+                              },
+                              {
+                                    "id": "u18",
+                                    "hanzi": "骑车",
+                                    "pinyin": "qíchē",
+                                    "meaning": "Bersepeda",
+                                    "tone": 2,
+                                    "emoji": "🚲"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh4_vehicles",
+                        "title": "Level 4: Transportasi & Kendaraan",
+                        "subtitle": "Mobil, pesawat, kereta & bus umum",
+                        "emoji": "✈️",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u19",
+                                    "hanzi": "汽车",
+                                    "pinyin": "qìchē",
+                                    "meaning": "Mobil",
+                                    "tone": 4,
+                                    "emoji": "🚗"
+                              },
+                              {
+                                    "id": "u20",
+                                    "hanzi": "飞机",
+                                    "pinyin": "fēijī",
+                                    "meaning": "Pesawat Terbang",
+                                    "tone": 1,
+                                    "emoji": "✈️",
+                                    "sentence": "我们坐飞机去北京。",
+                                    "sentencePy": "Wǒmen zuò fēijī qù Běijīng.",
+                                    "sentenceId": "Kami naik pesawat terbang pergi ke Beijing."
+                              },
+                              {
+                                    "id": "u21",
+                                    "hanzi": "火车",
+                                    "pinyin": "huǒchē",
+                                    "meaning": "Kereta Api",
+                                    "tone": 3,
+                                    "emoji": "🚆"
+                              },
+                              {
+                                    "id": "u22",
+                                    "hanzi": "船",
+                                    "pinyin": "chuán",
+                                    "meaning": "Kapal Laut",
+                                    "tone": 2,
+                                    "emoji": "🚢"
+                              },
+                              {
+                                    "id": "u23",
+                                    "hanzi": "自行车",
+                                    "pinyin": "zìxíngchē",
+                                    "meaning": "Sepeda",
+                                    "tone": 4,
+                                    "emoji": "🚲"
+                              },
+                              {
+                                    "id": "u24",
+                                    "hanzi": "公共汽车",
+                                    "pinyin": "gōnggòng qìchē",
+                                    "meaning": "Bus Umum",
+                                    "tone": 1,
+                                    "emoji": "🚌"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh4_birthday",
+                        "title": "Level 5: Bulan & Ulang Tahun",
+                        "subtitle": "Bulan, tanggal, selamat ultah & hadiah",
+                        "emoji": "🎁",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u25",
+                                    "hanzi": "月",
+                                    "pinyin": "yuè",
+                                    "meaning": "Bulan (Kalender)",
+                                    "tone": 4,
+                                    "emoji": "📆"
+                              },
+                              {
+                                    "id": "u26",
+                                    "hanzi": "日",
+                                    "pinyin": "rì",
+                                    "meaning": "Tanggal / Hari",
+                                    "tone": 4,
+                                    "emoji": "📅"
+                              },
+                              {
+                                    "id": "u27",
+                                    "hanzi": "生日",
+                                    "pinyin": "shēngrì",
+                                    "meaning": "Hari Ulang Tahun",
+                                    "tone": 1,
+                                    "emoji": "🎂",
+                                    "sentence": "祝你生日快乐！",
+                                    "sentencePy": "Zhù nǐ shēngrì kuàilè!",
+                                    "sentenceId": "Selamat ulang tahun untukmu!"
+                              },
+                              {
+                                    "id": "u28",
+                                    "hanzi": "快乐",
+                                    "pinyin": "kuàilè",
+                                    "meaning": "Bahagia / Gembira",
+                                    "tone": 4,
+                                    "emoji": "🎉"
+                              },
+                              {
+                                    "id": "u29",
+                                    "hanzi": "送",
+                                    "pinyin": "sòng",
+                                    "meaning": "Memberi / Mengantar",
+                                    "tone": 4,
+                                    "emoji": "🎁"
+                              },
+                              {
+                                    "id": "u30",
+                                    "hanzi": "礼物",
+                                    "pinyin": "lǐwù",
+                                    "meaning": "Kado / Hadiah",
+                                    "tone": 3,
+                                    "emoji": "🎀"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh5_shopping",
+                        "title": "Level 6: Belanja di Toko",
+                        "subtitle": "Beli, jual, harga, mahal & murah",
+                        "emoji": "🛍️",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u31",
+                                    "hanzi": "买",
+                                    "pinyin": "mǎi",
+                                    "meaning": "Membeli",
+                                    "tone": 3,
+                                    "emoji": "🛒"
+                              },
+                              {
+                                    "id": "u32",
+                                    "hanzi": "卖",
+                                    "pinyin": "mài",
+                                    "meaning": "Menjual",
+                                    "tone": 4,
+                                    "emoji": "🏷️"
+                              },
+                              {
+                                    "id": "u33",
+                                    "hanzi": "多少钱",
+                                    "pinyin": "duōshao qián",
+                                    "meaning": "Berapa Harganya?",
+                                    "tone": 1,
+                                    "emoji": "💰",
+                                    "sentence": "这个苹果多少钱？",
+                                    "sentencePy": "Zhè ge píngguǒ duōshao qián?",
+                                    "sentenceId": "Berapa harga apel ini?"
+                              },
+                              {
+                                    "id": "u34",
+                                    "hanzi": "块",
+                                    "pinyin": "kuài",
+                                    "meaning": "Satuan Uang (Yuan)",
+                                    "tone": 4,
+                                    "emoji": "💵"
+                              },
+                              {
+                                    "id": "u35",
+                                    "hanzi": "贵",
+                                    "pinyin": "guì",
+                                    "meaning": "Mahal",
+                                    "tone": 4,
+                                    "emoji": "💎"
+                              },
+                              {
+                                    "id": "u36",
+                                    "hanzi": "便宜",
+                                    "pinyin": "piányi",
+                                    "meaning": "Murah",
+                                    "tone": 2,
+                                    "emoji": "🪙"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh5_house",
+                        "title": "Level 7: Ruangan Rumah",
+                        "subtitle": "Ruang tamu, kamar, dapur & perabot",
+                        "emoji": "🏡",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u37",
+                                    "hanzi": "客厅",
+                                    "pinyin": "kètīng",
+                                    "meaning": "Ruang Tamu",
+                                    "tone": 4,
+                                    "emoji": "🛋️"
+                              },
+                              {
+                                    "id": "u38",
+                                    "hanzi": "卧室",
+                                    "pinyin": "wòshì",
+                                    "meaning": "Kamar Tidur",
+                                    "tone": 4,
+                                    "emoji": "🛏️",
+                                    "sentence": "我的卧室很干净。",
+                                    "sentencePy": "Wǒ de wòshì hěn gānjìng.",
+                                    "sentenceId": "Kamar tidurku sangat bersih."
+                              },
+                              {
+                                    "id": "u39",
+                                    "hanzi": "厨房",
+                                    "pinyin": "chúfáng",
+                                    "meaning": "Dapur",
+                                    "tone": 2,
+                                    "emoji": "🍳"
+                              },
+                              {
+                                    "id": "u40",
+                                    "hanzi": "门",
+                                    "pinyin": "mén",
+                                    "meaning": "Pintu",
+                                    "tone": 2,
+                                    "emoji": "🚪"
+                              },
+                              {
+                                    "id": "u41",
+                                    "hanzi": "窗户",
+                                    "pinyin": "chuānghu",
+                                    "meaning": "Jendela",
+                                    "tone": 1,
+                                    "emoji": "🪟"
+                              },
+                              {
+                                    "id": "u42",
+                                    "hanzi": "桌子",
+                                    "pinyin": "zhuōzi",
+                                    "meaning": "Meja",
+                                    "tone": 1,
+                                    "emoji": "🪵"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh5_career",
+                        "title": "Level 8: Profesi & Cita-cita",
+                        "subtitle": "Dokter, perawat, polisi & guru",
+                        "emoji": "👨‍⚕️",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u43",
+                                    "hanzi": "医生",
+                                    "pinyin": "yīshēng",
+                                    "meaning": "Dokter",
+                                    "tone": 1,
+                                    "emoji": "👨‍⚕️",
+                                    "sentence": "我长大想当医生。",
+                                    "sentencePy": "Wǒ zhǎngdà xiǎng dāng yīshēng.",
+                                    "sentenceId": "Saya kalau besar ingin menjadi dokter."
+                              },
+                              {
+                                    "id": "u44",
+                                    "hanzi": "护士",
+                                    "pinyin": "hùshi",
+                                    "meaning": "Perawat",
+                                    "tone": 4,
+                                    "emoji": "👩‍⚕️"
+                              },
+                              {
+                                    "id": "u45",
+                                    "hanzi": "警察",
+                                    "pinyin": "jǐngchá",
+                                    "meaning": "Polisi",
+                                    "tone": 3,
+                                    "emoji": "👮‍♂️"
+                              },
+                              {
+                                    "id": "u46",
+                                    "hanzi": "老师",
+                                    "pinyin": "lǎoshī",
+                                    "meaning": "Guru",
+                                    "tone": 3,
+                                    "emoji": "👩‍🏫"
+                              },
+                              {
+                                    "id": "u47",
+                                    "hanzi": "司机",
+                                    "pinyin": "sījī",
+                                    "meaning": "Supir",
+                                    "tone": 1,
+                                    "emoji": "🚗"
+                              },
+                              {
+                                    "id": "u48",
+                                    "hanzi": "想当",
+                                    "pinyin": "xiǎng dāng",
+                                    "meaning": "Ingin Menjadi",
+                                    "tone": 3,
+                                    "emoji": "⭐"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh5_seasons",
+                        "title": "Level 9: Empat Musim Dunia",
+                        "subtitle": "Musim semi, panas, gugur & dingin",
+                        "emoji": "🍁",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u49",
+                                    "hanzi": "春天",
+                                    "pinyin": "chūntiān",
+                                    "meaning": "Musim Semi",
+                                    "tone": 1,
+                                    "emoji": "🌸",
+                                    "sentence": "春天花开了。",
+                                    "sentencePy": "Chūntiān huā kāi le.",
+                                    "sentenceId": "Bunga bermekaran di musim semi."
+                              },
+                              {
+                                    "id": "u50",
+                                    "hanzi": "夏天",
+                                    "pinyin": "xiàtiān",
+                                    "meaning": "Musim Panas",
+                                    "tone": 4,
+                                    "emoji": "🏖️"
+                              },
+                              {
+                                    "id": "u51",
+                                    "hanzi": "秋天",
+                                    "pinyin": "qiūtiān",
+                                    "meaning": "Musim Gugur",
+                                    "tone": 1,
+                                    "emoji": "🍁"
+                              },
+                              {
+                                    "id": "u52",
+                                    "hanzi": "冬天",
+                                    "pinyin": "dōngtiān",
+                                    "meaning": "Musim Dingin",
+                                    "tone": 1,
+                                    "emoji": "⛄"
+                              },
+                              {
+                                    "id": "u53",
+                                    "hanzi": "下雪",
+                                    "pinyin": "xiàxuě",
+                                    "meaning": "Turun Salju",
+                                    "tone": 4,
+                                    "emoji": "❄️"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh6_restaurant",
+                        "title": "Level 10: Di Restoran",
+                        "subtitle": "Restoran, menu, bakpao & pangsit",
+                        "emoji": "🥟",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u54",
+                                    "hanzi": "饭馆",
+                                    "pinyin": "fànguǎn",
+                                    "meaning": "Restoran / Rumah Makan",
+                                    "tone": 4,
+                                    "emoji": "🍜"
+                              },
+                              {
+                                    "id": "u55",
+                                    "hanzi": "菜单",
+                                    "pinyin": "càidān",
+                                    "meaning": "Buku Menu Makanan",
+                                    "tone": 4,
+                                    "emoji": "📋",
+                                    "sentence": "请给我菜单。",
+                                    "sentencePy": "Qǐng gěi wǒ càidān.",
+                                    "sentenceId": "Tolong berikan saya buku menu."
+                              },
+                              {
+                                    "id": "u56",
+                                    "hanzi": "点菜",
+                                    "pinyin": "diǎncài",
+                                    "meaning": "Memesan Makanan",
+                                    "tone": 3,
+                                    "emoji": "🛎️"
+                              },
+                              {
+                                    "id": "u57",
+                                    "hanzi": "包子",
+                                    "pinyin": "bāozi",
+                                    "meaning": "Bakpao",
+                                    "tone": 1,
+                                    "emoji": "🥟"
+                              },
+                              {
+                                    "id": "u58",
+                                    "hanzi": "饺子",
+                                    "pinyin": "jiǎozi",
+                                    "meaning": "Pangsit / Jiaozi",
+                                    "tone": 3,
+                                    "emoji": "🥟"
+                              },
+                              {
+                                    "id": "u59",
+                                    "hanzi": "服务员",
+                                    "pinyin": "fúwùyuán",
+                                    "meaning": "Pelayan Restoran",
+                                    "tone": 2,
+                                    "emoji": "🤵"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh6_health",
+                        "title": "Level 11: Tubuh Sakit & Dokter",
+                        "subtitle": "Demam, flu, obat & istirahat",
+                        "emoji": "🤒",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u60",
+                                    "hanzi": "生病",
+                                    "pinyin": "shēngbìng",
+                                    "meaning": "Sakit",
+                                    "tone": 1,
+                                    "emoji": "🤒",
+                                    "sentence": "他生病了，今天没去学校。",
+                                    "sentencePy": "Tā shēngbìng le, jīntiān méi qù xuéxiào.",
+                                    "sentenceId": "Dia sakit, hari ini tidak ke sekolah."
+                              },
+                              {
+                                    "id": "u61",
+                                    "hanzi": "发烧",
+                                    "pinyin": "fāshāo",
+                                    "meaning": "Demam",
+                                    "tone": 1,
+                                    "emoji": "🌡️"
+                              },
+                              {
+                                    "id": "u62",
+                                    "hanzi": "头疼",
+                                    "pinyin": "tóuténg",
+                                    "meaning": "Sakit Kepala",
+                                    "tone": 2,
+                                    "emoji": "🤕"
+                              },
+                              {
+                                    "id": "u63",
+                                    "hanzi": "感冒",
+                                    "pinyin": "gǎnmào",
+                                    "meaning": "Flu / Pilek",
+                                    "tone": 3,
+                                    "emoji": "🤧"
+                              },
+                              {
+                                    "id": "u64",
+                                    "hanzi": "吃药",
+                                    "pinyin": "chīyào",
+                                    "meaning": "Minum Obat",
+                                    "tone": 1,
+                                    "emoji": "💊"
+                              },
+                              {
+                                    "id": "u65",
+                                    "hanzi": "休息",
+                                    "pinyin": "xiūxi",
+                                    "meaning": "Beristirahat",
+                                    "tone": 1,
+                                    "emoji": "🛌"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh6_questions",
+                        "title": "Level 12: Kata Tanya Praktis",
+                        "subtitle": "Siapa, di mana, bagaimana & kenapa",
+                        "emoji": "🤔",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u66",
+                                    "hanzi": "哪儿",
+                                    "pinyin": "nǎr",
+                                    "meaning": "Di mana / Mana",
+                                    "tone": 3,
+                                    "emoji": "📍",
+                                    "sentence": "你去哪儿？",
+                                    "sentencePy": "Nǐ qù nǎr?",
+                                    "sentenceId": "Kamu pergi ke mana?"
+                              },
+                              {
+                                    "id": "u67",
+                                    "hanzi": "谁",
+                                    "pinyin": "shéi",
+                                    "meaning": "Siapa",
+                                    "tone": 2,
+                                    "emoji": "👤",
+                                    "sentence": "他是谁？",
+                                    "sentencePy": "Tā shì shéi?",
+                                    "sentenceId": "Siapa dia?"
+                              },
+                              {
+                                    "id": "u68",
+                                    "hanzi": "怎么",
+                                    "pinyin": "zěnme",
+                                    "meaning": "Bagaimana",
+                                    "tone": 3,
+                                    "emoji": "❓"
+                              },
+                              {
+                                    "id": "u69",
+                                    "hanzi": "为什么",
+                                    "pinyin": "wèishénme",
+                                    "meaning": "Mengapa / Kenapa",
+                                    "tone": 4,
+                                    "emoji": "💭"
+                              },
+                              {
+                                    "id": "u70",
+                                    "hanzi": "因为",
+                                    "pinyin": "yīnwèi",
+                                    "meaning": "Karena",
+                                    "tone": 1,
+                                    "emoji": "💡"
+                              },
+                              {
+                                    "id": "u71",
+                                    "hanzi": "可以",
+                                    "pinyin": "kěyǐ",
+                                    "meaning": "Boleh / Bisa",
+                                    "tone": 3,
+                                    "emoji": "🆗"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh6_travel",
+                        "title": "Level 13: Liburan & Wisata",
+                        "subtitle": "Berwisata, Beijing, foto & kamera",
+                        "emoji": "📸",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u72",
+                                    "hanzi": "旅游",
+                                    "pinyin": "lǚyóu",
+                                    "meaning": "Berwisata / Liburan",
+                                    "tone": 3,
+                                    "emoji": "🏖️",
+                                    "sentence": "暑假我和家人去旅游。",
+                                    "sentencePy": "Shǔjià wǒ hé jiārén qù lǚyóu.",
+                                    "sentenceId": "Libur musim panas saya dan keluarga pergi berwisata."
+                              },
+                              {
+                                    "id": "u73",
+                                    "hanzi": "北京",
+                                    "pinyin": "Běijīng",
+                                    "meaning": "Kota Beijing",
+                                    "tone": 3,
+                                    "emoji": "🏯"
+                              },
+                              {
+                                    "id": "u74",
+                                    "hanzi": "中国",
+                                    "pinyin": "Zhōngguó",
+                                    "meaning": "Negara Tiongkok",
+                                    "tone": 1,
+                                    "emoji": "🇨🇳"
+                              },
+                              {
+                                    "id": "u75",
+                                    "hanzi": "照相机",
+                                    "pinyin": "zhàoxiàngjī",
+                                    "meaning": "Kamera Foto",
+                                    "tone": 4,
+                                    "emoji": "📷"
+                              },
+                              {
+                                    "id": "u76",
+                                    "hanzi": "拍照",
+                                    "pinyin": "pāizhào",
+                                    "meaning": "Mengambil Foto",
+                                    "tone": 1,
+                                    "emoji": "📸"
+                              },
+                              {
+                                    "id": "u77",
+                                    "hanzi": "好玩",
+                                    "pinyin": "hǎowán",
+                                    "meaning": "Seru / Menyenangkan",
+                                    "tone": 3,
+                                    "emoji": "🎡"
+                              }
+                        ]
+                  },
+                  {
+                        "id": "mh6_challenge",
+                        "title": "Level 14: Juara Percakapan YCT",
+                        "subtitle": "Ungkapan keren penakluk ujian YCT",
+                        "emoji": "🏆",
+                        "starsEarned": 0,
+                        "locked": true,
+                        "cards": [
+                              {
+                                    "id": "u78",
+                                    "hanzi": "认识你很高兴",
+                                    "pinyin": "rènshi nǐ hěn gāoxìng",
+                                    "meaning": "Senang Berkenalan denganmu",
+                                    "tone": 4,
+                                    "emoji": "🤝",
+                                    "sentence": "认识你我也很高兴！",
+                                    "sentencePy": "Rènshi nǐ wǒ yě hěn gāoxìng!",
+                                    "sentenceId": "Senang juga berkenalan denganmu!"
+                              },
+                              {
+                                    "id": "u79",
+                                    "hanzi": "没问题",
+                                    "pinyin": "méi wèntí",
+                                    "meaning": "Tidak Masalah / Siap",
+                                    "tone": 2,
+                                    "emoji": "👌"
+                              },
+                              {
+                                    "id": "u80",
+                                    "hanzi": "加油",
+                                    "pinyin": "jiāyóu",
+                                    "meaning": "Semangat! / Berjuanglah!",
+                                    "tone": 1,
+                                    "emoji": "💪"
+                              },
+                              {
+                                    "id": "u81",
+                                    "hanzi": "明天见",
+                                    "pinyin": "míngtiān jiàn",
+                                    "meaning": "Sampai Jumpa Besok",
+                                    "tone": 2,
+                                    "emoji": "👋"
+                              },
+                              {
+                                    "id": "u82",
+                                    "hanzi": "欢迎",
+                                    "pinyin": "huānyíng",
+                                    "meaning": "Selamat Datang",
+                                    "tone": 1,
+                                    "emoji": "🎊"
+                              },
+                              {
+                                    "id": "u83",
+                                    "hanzi": "真棒",
+                                    "pinyin": "zhēn bàng",
+                                    "meaning": "Hebat Sekali! / Keren!",
+                                    "tone": 1,
+                                    "emoji": "🌟"
+                              }
+                        ]
+                  }
+            ]
+      }
+};
+
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) {
+        target.classList.add('active');
+      }
+      playPop();
+    }
+
+    function selectGrade(gradeKey, title) {
+      currentGradeKey = gradeKey;
+      const grp = gradeCurriculum[gradeKey] || gradeCurriculum.paud;
+      activeLessons = grp.lessons;
+      document.getElementById('map-grade-title').textContent = title || grp.title;
+      renderMapNodes();
+      showScreen('screen-map');
+    }
+
+    function renderMapNodes() {
+      const container = document.getElementById('map-nodes-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      activeLessons.forEach((lesson, idx) => {
+        const node = document.createElement('div');
+        node.className = 'path-node' + (lesson.locked ? ' locked' : '');
+
+        let starsHtml = '';
+        for (let i = 1; i <= 3; i++) {
+          starsHtml += (i <= lesson.starsEarned) ? '⭐' : '☆';
+        }
+
+        if (lesson.locked) {
+          node.onclick = alertLocked;
+          node.innerHTML = `
+            <div class="path-node-left">
+              <div class="node-badge node-locked-icon">🔒</div>
+              <div>
+                <div class="node-title">${lesson.title}</div>
+                <div style="font-size:11px; color:#78909C; margin-top:2px;">Butuh Bintang ⭐</div>
+              </div>
+            </div>
+            <span style="font-size:16px;">🔒</span>
+          `;
+        } else {
+          node.onclick = () => startLesson(idx);
+          const sampleText = lesson.cards.slice(0, 3).map(c => c.hanzi).join(', ');
+          node.innerHTML = `
+            <div class="path-node-left">
+              <div class="node-badge">${lesson.emoji}</div>
+              <div>
+                <div class="node-title">${lesson.title}</div>
+                <div class="stars-row">${starsHtml} <span style="font-size:11px; color:#78909C;">(${lesson.cards.length} kata)</span></div>
+              </div>
+            </div>
+            <button class="node-audio-btn" title="Dengar suara" onclick="event.stopPropagation(); speakText('${sampleText}')">🔊</button>
+          `;
+        }
+
+        container.appendChild(node);
+      });
+    }
+
+    function alertLocked() {
+      alert('🔒 Level ini masih terkunci! Kumpulkan bintang dengan menyelesaikan level sebelumnya.');
+    }
+
+    function startLesson(idx) {
+      currentLessonIndex = idx;
+      currentCardIndex = 0;
+      updateFlashcardUI();
+      showScreen('screen-flashcard');
+      setTimeout(speakCurrent, 300);
+    }
+
+    function updateFlashcardUI() {
+      const curCards = activeLessons[currentLessonIndex].cards;
+      const card = curCards[currentCardIndex];
+
+      document.getElementById('fc-counter').textContent = (currentCardIndex + 1) + ' / ' + curCards.length;
+      document.getElementById('fc-emoji').textContent = card.emoji;
+      document.getElementById('fc-hanzi').textContent = card.hanzi;
+      document.getElementById('fc-pinyin').textContent = card.pinyin;
+      document.getElementById('fc-meaning').textContent = card.meaning;
+
+      const nextBtn = document.getElementById('next-fc-btn');
+      if (currentCardIndex === curCards.length - 1) {
+        nextBtn.textContent = 'Kuis 🎯';
+        nextBtn.style.background = 'var(--coral-orange)';
+        nextBtn.style.boxShadow = '0 4px 0 #D84315';
+      } else {
+        nextBtn.textContent = 'Berikutnya ▶';
+        nextBtn.style.background = 'var(--secondary-green)';
+        nextBtn.style.boxShadow = '0 4px 0 #388E3C';
+      }
+    }
+
+    function speakCurrent() {
+      const card = activeLessons[currentLessonIndex].cards[currentCardIndex];
+      playVocabAudio(card.id, card.hanzi);
+    }
+
+    function nextCard() {
+      const curCards = activeLessons[currentLessonIndex].cards;
+      if (currentCardIndex < curCards.length - 1) {
+        currentCardIndex++;
+        updateFlashcardUI();
+        speakCurrent();
+      } else {
+        startQuiz();
+      }
+    }
+
+    function prevCard() {
+      if (currentCardIndex > 0) {
+        currentCardIndex--;
+        updateFlashcardUI();
+        speakCurrent();
+      }
+    }
+
+    let quizQuestion = null;
+
+    function startQuiz() {
+      const curCards = activeLessons[currentLessonIndex].cards;
+      quizQuestion = curCards[Math.floor(Math.random() * curCards.length)];
+
+      document.getElementById('quiz-hanzi').textContent = quizQuestion.hanzi;
+
+      const others = curCards.filter(c => c.hanzi !== quizQuestion.hanzi).map(c => c.meaning);
+      const options = [quizQuestion.meaning, ...others.slice(0, 2)].sort(() => Math.random() - 0.5);
+
+      const container = document.getElementById('quiz-options-container');
+      container.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.className = 'quiz-opt';
+        btn.textContent = opt;
+        btn.onclick = () => handleAnswer(btn, opt);
+        container.appendChild(btn);
+      });
+
+      showScreen('screen-quiz');
+      setTimeout(speakCurrentQuiz, 300);
+    }
+
+    function speakCurrentQuiz() {
+      if (quizQuestion) playVocabAudio(quizQuestion.id, quizQuestion.hanzi);
+    }
+
+    function handleAnswer(btn, chosen) {
+      const isCorrect = chosen === quizQuestion.meaning;
+      if (isCorrect) {
+        btn.classList.add('correct');
+        playSuccessChime();
+        stars += 1;
+        persistRewards();
+        setTimeout(() => {
+          alert('🎉 Hebat sekali! Jawabanmu benar! ⭐ +1 Bintang');
+          showScreen('screen-map');
+        }, 500);
+      } else {
+        btn.classList.add('wrong');
+        playTone(220, 0.25, 'sawtooth');
+      }
+    }
+
+    /* ============================================================
+       REALISTIC GOOGLE ADMOB REWARDED VIDEO TEST AD CONTROLLER
+       ============================================================ */
+    let adInterval = null;
+    let secondsLeft = 5;
+
+    function startAdMobVideoAd() {
+      const overlay = document.getElementById('admob-video-overlay');
+      const timerDisplay = document.getElementById('admob-timer-display');
+      const closeBtn = document.getElementById('admob-close-btn');
+      const rewardCard = document.getElementById('admob-reward-card');
+      const progressFill = document.getElementById('admob-progress-fill');
+
+      overlay.style.display = 'flex';
+      closeBtn.style.display = 'none';
+      rewardCard.style.display = 'none';
+      progressFill.style.width = '0%';
+      secondsLeft = 5;
+      timerDisplay.textContent = 'Hadiah dalam ' + secondsLeft + 'd...';
+
+      playTone(320, 0.1, 'sine');
+
+      if (adInterval) clearInterval(adInterval);
+
+      adInterval = setInterval(() => {
+        secondsLeft--;
+        const percent = ((5 - secondsLeft) / 5) * 100;
+        progressFill.style.width = percent + '%';
+
+        if (secondsLeft > 0) {
+          timerDisplay.textContent = 'Hadiah dalam ' + secondsLeft + 'd...';
+        } else {
+          clearInterval(adInterval);
+          timerDisplay.textContent = 'Hadiah Diperoleh! 🎁';
+          closeBtn.style.display = 'block';
+          rewardCard.style.display = 'block';
+          playSuccessChime();
+        }
+      }, 1000);
+    }
+
+    function closeAdMobVideo(isPremature) {
+      if (adInterval) clearInterval(adInterval);
+      document.getElementById('admob-video-overlay').style.display = 'none';
+      if (isPremature && secondsLeft > 0) {
+        alert('Iklan ditutup sebelum selesai. Hadiah belum diberikan.');
+      }
+    }
+
+    function claimAdMobReward() {
+      bamboo += 5;
+      stars += 3;
+      persistRewards();
+      closeAdMobVideo(false);
+      playSuccessChime();
+      alert('🎉 Hore! +5 Bambu & +3 Bintang berhasil ditambahkan dan disimpan permanen!');
+      renderWardrobe();
+    }
+
+    /* ============================================================
+       PANDA WARDROBE & PARENTAL GATE / IAP STORE CONTROLLER
+       ============================================================ */
+    const shopHats = [
+      { id: 'none', name: 'Tanpa Topi', icon: '', cost: 0, desc: 'Panda Bao Bao polos imut' },
+      { id: 'cowboy', name: 'Topi Koboi Cilik', icon: '🤠', cost: 100, desc: 'Biasa • Bao Bao jadi petualang tangguh!' },
+      { id: 'grad', name: 'Topi Sarjana Pintar', icon: '🎓', cost: 300, desc: 'Keren • Juara kelas bahasa Mandarin!' },
+      { id: 'glasses', name: 'Kacamata Bintang', icon: '🕶️', cost: 300, desc: 'Keren • Gaya keren saat membaca Hanzi!' },
+      { id: 'astronaut', name: 'Helm Astronot Cilik', icon: '🚀', cost: 700, desc: 'Langka • Menjelajah luar angkasa!' },
+      { id: 'crown', name: 'Mahkota Kaisar Emas', icon: '👑', cost: 1500, desc: 'Legendary • Eksklusif Bao Bao Premium!' }
+    ];
+
+    let ownedHats = JSON.parse(localStorage.getItem('nh_owned_hats') || '["none"]');
+    let equippedHat = localStorage.getItem('nh_equipped_hat') || 'none';
+
+    function openPandaWardrobe() {
+      renderWardrobe();
+      showScreen('screen-wardrobe');
+    }
+
+    function renderWardrobe() {
+      const displayEl = document.getElementById('wardrobe-hat-display');
+      const cur = shopHats.find(h => h.id === equippedHat);
+      if (displayEl) displayEl.textContent = cur ? cur.icon : '';
+
+      const container = document.getElementById('wardrobe-items-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      shopHats.forEach(hat => {
+        const isFreeForPrem = (hat.id === 'crown' && isPremium);
+        const isOwned = ownedHats.includes(hat.id) || isFreeForPrem;
+        const isEquipped = equippedHat === hat.id;
+
+        const card = document.createElement('div');
+        card.style.cssText = `
+          background: white;
+          border-radius: 18px;
+          padding: 12px;
+          border: 2px solid ${isEquipped ? 'var(--secondary-green)' : '#E0E0E0'};
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        `;
+
+        card.innerHTML = `
+          <div style="font-size: 32px; width: 44px; text-align: center;">${hat.icon || '🐼'}</div>
+          <div style="flex: 1;">
+            <div style="font-size: 15px; font-weight: 700; color: var(--panda-black);">${hat.name}</div>
+            <div style="font-size: 11px; color: #78909C; margin-top: 2px;">${hat.desc}</div>
+            <div style="font-size: 12px; font-weight: 700; color: #2E7D32; margin-top: 3px;">
+              ${isFreeForPrem ? '👑 Gratis (Bao Bao Premium)' : isOwned ? 'Sudah Dimiliki' : '🎋 ' + hat.cost + ' Bambu'}
+            </div>
+          </div>
+          <button style="
+            background: ${isEquipped ? '#ECEFF1' : isOwned ? 'var(--sky-blue)' : 'var(--primary-yellow)'};
+            color: ${isEquipped ? '#78909C' : '#263238'};
+            border: none;
+            padding: 8px 14px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+          " onclick="buyOrEquipHat('${hat.id}')">
+            ${isEquipped ? 'Dipakai' : isOwned ? 'Pasang' : 'Beli 🎋'}
+          </button>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function buyOrEquipHat(id) {
+      playPop();
+      const isFreeForPrem = (id === 'crown' && isPremium);
+      if (ownedHats.includes(id) || isFreeForPrem) {
+        equippedHat = id;
+        localStorage.setItem('nh_equipped_hat', equippedHat);
+        renderWardrobe();
+        playSuccessChime();
+        return;
+      }
+
+      const hat = shopHats.find(h => h.id === id);
+      if (!hat) return;
+
+      if (bamboo >= hat.cost) {
+        bamboo -= hat.cost;
+        ownedHats.push(id);
+        equippedHat = id;
+        localStorage.setItem('nh_owned_hats', JSON.stringify(ownedHats));
+        localStorage.setItem('nh_equipped_hat', equippedHat);
+        persistRewards();
+        renderWardrobe();
+        playSuccessChime();
+        alert('🎉 Hore! Kamu berhasil membeli ' + hat.name + '!');
+      } else {
+        const kurang = hat.cost - bamboo;
+        if (confirm('Bambu kamu kurang ' + kurang + ' lagi untuk membeli ' + hat.name + '!\n\nPilih "OK" untuk tonton video iklan gratis (+5 🎋), atau "Batal" lalu buka Pojok Orang Tua untuk Top Up?')) {
+          startAdMobVideoAd();
+        }
+      }
+    }
+
+    /* ============================================================
+       PARENTAL GATE CONTROLLER (COPPA & Play Families Policy)
+       ============================================================ */
+    let gateAnswer = 0;
+
+    function openParentalGate() {
+      const num1 = 15 + Math.floor(Math.random() * 25);
+      const num2 = 12 + Math.floor(Math.random() * 30);
+      gateAnswer = num1 + num2;
+
+      document.getElementById('gate-math-display').textContent = `${num1} + ${num2} = ?`;
+      const input = document.getElementById('gate-math-input');
+      input.value = '';
+      document.getElementById('gate-error-msg').textContent = '';
+      document.getElementById('parental-gate-modal').style.display = 'flex';
+      setTimeout(() => input.focus(), 200);
+      playPop();
+    }
+
+    function closeParentalGate() {
+      document.getElementById('parental-gate-modal').style.display = 'none';
+      playPop();
+    }
+
+    function verifyParentalGate() {
+      const input = document.getElementById('gate-math-input');
+      const val = parseInt(input.value.trim(), 10);
+      if (val === gateAnswer) {
+        closeParentalGate();
+        playSuccessChime();
+        openParentStore();
+      } else {
+        document.getElementById('gate-error-msg').textContent = 'Jawaban salah. Akses pembelian dibatalkan.';
+        playTone(220, 0.3, 'sawtooth');
+        setTimeout(closeParentalGate, 1500);
+      }
+    }
+
+    /* ============================================================
+       PARENT STORE / GOOGLE PLAY IAP SIMULATOR
+       ============================================================ */
+    function openParentStore() {
+      const btnContainer = document.getElementById('premium-status-btn-container');
+      if (btnContainer) {
+        if (isPremium) {
+          btnContainer.innerHTML = `
+            <div style="background:#2E7D32; color:white; padding:10px; border-radius:12px; font-weight:800; font-size:13px; text-align:center;">
+              ✅ Paket Premium Telah Aktif Selamanya
+            </div>
+          `;
+        } else {
+          btnContainer.innerHTML = `
+            <button onclick="simulateBuyPremium()" style="width: 100%; padding: 10px; border: none; background: #D84315; border-radius: 12px; color: white; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 3px 0 #BF360C;">
+              Beli Rp49.000 (Launch Special)
+            </button>
+          `;
+        }
+      }
+      document.getElementById('parent-store-modal').style.display = 'flex';
+    }
+
+    function closeParentStore() {
+      document.getElementById('parent-store-modal').style.display = 'none';
+      playPop();
+    }
+
+    function simulateBuyPremium() {
+      if (confirm('Simulasi Google Play Billing:\n\nKonfirmasi Pembelian "Bao Bao Premium" seharga Rp49.000 (Sekali bayar seumur hidup)?')) {
+        isPremium = true;
+        bamboo += 100;
+        if (!ownedHats.includes('crown')) ownedHats.push('crown');
+        equippedHat = 'crown';
+        localStorage.setItem('nh_owned_hats', JSON.stringify(ownedHats));
+        localStorage.setItem('nh_equipped_hat', equippedHat);
+        persistRewards();
+        renderWardrobe();
+        openParentStore(); // update UI
+        playSuccessChime();
+        alert('🎉 Pembelian Berhasil!\n\nPaket Bao Bao Premium aktif selamanya:\n• Semua iklan resmi dinonaktifkan\n• +100 Bambu ditambahkan\n• Mahkota Kaisar Emas berhasil dipasang!');
+      }
+    }
+
+    function simulateBuyBamboo(amount, priceStr) {
+      if (confirm(`Simulasi Google Play Billing:\n\nBeli Top Up ${amount} Bambu seharga ${priceStr}?`)) {
+        bamboo += amount;
+        persistRewards();
+        renderWardrobe();
+        playSuccessChime();
+        alert(`🎋 Top Up Berhasil!\n\n+${amount} Bambu berhasil ditambahkan ke dompet Bao Bao!`);
+      }
+    }
+
+    function simulateRestore() {
+      if (isPremium) {
+        alert('✅ Pembelian "Bao Bao Premium" telah aktif pada akun Google Play ini!');
+      } else {
+        alert('Tidak ditemukan riwayat pembelian sebelumnya untuk akun ini.');
+      }
+    }
+  </script>
+</body>
+</html>
