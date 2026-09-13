@@ -6,7 +6,7 @@ class XingxingCurriculum {
   // LEVEL 1: PAUD / NURSERY (Usia 3 - 4 Tahun) - 8 Unit
   static List<LessonTopic> getPaudLessons() {
     return [
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_num1',
         grade: SchoolGrade.paud,
         title: 'Angka Jari (1 - 5)',
@@ -23,7 +23,7 @@ class XingxingCurriculum {
           VocabItem(id: 'p5', hanzi: '五', pinyin: 'wǔ', meaningId: 'Lima', tone: 3, category: 'Angka', emoji: '5️⃣'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_pets',
         grade: SchoolGrade.paud,
         title: 'Hewan Peliharaan',
@@ -41,7 +41,7 @@ class XingxingCurriculum {
           VocabItem(id: 'p11', hanzi: '鸭', pinyin: 'yā', meaningId: 'Bebek', tone: 1, category: 'Hewan', emoji: '🦆'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_nature',
         grade: SchoolGrade.paud,
         title: 'Piktogram Alam',
@@ -59,7 +59,7 @@ class XingxingCurriculum {
           VocabItem(id: 'p17', hanzi: '火', pinyin: 'huǒ', meaningId: 'Api', tone: 3, category: 'Alam', emoji: '🔥'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_colors1',
         grade: SchoolGrade.paud,
         title: 'Warna Dasar Ceria',
@@ -76,7 +76,7 @@ class XingxingCurriculum {
           VocabItem(id: 'p22', hanzi: '黑', pinyin: 'hēi', meaningId: 'Hitam', tone: 1, category: 'Warna', emoji: '⚫'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_body',
         grade: SchoolGrade.paud,
         title: 'Wajah & Anggota Tubuh',
@@ -94,7 +94,7 @@ class XingxingCurriculum {
           VocabItem(id: 'p28', hanzi: '脚', pinyin: 'jiǎo', meaningId: 'Kaki', tone: 3, category: 'Tubuh', emoji: '🦶'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_toys',
         grade: SchoolGrade.paud,
         title: 'Mainan Kesayangan',
@@ -111,7 +111,7 @@ class XingxingCurriculum {
           VocabItem(id: 'p33', hanzi: '风筝', pinyin: 'fēngzheng', meaningId: 'Layang-layang', tone: 1, category: 'Mainan', emoji: '🪁'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_actions1',
         grade: SchoolGrade.paud,
         title: 'Aksi Bayi Panda',
@@ -128,7 +128,7 @@ class XingxingCurriculum {
           VocabItem(id: 'p38', hanzi: '睡', pinyin: 'shuì', meaningId: 'Tidur', tone: 4, category: 'Aksi', emoji: '😴'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_greetings1',
         grade: SchoolGrade.paud,
         title: 'Salam Pertama',
@@ -150,7 +150,7 @@ class XingxingCurriculum {
   // LEVEL 2: TK-A & TK-B (Usia 5 - 6 Tahun) - 10 Unit
   static List<LessonTopic> getTkLessons() {
     return [
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_num2',
         grade: SchoolGrade.tk,
         title: 'Angka Lanjutan (6 - 10)',
@@ -167,7 +167,7 @@ class XingxingCurriculum {
           VocabItem(id: 't5', hanzi: '十', pinyin: 'shí', meaningId: 'Sepuluh', tone: 2, category: 'Angka', emoji: '🔟'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_fruits',
         grade: SchoolGrade.tk,
         title: 'Buah-buahan Manis',
@@ -185,7 +185,7 @@ class XingxingCurriculum {
           VocabItem(id: 't11', hanzi: '橘子', pinyin: 'júzi', meaningId: 'Jeruk', tone: 2, category: 'Buah', emoji: '🍊'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_veg',
         grade: SchoolGrade.tk,
         title: 'Sayuran Sehat',
@@ -202,7 +202,7 @@ class XingxingCurriculum {
           VocabItem(id: 't16', hanzi: '青菜', pinyin: 'qīngcài', meaningId: 'Sawi Hijau', tone: 1, category: 'Sayur', emoji: '🥬'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_family',
         grade: SchoolGrade.tk,
         title: 'Keluarga Intiku',
@@ -220,7 +220,7 @@ class XingxingCurriculum {
           VocabItem(id: 't22', hanzi: '妹妹', pinyin: 'mèimei', meaningId: 'Adik Perempuan', tone: 4, category: 'Keluarga', emoji: '👧'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_food',
         grade: SchoolGrade.tk,
         title: 'Makanan & Minuman',
@@ -238,7 +238,7 @@ class XingxingCurriculum {
           VocabItem(id: 't28', hanzi: '鸡蛋', pinyin: 'jīdàn', meaningId: 'Telur Ayam', tone: 1, category: 'Makanan', emoji: '🥚'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_zoo',
         grade: SchoolGrade.tk,
         title: 'Kebun Binatang',
@@ -256,7 +256,7 @@ class XingxingCurriculum {
           VocabItem(id: 't34', hanzi: '长颈鹿', pinyin: 'chángjǐnglù', meaningId: 'Jerapah', tone: 2, category: 'Hewan', emoji: '🦒'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_shapes',
         grade: SchoolGrade.tk,
         title: 'Warna & Bentuk Indah',
@@ -274,7 +274,7 @@ class XingxingCurriculum {
           VocabItem(id: 't40', hanzi: '星星', pinyin: 'xīngxing', meaningId: 'Bintang', tone: 1, category: 'Bentuk', emoji: '⭐'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_opposites1',
         grade: SchoolGrade.tk,
         title: 'Lawan Kata Seru',
@@ -292,7 +292,7 @@ class XingxingCurriculum {
           VocabItem(id: 't46', hanzi: '短', pinyin: 'duǎn', meaningId: 'Pendek', tone: 3, category: 'Sifat', emoji: '📐'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_health',
         grade: SchoolGrade.tk,
         title: 'Kegiatan Anak Sehat',
@@ -310,7 +310,7 @@ class XingxingCurriculum {
           VocabItem(id: 't52', hanzi: '玩', pinyin: 'wán', meaningId: 'Bermain', tone: 2, category: 'Aksi', emoji: '🎮'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'xx_class',
         grade: SchoolGrade.tk,
         title: 'Tata Tertib di Kelas',

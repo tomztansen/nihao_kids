@@ -5,7 +5,7 @@ import '../models/models.dart';
 class MeiHuaLowerCurriculum {
   static List<LessonTopic> getLessons() {
     return [
-      const LessonTopic(
+      LessonTopic(
         id: 'mh1_intro',
         grade: SchoolGrade.sdLower,
         title: 'Level 1: Perkenalan & Kesantunan',
@@ -23,7 +23,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm6', hanzi: '什么', pinyin: 'shénme', meaningId: 'Apa', tone: 2, category: 'Tanya', emoji: '❓', exampleSentenceHanzi: '你叫什么名字？', exampleSentencePinyin: 'Nǐ jiào shénme míngzi?', exampleSentenceId: 'Siapa namamu?'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh1_age',
         grade: SchoolGrade.sdLower,
         title: 'Level 2: Hitungan & Umur',
@@ -41,7 +41,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm12', hanzi: '百', pinyin: 'bǎi', meaningId: 'Ratus / Ratusan', tone: 3, category: 'Angka', emoji: '💯'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh1_stationery',
         grade: SchoolGrade.sdLower,
         title: 'Level 3: Alat Tulis & Kelas',
@@ -59,7 +59,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm18', hanzi: '橡皮', pinyin: 'xiàngpí', meaningId: 'Penghapus', tone: 4, category: 'Sekolah', emoji: '🧹'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh1_family',
         grade: SchoolGrade.sdLower,
         title: 'Level 4: Keluarga Besar',
@@ -77,7 +77,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm24', hanzi: '有', pinyin: 'yǒu', meaningId: 'Punya / Ada', tone: 3, category: 'Kata Kerja', emoji: '🤲'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh2_week',
         grade: SchoolGrade.sdLower,
         title: 'Level 5: Hari dalam Seminggu',
@@ -96,7 +96,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm31', hanzi: '星期日', pinyin: 'xīngqīrì', meaningId: 'Minggu', tone: 1, category: 'Hari', emoji: '☀️', exampleSentenceHanzi: '今天星期日。', exampleSentencePinyin: 'Jīntiān xīngqīrì.', exampleSentenceId: 'Hari ini hari Minggu.'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh2_clothes',
         grade: SchoolGrade.sdLower,
         title: 'Level 6: Pakaian Sehari-hari',
@@ -114,7 +114,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm37', hanzi: '穿', pinyin: 'chuān', meaningId: 'Memakai (Baju/Sepatu)', tone: 1, category: 'Kata Kerja', emoji: '🦺'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh2_food',
         grade: SchoolGrade.sdLower,
         title: 'Level 7: Hidangan Lezat',
@@ -132,7 +132,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm43', hanzi: '喜欢', pinyin: 'xǐhuan', meaningId: 'Suka / Senang', tone: 3, category: 'Kata Kerja', emoji: '❤️'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh2_drinks',
         grade: SchoolGrade.sdLower,
         title: 'Level 8: Minuman Segar',
@@ -149,7 +149,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm48', hanzi: '渴', pinyin: 'kě', meaningId: 'Haus', tone: 3, category: 'Kondisi', emoji: '🥵'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh3_time',
         grade: SchoolGrade.sdLower,
         title: 'Level 9: Jam & Waktu',
@@ -167,7 +167,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm54', hanzi: '晚上', pinyin: 'wǎnshang', meaningId: 'Malam Hari', tone: 3, category: 'Waktu', emoji: '🌃'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh3_routine',
         grade: SchoolGrade.sdLower,
         title: 'Level 10: Rutinitas Harian',
@@ -185,7 +185,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm60', hanzi: '睡觉', pinyin: 'shuìjiào', meaningId: 'Tidur Malam', tone: 4, category: 'Rutinitas', emoji: '🛌'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh3_weather',
         grade: SchoolGrade.sdLower,
         title: 'Level 11: Cuaca & Suhu',
@@ -203,7 +203,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm66', hanzi: '冷', pinyin: 'lěng', meaningId: 'Dingin', tone: 3, category: 'Suhu', emoji: '🥶'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh3_school',
         grade: SchoolGrade.sdLower,
         title: 'Level 12: Area Sekolah',
@@ -221,7 +221,7 @@ class MeiHuaLowerCurriculum {
           VocabItem(id: 'm72', hanzi: '食堂', pinyin: 'shítáng', meaningId: 'Kantin Sekolah', tone: 2, category: 'Tempat', emoji: '🍽️'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh3_adjectives',
         grade: SchoolGrade.sdLower,
         title: 'Level 13: Kata Sifat Berlawanan',

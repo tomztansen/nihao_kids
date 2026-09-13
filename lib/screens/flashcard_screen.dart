@@ -200,7 +200,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                         const SizedBox(height: 4),
                         Text(
                           vocab.exampleSentenceHanzi!,
-                          style: const TextStyle(fontSize: 14, color: Colors.black82),
+                          style: const TextStyle(fontSize: 14, color: Colors.black87),
                         ),
                         Text(
                           '${vocab.exampleSentencePinyin ?? ""} (${vocab.exampleSentenceId ?? ""})',

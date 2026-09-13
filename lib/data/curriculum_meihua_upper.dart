@@ -5,7 +5,7 @@ import '../models/models.dart';
 class MeiHuaUpperCurriculum {
   static List<LessonTopic> getLessons() {
     return [
-      const LessonTopic(
+      LessonTopic(
         id: 'mh4_directions',
         grade: SchoolGrade.sdUpper,
         title: 'Level 1: Arah & Posisi',
@@ -23,7 +23,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u6', hanzi: '后面', pinyin: 'hòumiàn', meaningId: 'Sebelah Belakang', tone: 4, category: 'Arah', emoji: '🔽'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh4_hobbies',
         grade: SchoolGrade.sdUpper,
         title: 'Level 2: Hobi & Bakat',
@@ -41,7 +41,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u12', hanzi: '听音乐', pinyin: 'tīng yīnyuè', meaningId: 'Mendengarkan Musik', tone: 1, category: 'Hobi', emoji: '🎧'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh4_sports',
         grade: SchoolGrade.sdUpper,
         title: 'Level 3: Olahraga Seru',
@@ -59,7 +59,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u18', hanzi: '骑车', pinyin: 'qíchē', meaningId: 'Bersepeda', tone: 2, category: 'Olahraga', emoji: '🚲'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh4_vehicles',
         grade: SchoolGrade.sdUpper,
         title: 'Level 4: Transportasi & Kendaraan',
@@ -77,7 +77,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u24', hanzi: '公共汽车', pinyin: 'gōnggòng qìchē', meaningId: 'Bus Umum', tone: 1, category: 'Kendaraan', emoji: '🚌'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh4_birthday',
         grade: SchoolGrade.sdUpper,
         title: 'Level 5: Bulan & Ulang Tahun',
@@ -95,7 +95,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u30', hanzi: '礼物', pinyin: 'lǐwù', meaningId: 'Kado / Hadiah', tone: 3, category: 'Benda', emoji: '🎀'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh5_shopping',
         grade: SchoolGrade.sdUpper,
         title: 'Level 6: Belanja di Toko',
@@ -113,7 +113,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u36', hanzi: '便宜', pinyin: 'piányi', meaningId: 'Murah', tone: 2, category: 'Sifat', emoji: '🪙'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh5_house',
         grade: SchoolGrade.sdUpper,
         title: 'Level 7: Ruangan Rumah',
@@ -131,7 +131,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u42', hanzi: '桌子', pinyin: 'zhuōzi', meaningId: 'Meja', tone: 1, category: 'Rumah', emoji: '🪵'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh5_career',
         grade: SchoolGrade.sdUpper,
         title: 'Level 8: Profesi & Cita-cita',
@@ -149,7 +149,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u48', hanzi: '想当', pinyin: 'xiǎng dāng', meaningId: 'Ingin Menjadi', tone: 3, category: 'Cita-cita', emoji: '⭐'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh5_seasons',
         grade: SchoolGrade.sdUpper,
         title: 'Level 9: Empat Musim Dunia',
@@ -166,7 +166,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u53', hanzi: '下雪', pinyin: 'xiàxuě', meaningId: 'Turun Salju', tone: 4, category: 'Cuaca', emoji: '❄️'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh6_restaurant',
         grade: SchoolGrade.sdUpper,
         title: 'Level 10: Di Restoran',
@@ -184,7 +184,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u59', hanzi: '服务员', pinyin: 'fúwùyuán', meaningId: 'Pelayan Restoran', tone: 2, category: 'Restoran', emoji: '🤵'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh6_health',
         grade: SchoolGrade.sdUpper,
         title: 'Level 11: Tubuh Sakit & Dokter',
@@ -202,7 +202,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u65', hanzi: '休息', pinyin: 'xiūxi', meaningId: 'Beristirahat', tone: 1, category: 'Kesehatan', emoji: '🛌'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh6_questions',
         grade: SchoolGrade.sdUpper,
         title: 'Level 12: Kata Tanya Praktis',
@@ -220,7 +220,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u71', hanzi: '可以', pinyin: 'kěyǐ', meaningId: 'Boleh / Bisa', tone: 3, category: 'Izin', emoji: '🆗'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh6_travel',
         grade: SchoolGrade.sdUpper,
         title: 'Level 13: Liburan & Wisata',
@@ -238,7 +238,7 @@ class MeiHuaUpperCurriculum {
           VocabItem(id: 'u77', hanzi: '好玩', pinyin: 'hǎowán', meaningId: 'Seru / Menyenangkan', tone: 3, category: 'Sifat', emoji: '🎡'),
         ],
       ),
-      const LessonTopic(
+      LessonTopic(
         id: 'mh6_challenge',
         grade: SchoolGrade.sdUpper,
         title: 'Level 14: Juara Percakapan YCT',
