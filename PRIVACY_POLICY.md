@@ -1,4 +1,4 @@
-﻿# Kebijakan Privasi (Privacy Policy) - NiHao Kids
+# Kebijakan Privasi (Privacy Policy) - NiHao Kids
 
 **Terakhir Diperbarui:** September 2026
 
@@ -15,9 +15,9 @@ Aplikasi **NiHao Kids**:
 
 ---
 
-### 2. Kepatuhan Iklan Ramah Keluarga (Google AdMob & COPPA)
-Aplikasi ini menampilkan iklan berhadiah sukarela (*Rewarded Video Ads*) dengan aturan kepatuhan tertinggi:
-* Seluruh permintaan iklan dikonfigurasi dengan flag wajib `TagForChildDirectedTreatment = YES`.
+### 2. Kepatuhan Iklan Ramah Keluarga (Google AdMob, Unity Ads & COPPA)
+Aplikasi ini menampilkan iklan berhadiah sukarela (*Rewarded Video Ads*) melalui jaringan periklanan resmi yang disertifikasi oleh Google Play Families Program (**Google AdMob** dan **Unity Ads**):
+* Seluruh permintaan iklan dikonfigurasi dengan flag wajib `TagForChildDirectedTreatment = YES` / `COPPA = True`.
 * Kategori konten iklan dibatasi secara ketat hanya pada **Rating G (General Audience / Semua Umur)**.
 * Tidak ada pelacakan berbasis minat (*Non-Personalized Ads*).
 * Iklan hanya diputar jika anak/orang tua secara sadar menekan tombol tonton untuk mendapatkan bambu bonus.
