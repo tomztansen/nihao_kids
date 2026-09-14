@@ -87,7 +87,8 @@ class AdMobService {
         onAdFailedToLoad: (error) {
           _admobRewardedAd = null;
           _isAdmobLoading = false;
-          debugPrint('ℹ️ [AdMob] Gagal memuat (${error.message}). Cadangan Unity Ads siap siaga.');
+          debugPrint('ℹ️ [AdMob] Gagal memuat (${error.message} [Kode: ${error.code}]).');
+          debugPrint('ℹ️ [AdMob] Jika akun/unit iklan masih dalam peninjauan (Under Review), fallback Unity Ads otomatis aktif.');
         },
       ),
     );
@@ -139,8 +140,9 @@ class AdMobService {
         },
       );
     } else {
-      // TAHAP 2: AdMob belum siap / no-fill -> Langsung FALLBACK ke Unity Ads!
-      debugPrint('🔄 [Ads Engine] AdMob belum siap/kosong. Otomatis beralih ke Unity Ads!');
+      // TAHAP 2: AdMob belum siap / masih dalam review Google / no-fill -> Langsung FALLBACK ke Unity Ads!
+      debugPrint('🔄 [Ads Engine] AdMob belum siap / akun masih di-review. Otomatis beralih ke Unity Ads!');
+      loadAdMobRewardedAd(); // Coba muat AdMob lagi di background untuk penayangan berikutnya saat sudah diapprove
       _showUnityRewarded(onUserEarnedReward: onUserEarnedReward, onAdClosed: onAdClosed);
     }
   }
