@@ -20,11 +20,9 @@ class AdMobService {
   // ==========================================
   // 2. KONFIGURASI UNITY ADS (FALLBACK)
   // ==========================================
-  // Ganti dengan Game ID Android Anda dari Unity Dashboard (cloud.unity.com)
-  static const String liveUnityGameId = '5731234'; 
-  static const String testUnityGameId = '4798991'; // Unity Sample Test Game ID
-  static String get unityGameId => kReleaseMode ? liveUnityGameId : testUnityGameId;
-  static const String unityRewardedPlacementId = 'Rewarded_Android';
+  // Game ID Resmi NiHao Kids dari Unity Dashboard: 800372977
+  static const String unityGameId = '800372977';
+  static const String unityRewardedPlacementId = 'BP_Rewarded_Android';
 
   // Cek apakah iklan harus ditampilkan (Pengguna Bao Bao Premium bebas iklan)
   bool get shouldShowAds => !RewardService().isPremium;

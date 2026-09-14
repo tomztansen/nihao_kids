@@ -1,4 +1,4 @@
-﻿# Panduan Lengkap: Integrasi Unity Ads (Sistem Hybrid Fallback) - NiHao Kids
+# Panduan Lengkap: Integrasi Unity Ads (Sistem Hybrid Fallback) - NiHao Kids
 
 Panduan ini memandu Anda langkah-demi-langkah dari membuat akun hingga menerima pembayaran pendapatan iklan dari **Unity Ads**.
 
@@ -32,29 +32,24 @@ Aplikasi **NiHao Kids** telah dilengkapi sistem **Hybrid Ads Waterfall**:
 
 ---
 
-## 🔑 Langkah 3: Mengambil Android Game ID
-
-1. Di menu Monetization Unity Dashboard, klik submenu **Ad Units** (atau **Project Settings** > **Monetization**).
-2. Anda akan melihat dua sistem operasi: *Google Play (Android)* dan *Apple App Store (iOS)*.
-3. Catat nomor **Android Game ID** Anda (berupa angka 7 digit, contoh: `5678901`).
-4. Pastikan unit iklan **`Rewarded_Android`** sudah berstatus *Active*.
+## 🔑 Langkah 3: Mengambil Android Game ID & Placement
+1. Di menu Monetization Unity Dashboard, klik submenu **Ad Units** / **Placements**.
+2. Anda akan melihat informasi proyek **NiHao Kids**:
+   * **Android Game ID:** `800372977`
+   * **Rewarded Placement:** `BP_Rewarded_Android` (Status: *Active*)
+   * **Interstitial Placement:** `BP_Interstitial_Android` (Status: *Active*)
+   * **Banner Placement:** `BP_Banner_Android` (Status: *Active*)
 
 ---
 
-## ✏️ Langkah 4: Memasang Game ID Anda ke Kode Aplikasi
-
-1. Buka berkas kode di laptop Anda:  
-   📂 **[`D:\PROJECT GMN\nihao\lib\services\admob_service.dart`](file:///D:/PROJECT%20GMN/nihao/lib/services/admob_service.dart)**
-2. Cari baris nomor 23:
-   ```dart
-   // Ganti dengan Game ID Android Anda dari Unity Dashboard (cloud.unity.com)
-   static const String liveUnityGameId = '5731234'; 
-   ```
-3. Ganti `'5731234'` dengan **Android Game ID asli** milik Anda, contoh:
-   ```dart
-   static const String liveUnityGameId = '5678901';
-   ```
-4. Simpan berkas (*Ctrl + S*).
+## ✏️ Langkah 4: Memasang Game ID ke Kode Aplikasi (SUDAH TERPASANG)
+Game ID resmi Anda telah langsung dipasang ke dalam berkas kode:
+📂 **[`D:\PROJECT GMN\nihao\lib\services\admob_service.dart`](file:///D:/PROJECT%20GMN/nihao/lib/services/admob_service.dart)**:
+```dart
+static const String unityGameId = '800372977';
+static const String unityRewardedPlacementId = 'BP_Rewarded_Android';
+```
+*(Anda tidak perlu mengedit apa-apa lagi, kode sudah 100% tersambung ke akun Unity Ads Anda!)*
 
 ---
 
