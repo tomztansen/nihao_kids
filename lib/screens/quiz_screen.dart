@@ -134,6 +134,17 @@ class _QuizScreenState extends State<QuizScreen> {
                       ),
                     );
                   },
+                  onAdUnavailable: (msg) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.orange.shade800,
+                        content: Text(
+                          msg,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
               style: OutlinedButton.styleFrom(

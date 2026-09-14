@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../data/curriculum_data.dart';
 import '../models/models.dart';
 import '../services/admob_service.dart';
@@ -32,6 +32,18 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
             content: Text(
               '🎉 Hore! Kamu dapat +5 Bambu & +3 Bintang tersimpan permanen!',
               style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        );
+      },
+      onAdUnavailable: (msg) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.orange.shade800,
+            content: Text(
+              msg,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         );

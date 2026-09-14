@@ -30,6 +30,8 @@ class AdMobService {
   RewardedAd? _admobRewardedAd;
   bool _isAdmobLoading = false;
   bool _isUnityInitialized = false;
+  bool _isUnityAdLoaded = false;
+  bool _isUnityLoading = false;
 
   /// Inisialisasi kedua SDK (AdMob + Unity Ads) dengan kepatuhan COPPA & Google Play Families
   Future<void> initialize() async {
@@ -94,11 +96,20 @@ class AdMobService {
 
   /// Memuat Unity Rewarded Ad
   void loadUnityRewardedAd() {
-    if (!_isUnityInitialized) return;
+    if (!_isUnityInitialized || _isUnityLoading || _isUnityAdLoaded) return;
+    _isUnityLoading = true;
     UnityAds.load(
       placementId: unityRewardedPlacementId,
-      onComplete: (placementId) => debugPrint('✅ [Unity Ads] Rewarded Video ($placementId) siap siaga!'),
-      onFailed: (placementId, error, message) => debugPrint('ℹ️ [Unity Ads] Load status: $message'),
+      onComplete: (placementId) {
+        _isUnityAdLoaded = true;
+        _isUnityLoading = false;
+        debugPrint('✅ [Unity Ads] Rewarded Video ($placementId) siap siaga!');
+      },
+      onFailed: (placementId, error, message) {
+        _isUnityAdLoaded = false;
+        _isUnityLoading = false;
+        debugPrint('ℹ️ [Unity Ads] Load status: $message');
+      },
     );
   }
 
@@ -106,6 +117,7 @@ class AdMobService {
   void showRewardedAd({
     required VoidCallback onUserEarnedReward,
     VoidCallback? onAdClosed,
+    Function(String message)? onAdUnavailable,
   }) {
     if (!shouldShowAds) {
       onUserEarnedReward();
@@ -127,7 +139,11 @@ class AdMobService {
           ad.dispose();
           _admobRewardedAd = null;
           loadAdMobRewardedAd();
-          _showUnityRewarded(onUserEarnedReward: onUserEarnedReward, onAdClosed: onAdClosed);
+          _showUnityRewarded(
+            onUserEarnedReward: onUserEarnedReward,
+            onAdClosed: onAdClosed,
+            onAdUnavailable: onAdUnavailable,
+          );
         },
       );
 
@@ -140,8 +156,12 @@ class AdMobService {
     } else {
       // TAHAP 2: AdMob belum siap / masih dalam review Google / no-fill -> Langsung FALLBACK ke Unity Ads!
       debugPrint('🔄 [Ads Engine] AdMob belum siap / akun masih di-review. Otomatis beralih ke Unity Ads!');
-      loadAdMobRewardedAd(); // Coba muat AdMob lagi di background untuk penayangan berikutnya saat sudah diapprove
-      _showUnityRewarded(onUserEarnedReward: onUserEarnedReward, onAdClosed: onAdClosed);
+      loadAdMobRewardedAd(); // Coba muat AdMob lagi di background untuk penayangan berikutnya
+      _showUnityRewarded(
+        onUserEarnedReward: onUserEarnedReward,
+        onAdClosed: onAdClosed,
+        onAdUnavailable: onAdUnavailable,
+      );
     }
   }
 
@@ -149,33 +169,47 @@ class AdMobService {
   void _showUnityRewarded({
     required VoidCallback onUserEarnedReward,
     VoidCallback? onAdClosed,
+    Function(String message)? onAdUnavailable,
   }) {
     if (!_isUnityInitialized) {
-      debugPrint('ℹ️ [Unity Ads] Belum terinisialisasi. Memberikan reward mode offline.');
-      onUserEarnedReward();
+      debugPrint('ℹ️ [Unity Ads] Belum terinisialisasi.');
+      onAdUnavailable?.call('Layanan iklan belum siap, silakan periksa koneksi internet Anda.');
       if (onAdClosed != null) onAdClosed();
       return;
     }
+
+    // Jika video belum siap dimuat oleh Unity Ads:
+    if (!_isUnityAdLoaded) {
+      debugPrint('⏳ [Unity Ads] Video berikutnya sedang diunduh/buffering di latar belakang...');
+      loadUnityRewardedAd();
+      onAdUnavailable?.call('Video iklan sedang disiapkan, silakan coba 5-10 detik lagi ya! ⏳');
+      if (onAdClosed != null) onAdClosed();
+      return;
+    }
+
+    // Tandai sedang diputar agar tidak dipanggil dobel
+    _isUnityAdLoaded = false;
 
     UnityAds.showVideoAd(
       placementId: unityRewardedPlacementId,
       onStart: (placementId) => debugPrint('🎬 [Unity Ads] Video dimulai: $placementId'),
       onComplete: (placementId) {
         debugPrint('🎉 [Unity Ads] Video selesai ditonton! Reward diklaim.');
-        onUserEarnedReward();
-        loadUnityRewardedAd();
+        onUserEarnedReward(); // HANYA DI SINI HADIAH DIBERIKAN!
+        loadUnityRewardedAd(); // Langsung preload video berikutnya
         if (onAdClosed != null) onAdClosed();
       },
       onSkipped: (placementId) {
-        debugPrint('ℹ️ [Unity Ads] Video dilewati oleh pengguna.');
+        debugPrint('ℹ️ [Unity Ads] Video dilewati oleh pengguna (tidak dapat reward).');
         loadUnityRewardedAd();
         if (onAdClosed != null) onAdClosed();
       },
       onFailed: (placementId, error, message) {
-        debugPrint('⚠️ [Unity Ads] Gagal tayang: $message. Memberikan reward aman untuk anak.');
+        debugPrint('⚠️ [Unity Ads] Gagal tayang: $message.');
+        _isUnityAdLoaded = false;
         loadUnityRewardedAd();
-        // Fallback offline agar anak tidak kecewa
-        onUserEarnedReward();
+        onAdUnavailable?.call('Video belum siap diputar, silakan coba sebentar lagi.');
+        // JANGAN PERNAH PANGGIL onUserEarnedReward() DI SINI AGAR TIDAK ADA KREDIT GRATIS
         if (onAdClosed != null) onAdClosed();
       },
     );

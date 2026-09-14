@@ -1,4 +1,4 @@
-﻿# Miscellaneous
+# Miscellaneous
 *.class
 *.log
 *.pyc
@@ -43,3 +43,7 @@ migrate_working_dir/
 
 # Exceptions to above rules.
 !**/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Local downloaded build artifacts
+build_output/
+

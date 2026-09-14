@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../data/curriculum_data.dart';
 import '../models/models.dart';
 import '../theme/app_theme.dart';
@@ -61,6 +61,17 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
                     const SnackBar(
                       backgroundColor: AppColors.secondaryGreen,
                       content: Text('🎉 Selamat! Bonus bintang untuk membuka level berikutnya!'),
+                    ),
+                  );
+                },
+                onAdUnavailable: (msg) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.orange.shade800,
+                      content: Text(
+                        msg,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   );
                 },

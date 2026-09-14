@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../services/admob_service.dart';
 import '../services/reward_service.dart';
 import '../theme/app_theme.dart';
@@ -116,6 +116,17 @@ class _PandaShopScreenState extends State<PandaShopScreen> {
                     const SnackBar(
                       backgroundColor: AppColors.secondaryGreen,
                       content: Text('🎁 +5 Bambu & +3 Bintang berhasil diklaim!'),
+                    ),
+                  );
+                },
+                onAdUnavailable: (msg) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: Colors.orange.shade800,
+                      content: Text(
+                        msg,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   );
                 },
