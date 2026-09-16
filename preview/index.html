@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+SC:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
   <style>
     :root {
       --primary-yellow: #FFCA28;
@@ -735,10 +736,15 @@
         <span id="bamboo-count">10</span>
       </div>
 
+      <!-- Quick Language Switcher Button -->
+      <button id="web-lang-toggle" onclick="toggleWebLanguage()" style="background:#FFF9C4; border:2px solid #FBC02D; border-radius:16px; padding:4px 10px; font-size:12px; font-weight:800; color:#37474F; cursor:pointer;">
+        🇮🇩 ID
+      </button>
+
       <!-- CLICK TO WATCH REWARDED AD -->
       <button class="ad-reward-btn" onclick="startAdMobVideoAd()">
         <span>🎬</span>
-        <span>Tonton Iklan (Hadiah)</span>
+        <span id="ad-btn-label">Tonton Iklan (+5🎋)</span>
       </button>
 
       <div class="badge badge-stars">
@@ -768,8 +774,8 @@
           <circle cx="24" cy="65" r="7" fill="#FF80AB" opacity="0.6"/>
           <circle cx="76" cy="65" r="7" fill="#FF80AB" opacity="0.6"/>
           <!-- Nose & Smile -->
-          <ellipse cx="50" cy="62" rx="7" ry="5" fill="#263238"/>
-          <path d="M 44 70 Q 50 76 56 70" stroke="#263238" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="50" cy="60" rx="6" ry="4" fill="#263238"/>
+          <path d="M 45 66 Q 50 71 55 66" stroke="#263238" stroke-width="3" fill="none" stroke-linecap="round"/>
         </svg>
       </div>
 
@@ -779,7 +785,7 @@
           <span>🔊 "Ni Hao!"</span>
         </button>
         <button class="sound-btn-main" style="flex:1; margin:0; font-size:13px; padding:10px 8px; background:linear-gradient(180deg, #81D4FA, #29B6F6); border-color:#0288D1; box-shadow:0 4px 0 #0277BD; color:white;" onclick="openPandaWardrobe()">
-          <span>👗 Kostum Panda</span>
+          <span id="btn-wardrobe-label">👗 Kostum Panda</span>
         </button>
       </div>
 
@@ -853,25 +859,74 @@
         <button class="node-audio-btn" onclick="speakCurrent()">🔊</button>
       </div>
 
-      <div class="flashcard">
-        <div class="flash-emoji" id="fc-emoji">🤝</div>
-        <div class="flash-hanzi" id="fc-hanzi" onclick="speakCurrent()" title="Klik untuk mendengar suara">你好</div>
-        <div class="pinyin-badge" id="fc-pinyin" onclick="speakCurrent()" style="color: var(--tone-3); border-color: var(--tone-3); background: #E8F5E9;">
-          nǐ hǎo
-        </div>
-
-        <!-- BIG ULTRA PROMINENT SOUND BUTTON -->
-        <button class="sound-btn-flashcard" onclick="speakCurrent()">
-          <span style="font-size: 24px;">🔊</span>
-          <span>DENGARKAN SUARA</span>
+      <!-- Segmented Tab Switcher (Vocab vs Stroke Order) -->
+      <div style="display:flex; justify-content:center; gap:8px; margin: 4px 0 10px;">
+        <button id="fc-tab-vocab" onclick="switchFcTab('vocab')" style="flex:1; padding:8px 12px; border:none; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer; background:var(--primary-yellow); color:#263238; box-shadow:0 3px 0 #F57F17;">
+          🎴 <span id="fc-tab-vocab-text">Kartu Kata</span>
         </button>
+        <button id="fc-tab-stroke" onclick="switchFcTab('stroke')" style="flex:1; padding:8px 12px; border:none; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer; background:#ECEFF1; color:#546E7A; box-shadow:0 3px 0 #CFD8DC;">
+          ✍️ <span id="fc-tab-stroke-text">Urutan Goresan</span>
+        </button>
+      </div>
 
-        <div class="meaning-text" id="fc-meaning">Halo</div>
+      <!-- Tab 1: Vocab Flashcard View -->
+      <div id="fc-vocab-view">
+        <div class="flashcard">
+          <div class="flash-emoji" id="fc-emoji">🤝</div>
+          <div class="flash-hanzi" id="fc-hanzi" onclick="speakCurrent()" title="Klik untuk mendengar suara">你好</div>
+          <div class="pinyin-badge" id="fc-pinyin" onclick="speakCurrent()" style="color: var(--tone-3); border-color: var(--tone-3); background: #E8F5E9;">
+            nǐ hǎo
+          </div>
+
+          <!-- BIG ULTRA PROMINENT SOUND BUTTON -->
+          <button class="sound-btn-flashcard" onclick="speakCurrent()">
+            <span style="font-size: 24px;">🔊</span>
+            <span id="fc-sound-btn-text">DENGARKAN SUARA</span>
+          </button>
+
+          <div class="meaning-text" id="fc-meaning">Halo</div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Stroke Order Tianzige View -->
+      <div id="fc-stroke-view" style="display:none;">
+        <div class="flashcard" style="padding:16px 12px; display:flex; flex-direction:column; align-items:center;">
+          <!-- Character selector pills if multi-char -->
+          <div id="stroke-char-selector" style="display:flex; justify-content:center; gap:8px; margin-bottom:10px;"></div>
+
+          <!-- Tianzige Calligraphy Grid Container with HanziWriter -->
+          <div class="tianzige-box" style="position:relative; width:220px; height:220px; border:3px solid #E53935; border-radius:16px; background:#FFFDF7; margin:0 auto; overflow:hidden; box-shadow:0 4px 12px rgba(229,57,53,0.15);">
+            <!-- Traditional Red Dashed Rice Grid (米字格) -->
+            <svg style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;" viewBox="0 0 220 220">
+              <line x1="110" y1="0" x2="110" y2="220" stroke="#FFCDD2" stroke-width="1.5" stroke-dasharray="5,5"/>
+              <line x1="0" y1="110" x2="220" y2="110" stroke="#FFCDD2" stroke-width="1.5" stroke-dasharray="5,5"/>
+              <line x1="0" y1="0" x2="220" y2="220" stroke="#FFEBEE" stroke-width="1.2" stroke-dasharray="4,4"/>
+              <line x1="0" y1="220" x2="220" y2="0" stroke="#FFEBEE" stroke-width="1.2" stroke-dasharray="4,4"/>
+            </svg>
+            <div id="hanzi-writer-container" style="position:relative; z-index:2; width:220px; height:220px;"></div>
+          </div>
+
+          <!-- Stroke Control Buttons Row -->
+          <div style="display:flex; justify-content:center; gap:8px; margin-top:14px; width:100%;">
+            <button onclick="replayHanziStrokes()" style="flex:1; padding:8px 10px; background:#4CAF50; color:white; border:none; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer; box-shadow:0 3px 0 #2E7D32;">
+              🔄 <span id="stroke-btn-replay">Ulangi</span>
+            </button>
+            <button id="stroke-speed-btn" onclick="toggleStrokeSpeed()" style="padding:8px 10px; background:#E0F2F1; color:#00796B; border:1px solid #80CBC4; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer;">
+              ⚡ 1.0x
+            </button>
+            <button onclick="practiceHanziQuiz()" style="flex:1; padding:8px 10px; background:#FF9800; color:white; border:none; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer; box-shadow:0 3px 0 #E65100;">
+              ✍️ <span id="stroke-btn-quiz">Latihan Tulis</span>
+            </button>
+          </div>
+          <div id="stroke-hint-text" style="font-size:11px; color:#78909C; margin-top:8px; font-weight:600;">
+            Ikuti goresan animasi untuk belajar menulis Hanzi!
+          </div>
+        </div>
       </div>
 
       <div style="display:flex; gap:10px;">
-        <button class="action-btn" style="background:#FFA726; box-shadow:0 4px 0 #F57C00;" onclick="prevCard()">◀ Sebelumnya</button>
-        <button class="action-btn" id="next-fc-btn" onclick="nextCard()">Berikutnya ▶</button>
+        <button class="action-btn" style="background:#FFA726; box-shadow:0 4px 0 #F57C00;" onclick="prevCard()"><span id="btn-fc-prev">◀ Sebelumnya</span></button>
+        <button class="action-btn" id="next-fc-btn" onclick="nextCard()"><span id="btn-fc-next">Berikutnya ▶</span></button>
       </div>
     </div>
 
@@ -3955,9 +4010,231 @@
       alert('🔒 Level ini masih terkunci! Kumpulkan bintang dengan menyelesaikan level sebelumnya.');
     }
 
+    /* ============================================================
+       BILINGUAL (ID / EN) & STROKE ORDER SYSTEM
+       ============================================================ */
+    let currentWebLang = 'id';
+    const webTranslations = {
+      id: {
+        flag: '🇮🇩 ID',
+        adBtn: 'Tonton Iklan (+5🎋)',
+        wardrobeBtn: '👗 Kostum Panda',
+        tabVocab: 'Kartu Kata',
+        tabStroke: 'Urutan Goresan',
+        listenSound: 'DENGARKAN SUARA',
+        prev: '◀ Sebelumnya',
+        next: 'Berikutnya ▶',
+        quiz: 'Kuis 🎯',
+        replay: 'Ulangi',
+        practice: 'Latihan Tulis',
+        strokeHint: 'Ikuti goresan animasi untuk belajar menulis Hanzi!',
+        mapTitle: 'Peta Petualangan',
+        quizTitle: 'Kuis NiHao Kids 🎯',
+        chooseGrade: 'Pilih Kelas Sekolahmu:',
+        starsEarned: 'Hebat sekali! Jawabanmu benar! ⭐ +1 Bintang',
+      },
+      en: {
+        flag: '🇬🇧 EN',
+        adBtn: 'Watch Ad (+5🎋)',
+        wardrobeBtn: '👗 Panda Wardrobe',
+        tabVocab: 'Vocab Card',
+        tabStroke: 'Stroke Order',
+        listenSound: 'LISTEN AUDIO',
+        prev: '◀ Previous',
+        next: 'Next ▶',
+        quiz: 'Quiz 🎯',
+        replay: 'Replay',
+        practice: 'Practice Writing',
+        strokeHint: 'Follow the animated stroke order to learn writing Hanzi!',
+        mapTitle: 'Adventure Map',
+        quizTitle: 'NiHao Kids Quiz 🎯',
+        chooseGrade: 'Choose Your Grade Level:',
+        starsEarned: 'Awesome! Correct answer! ⭐ +1 Star',
+      }
+    };
+
+    function toggleWebLanguage() {
+      currentWebLang = (currentWebLang === 'id') ? 'en' : 'id';
+      const t = webTranslations[currentWebLang];
+      const btn = document.getElementById('web-lang-toggle');
+      if (btn) btn.textContent = t.flag;
+
+      const adLabel = document.getElementById('ad-btn-label');
+      if (adLabel) adLabel.textContent = t.adBtn;
+      const wLabel = document.getElementById('btn-wardrobe-label');
+      if (wLabel) wLabel.textContent = t.wardrobeBtn;
+      const tabV = document.getElementById('fc-tab-vocab-text');
+      if (tabV) tabV.textContent = t.tabVocab;
+      const tabS = document.getElementById('fc-tab-stroke-text');
+      if (tabS) tabS.textContent = t.tabStroke;
+      const sndText = document.getElementById('fc-sound-btn-text');
+      if (sndText) sndText.textContent = t.listenSound;
+      const prevText = document.getElementById('btn-fc-prev');
+      if (prevText) prevText.textContent = t.prev;
+      const rText = document.getElementById('stroke-btn-replay');
+      if (rText) rText.textContent = t.replay;
+      const qText = document.getElementById('stroke-btn-quiz');
+      if (qText) qText.textContent = t.practice;
+      const sHint = document.getElementById('stroke-hint-text');
+      if (sHint) sHint.textContent = t.strokeHint;
+
+      if (activeLessons && activeLessons[currentLessonIndex]) {
+        updateFlashcardUI();
+        if (currentFcTab === 'stroke') setupStrokeOrder();
+      }
+      playPop();
+    }
+
+    function getCardMeaning(card) {
+      if (!card) return '';
+      if (currentWebLang === 'en' && card.meaningEn) return card.meaningEn;
+      return card.meaning;
+    }
+
+    let currentFcTab = 'vocab';
+    let currentHanziWriter = null;
+    let strokeSpeed = 1.0;
+    let selectedStrokeChar = '';
+
+    function switchFcTab(tab) {
+      currentFcTab = tab;
+      const btnVocab = document.getElementById('fc-tab-vocab');
+      const btnStroke = document.getElementById('fc-tab-stroke');
+      const viewVocab = document.getElementById('fc-vocab-view');
+      const viewStroke = document.getElementById('fc-stroke-view');
+
+      if (tab === 'vocab') {
+        if (viewVocab) viewVocab.style.display = 'block';
+        if (viewStroke) viewStroke.style.display = 'none';
+        if (btnVocab) {
+          btnVocab.style.background = 'var(--primary-yellow)';
+          btnVocab.style.color = '#263238';
+          btnVocab.style.boxShadow = '0 3px 0 #F57F17';
+        }
+        if (btnStroke) {
+          btnStroke.style.background = '#ECEFF1';
+          btnStroke.style.color = '#546E7A';
+          btnStroke.style.boxShadow = '0 3px 0 #CFD8DC';
+        }
+      } else {
+        if (viewVocab) viewVocab.style.display = 'none';
+        if (viewStroke) viewStroke.style.display = 'block';
+        if (btnStroke) {
+          btnStroke.style.background = 'var(--primary-yellow)';
+          btnStroke.style.color = '#263238';
+          btnStroke.style.boxShadow = '0 3px 0 #F57F17';
+        }
+        if (btnVocab) {
+          btnVocab.style.background = '#ECEFF1';
+          btnVocab.style.color = '#546E7A';
+          btnVocab.style.boxShadow = '0 3px 0 #CFD8DC';
+        }
+        setupStrokeOrder();
+      }
+      playPop();
+    }
+
+    function setupStrokeOrder() {
+      if (!activeLessons || !activeLessons[currentLessonIndex]) return;
+      const card = activeLessons[currentLessonIndex].cards[currentCardIndex];
+      if (!card) return;
+
+      const chars = Array.from(card.hanzi).filter(c => /[\u4e00-\u9fa5]/.test(c));
+      if (chars.length === 0) return;
+
+      const selector = document.getElementById('stroke-char-selector');
+      if (selector) {
+        selector.innerHTML = '';
+        if (!selectedStrokeChar || !chars.includes(selectedStrokeChar)) {
+          selectedStrokeChar = chars[0];
+        }
+
+        if (chars.length > 1) {
+          chars.forEach(ch => {
+            const pill = document.createElement('button');
+            pill.textContent = ch;
+            pill.style.cssText = 'padding:4px 12px; font-size:16px; font-weight:900; border-radius:12px; border:2px solid #E53935; cursor:pointer; font-family:"Noto Sans SC"; margin:0 4px;';
+            if (ch === selectedStrokeChar) {
+              pill.style.background = '#E53935';
+              pill.style.color = '#FFF';
+            } else {
+              pill.style.background = '#FFF';
+              pill.style.color = '#E53935';
+            }
+            pill.onclick = () => {
+              selectedStrokeChar = ch;
+              setupStrokeOrder();
+            };
+            selector.appendChild(pill);
+          });
+        }
+      }
+
+      loadHanziWriter(selectedStrokeChar);
+    }
+
+    function loadHanziWriter(char) {
+      const container = document.getElementById('hanzi-writer-container');
+      if (!container) return;
+      container.innerHTML = '';
+      if (typeof HanziWriter === 'undefined') {
+        container.innerHTML = `<div style="font-family:'Noto Sans SC'; font-size:110px; line-height:220px; color:#D32F2F; text-align:center;">${char}</div>`;
+        return;
+      }
+      currentHanziWriter = HanziWriter.create('hanzi-writer-container', char, {
+        width: 220,
+        height: 220,
+        padding: 15,
+        strokeAnimationSpeed: strokeSpeed,
+        delayBetweenStrokes: 180,
+        strokeColor: '#D32F2F',
+        radicalColor: '#1976D2',
+        outlineColor: '#E0E0E0',
+        drawingColor: '#2E7D32',
+        drawingWidth: 20,
+        showOutline: true,
+        showCharacter: false,
+      });
+      currentHanziWriter.animateCharacter();
+    }
+
+    function replayHanziStrokes() {
+      if (currentHanziWriter) {
+        currentHanziWriter.animateCharacter();
+        playPop();
+      }
+    }
+
+    function toggleStrokeSpeed() {
+      strokeSpeed = (strokeSpeed === 1.0) ? 0.5 : 1.0;
+      const btn = document.getElementById('stroke-speed-btn');
+      if (btn) btn.textContent = `⚡ ${strokeSpeed.toFixed(1)}x`;
+      if (selectedStrokeChar) loadHanziWriter(selectedStrokeChar);
+      playPop();
+    }
+
+    function practiceHanziQuiz() {
+      if (currentHanziWriter) {
+        currentHanziWriter.quiz({
+          onMistake: function(strokeData) {
+            playTone(220, 0.2, 'sawtooth');
+          },
+          onCorrectStroke: function(strokeData) {
+            playTone(587, 0.1, 'sine');
+          },
+          onComplete: function(summary) {
+            playSuccessChime();
+            alert('🎉 Bagus Sekali! Goresanmu sempurna!');
+          }
+        });
+      }
+    }
+
     function startLesson(idx) {
       currentLessonIndex = idx;
       currentCardIndex = 0;
+      selectedStrokeChar = '';
+      switchFcTab('vocab');
       updateFlashcardUI();
       showScreen('screen-flashcard');
       setTimeout(speakCurrent, 300);
@@ -3971,17 +4248,22 @@
       document.getElementById('fc-emoji').textContent = card.emoji;
       document.getElementById('fc-hanzi').textContent = card.hanzi;
       document.getElementById('fc-pinyin').textContent = card.pinyin;
-      document.getElementById('fc-meaning').textContent = card.meaning;
+      document.getElementById('fc-meaning').textContent = getCardMeaning(card);
 
       const nextBtn = document.getElementById('next-fc-btn');
+      const t = webTranslations[currentWebLang];
       if (currentCardIndex === curCards.length - 1) {
-        nextBtn.textContent = 'Kuis 🎯';
+        nextBtn.innerHTML = `<span>${t.quiz}</span>`;
         nextBtn.style.background = 'var(--coral-orange)';
         nextBtn.style.boxShadow = '0 4px 0 #D84315';
       } else {
-        nextBtn.textContent = 'Berikutnya ▶';
+        nextBtn.innerHTML = `<span id="btn-fc-next">${t.next}</span>`;
         nextBtn.style.background = 'var(--secondary-green)';
         nextBtn.style.boxShadow = '0 4px 0 #388E3C';
+      }
+
+      if (currentFcTab === 'stroke') {
+        setupStrokeOrder();
       }
     }
 
@@ -3994,6 +4276,7 @@
       const curCards = activeLessons[currentLessonIndex].cards;
       if (currentCardIndex < curCards.length - 1) {
         currentCardIndex++;
+        selectedStrokeChar = '';
         updateFlashcardUI();
         speakCurrent();
       } else {
@@ -4004,6 +4287,7 @@
     function prevCard() {
       if (currentCardIndex > 0) {
         currentCardIndex--;
+        selectedStrokeChar = '';
         updateFlashcardUI();
         speakCurrent();
       }
@@ -4017,8 +4301,9 @@
 
       document.getElementById('quiz-hanzi').textContent = quizQuestion.hanzi;
 
-      const others = curCards.filter(c => c.hanzi !== quizQuestion.hanzi).map(c => c.meaning);
-      const options = [quizQuestion.meaning, ...others.slice(0, 2)].sort(() => Math.random() - 0.5);
+      const others = curCards.filter(c => c.hanzi !== quizQuestion.hanzi).map(c => getCardMeaning(c));
+      const correctMeaning = getCardMeaning(quizQuestion);
+      const options = [correctMeaning, ...others.slice(0, 2)].sort(() => Math.random() - 0.5);
 
       const container = document.getElementById('quiz-options-container');
       container.innerHTML = '';
@@ -4039,14 +4324,15 @@
     }
 
     function handleAnswer(btn, chosen) {
-      const isCorrect = chosen === quizQuestion.meaning;
+      const isCorrect = chosen === getCardMeaning(quizQuestion);
       if (isCorrect) {
         btn.classList.add('correct');
         playSuccessChime();
         stars += 1;
         persistRewards();
         setTimeout(() => {
-          alert('🎉 Hebat sekali! Jawabanmu benar! ⭐ +1 Bintang');
+          const t = webTranslations[currentWebLang];
+          alert(`🎉 ${t.starsEarned}`);
           showScreen('screen-map');
         }, 500);
       } else {

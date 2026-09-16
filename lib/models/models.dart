@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/localization_service.dart';
 
 enum SchoolGrade {
   paud,    // PAUD & Nursery (Xingxing Series Starter) Usia 3-4 th
@@ -10,7 +11,9 @@ enum SchoolGrade {
 class GradeLevel {
   final SchoolGrade grade;
   final String title;
+  final String? titleEn;
   final String subtitle;
+  final String? subtitleEn;
   final String ageRange;
   final Color primaryColor;
   final Color secondaryColor;
@@ -19,12 +22,17 @@ class GradeLevel {
   const GradeLevel({
     required this.grade,
     required this.title,
+    this.titleEn,
     required this.subtitle,
+    this.subtitleEn,
     required this.ageRange,
     required this.primaryColor,
     required this.secondaryColor,
     required this.icon,
   });
+
+  String get localizedTitle => LocalizationService().isEnglish ? (titleEn ?? title) : title;
+  String get localizedSubtitle => LocalizationService().isEnglish ? (subtitleEn ?? subtitle) : subtitle;
 }
 
 class VocabItem {
@@ -32,32 +40,41 @@ class VocabItem {
   final String hanzi;
   final String pinyin;
   final String meaningId; // Arti bahasa Indonesia
+  final String? meaningEn; // Meaning in English
   final int tone; // 1, 2, 3, 4, or 0 (neutral)
   final String category;
   final String emoji;
   final String? exampleSentenceHanzi;
   final String? exampleSentencePinyin;
   final String? exampleSentenceId;
+  final String? exampleSentenceEn;
 
   const VocabItem({
     required this.id,
     required this.hanzi,
     required this.pinyin,
     required this.meaningId,
+    this.meaningEn,
     required this.tone,
     required this.category,
     required this.emoji,
     this.exampleSentenceHanzi,
     this.exampleSentencePinyin,
     this.exampleSentenceId,
+    this.exampleSentenceEn,
   });
+
+  String get meaning => LocalizationService().isEnglish ? (meaningEn ?? meaningId) : meaningId;
+  String? get exampleSentence => LocalizationService().isEnglish ? (exampleSentenceEn ?? exampleSentenceId) : exampleSentenceId;
 }
 
 class LessonTopic {
   final String id;
   final SchoolGrade grade;
   final String title;
+  final String? titleEn;
   final String subtitle;
+  final String? subtitleEn;
   final String emoji;
   final Color themeColor;
   final List<VocabItem> vocabs;
@@ -69,7 +86,9 @@ class LessonTopic {
     required this.id,
     required this.grade,
     required this.title,
+    this.titleEn,
     required this.subtitle,
+    this.subtitleEn,
     required this.emoji,
     required this.themeColor,
     required this.vocabs,
@@ -77,6 +96,9 @@ class LessonTopic {
     this.starsEarned = 0,
     this.isUnlocked = false,
   });
+
+  String get localizedTitle => LocalizationService().isEnglish ? (titleEn ?? title) : title;
+  String get localizedSubtitle => LocalizationService().isEnglish ? (subtitleEn ?? subtitle) : subtitle;
 }
 
 class QuizQuestion {

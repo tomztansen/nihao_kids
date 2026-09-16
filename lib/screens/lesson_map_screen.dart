@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../data/curriculum_data.dart';
 import '../models/models.dart';
-import '../theme/app_theme.dart';
 import '../services/admob_service.dart';
+import '../services/localization_service.dart';
+import '../theme/app_theme.dart';
+import '../widgets/language_switch_button.dart';
 import 'flashcard_screen.dart';
 
 class LessonMapScreen extends StatefulWidget {
@@ -20,18 +22,28 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
   @override
   void initState() {
     super.initState();
-    _lessons = CurriculumData.getLessonsForGrade(widget.gradeLevel.grade);
+    _lessons = widget.gradeLevel.grade == SchoolGrade.paud
+        ? XingxingCurriculum.getPaudLessons()
+        : widget.gradeLevel.grade == SchoolGrade.tk
+            ? XingxingCurriculum.getTkLessons()
+            : widget.gradeLevel.grade == SchoolGrade.sdLower
+                ? MeiHuaLowerCurriculum.getLessons()
+                : MeiHuaUpperCurriculum.getLessons();
+
+    // Ensure first lesson is unlocked by default
+    if (_lessons.isNotEmpty) {
+      _lessons[0].isUnlocked = true;
+    }
   }
 
   void _onLessonTap(LessonTopic lesson) {
+    final loc = LocalizationService();
     if (!lesson.isUnlocked) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          backgroundColor: AppColors.coralOrange,
-          content: Text(
-            '🔒 Kumpulkan  Bintang untuk membuka level ini!',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.grey.shade800,
+          content: Text(loc.t('level_locked')),
         ),
       );
       return;
@@ -42,89 +54,99 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
       MaterialPageRoute(
         builder: (context) => FlashcardScreen(lesson: lesson),
       ),
-    );
+    ).then((_) {
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.gradeLevel.title),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.videocam_rounded, color: Colors.deepOrange),
-            tooltip: 'Tonton Video Hadiah',
-            onPressed: () {
-              AdMobService().showRewardedAd(
-                onUserEarnedReward: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor: AppColors.secondaryGreen,
-                      content: Text('🎉 Selamat! Bonus bintang untuk membuka level berikutnya!'),
-                    ),
+    final loc = LocalizationService();
+
+    return ValueListenableBuilder<AppLanguage>(
+      valueListenable: loc.languageNotifier,
+      builder: (context, _, __) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.gradeLevel.localizedTitle),
+            actions: [
+              const LanguageSwitchButton(compact: true),
+              const SizedBox(width: 6),
+              IconButton(
+                icon: const Icon(Icons.videocam_rounded, color: Colors.deepOrange),
+                tooltip: loc.t('watch_ad_bonus'),
+                onPressed: () {
+                  AdMobService().showRewardedAd(
+                    onUserEarnedReward: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: AppColors.secondaryGreen,
+                          content: Text(loc.t('level_bonus_stars')),
+                        ),
+                      );
+                    },
+                    onAdUnavailable: (msg) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.orange.shade800,
+                          content: Text(
+                            msg,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
-                onAdUnavailable: (msg) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: Colors.orange.shade800,
-                      content: Text(
-                        msg,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          body: SafeArea(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              itemCount: _lessons.length,
+              itemBuilder: (context, index) {
+                final lesson = _lessons[index];
+                final isEven = index % 2 == 0;
+
+                return Column(
+                  children: [
+                    // Zig-zag offset row
+                    Align(
+                      alignment: isEven ? Alignment.centerLeft : Alignment.centerRight,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: isEven ? 20 : 0,
+                          right: isEven ? 0 : 20,
+                        ),
+                        child: _buildLessonNode(lesson, index + 1),
                       ),
                     ),
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          itemCount: _lessons.length,
-          itemBuilder: (context, index) {
-            final lesson = _lessons[index];
-            final isEven = index % 2 == 0;
-
-            return Column(
-              children: [
-                // Zig-zag offset row
-                Align(
-                  alignment: isEven ? Alignment.centerLeft : Alignment.centerRight,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: isEven ? 20 : 0,
-                      right: isEven ? 0 : 20,
-                    ),
-                    child: _buildLessonNode(lesson, index + 1),
-                  ),
-                ),
-                if (index < _lessons.length - 1)
-                  // Stepping stones / Pathway dots
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Column(
-                      children: List.generate(
-                        3,
-                        (i) => Container(
-                          width: 8,
-                          height: 8,
-                          margin: const EdgeInsets.symmetric(vertical: 3),
-                          decoration: BoxDecoration(
-                            color: Colors.black12,
-                            shape: BoxShape.circle,
+                    if (index < _lessons.length - 1)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: Column(
+                          children: List.generate(
+                            3,
+                            (i) => Container(
+                              width: 8,
+                              height: 8,
+                              margin: const EdgeInsets.symmetric(vertical: 3),
+                              decoration: const BoxDecoration(
+                                color: Colors.black12,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-              ],
-            );
-          },
-        ),
-      ),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -181,7 +203,7 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
                       shape: BoxShape.circle,
                     ),
                     child: Text(
-                      '',
+                      '$levelNumber',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 10,
@@ -194,7 +216,7 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              lesson.title,
+              lesson.localizedTitle,
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

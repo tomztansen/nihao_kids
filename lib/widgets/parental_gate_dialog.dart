@@ -1,5 +1,6 @@
-﻿import 'dart:math';
+import 'dart:math';
 import 'package:flutter/material.dart';
+import '../services/localization_service.dart';
 import '../theme/app_theme.dart';
 
 /// Modal Parental Gate untuk mematuhi regulasi Google Play Families Policy & COPPA.
@@ -42,9 +43,10 @@ class _ParentalGateDialogState extends State<ParentalGateDialog> {
   }
 
   void _verify() {
+    final loc = LocalizationService();
     final text = _controller.text.trim();
     if (text.isEmpty) {
-      setState(() => _errorMessage = 'Masukkan jawaban Anda.');
+      setState(() => _errorMessage = loc.t('enter_answer_error'));
       return;
     }
 
@@ -54,7 +56,7 @@ class _ParentalGateDialogState extends State<ParentalGateDialog> {
       widget.onPassed();
     } else {
       setState(() {
-        _errorMessage = 'Jawaban salah. Akses pembelian dibatalkan.';
+        _errorMessage = loc.t('math_error');
       });
       Future.delayed(const Duration(milliseconds: 1400), () {
         if (mounted) Navigator.of(context).pop();
@@ -70,16 +72,17 @@ class _ParentalGateDialogState extends State<ParentalGateDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final loc = LocalizationService();
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      title: const Row(
+      title: Row(
         children: [
-          Text('👨‍👩‍👧', style: TextStyle(fontSize: 26)),
-          SizedBox(width: 8),
+          const Text('👨‍👩‍👧', style: TextStyle(fontSize: 26)),
+          const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Kunci Orang Tua',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              loc.t('parental_gate_title'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -89,9 +92,9 @@ class _ParentalGateDialogState extends State<ParentalGateDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Halaman ini khusus untuk orang dewasa. Tanyakan pada orang tua atau selesaikan soal berikut:',
-              style: TextStyle(fontSize: 13, color: Colors.blueGrey),
+            Text(
+              loc.t('parental_gate_adult_desc'),
+              style: const TextStyle(fontSize: 13, color: Colors.blueGrey),
             ),
             const SizedBox(height: 16),
             Container(
@@ -120,7 +123,7 @@ class _ParentalGateDialogState extends State<ParentalGateDialog> {
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               decoration: InputDecoration(
-                hintText: 'Tulis Jawaban',
+                hintText: loc.t('write_answer_hint'),
                 contentPadding: const EdgeInsets.symmetric(vertical: 12),
                 filled: true,
                 fillColor: Colors.grey.shade100,
@@ -149,7 +152,7 @@ class _ParentalGateDialogState extends State<ParentalGateDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Batal', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+          child: Text(loc.t('cancel'), style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
         ),
         ElevatedButton(
           onPressed: _verify,
@@ -158,7 +161,7 @@ class _ParentalGateDialogState extends State<ParentalGateDialog> {
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           ),
-          child: const Text('Lanjutkan ➔', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+          child: Text(loc.t('continue_btn'), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         ),
       ],
     );

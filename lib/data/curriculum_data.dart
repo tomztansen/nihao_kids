@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../models/models.dart';
 import 'curriculum_meihua_lower.dart';
 import 'curriculum_meihua_upper.dart';
@@ -9,7 +9,9 @@ class CurriculumData {
     const GradeLevel(
       grade: SchoolGrade.paud,
       title: 'Bintang Cilik (PAUD)',
+      titleEn: 'Little Stars (Pre-K)',
       subtitle: 'Piktogram Visual, Bunyi Nada & Angka Jari (3-4 Thn)',
+      subtitleEn: 'Visual Pictograms, Tone Sounds & Finger Numbers (3-4 Yrs)',
       ageRange: 'Usia 3 - 4 Thn',
       primaryColor: Color(0xFFFFB300),
       secondaryColor: Color(0xFFFFF3E0),
@@ -18,7 +20,9 @@ class CurriculumData {
     const GradeLevel(
       grade: SchoolGrade.tk,
       title: 'Tunas Ceria (TK A/B)',
+      titleEn: 'Happy Sprouts (Kindergarten)',
       subtitle: 'Pinyin, Buah, Sayur, Hewan & Perintah Kelas (5-6 Thn)',
+      subtitleEn: 'Pinyin, Fruits, Veggies, Animals & Classroom (5-6 Yrs)',
       ageRange: 'Usia 5 - 6 Thn',
       primaryColor: Color(0xFF4CAF50),
       secondaryColor: Color(0xFFE8F5E9),
@@ -27,7 +31,9 @@ class CurriculumData {
     const GradeLevel(
       grade: SchoolGrade.sdLower,
       title: 'Penjelajah (SD 1 - 3)',
+      titleEn: 'Explorers (Grade 1 - 3)',
       subtitle: 'Kurikulum SD: Jam, Hari, Benda Kelas & YCT Level 1',
+      subtitleEn: 'Elementary School: Clock, Days, School Items & YCT 1',
       ageRange: 'Usia 7 - 9 Thn',
       primaryColor: Color(0xFF29B6F6),
       secondaryColor: Color(0xFFE1F5FE),
@@ -36,7 +42,9 @@ class CurriculumData {
     const GradeLevel(
       grade: SchoolGrade.sdUpper,
       title: 'Pendekar YCT (SD 4 - 6)',
+      titleEn: 'YCT Warriors (Grade 4 - 6)',
       subtitle: 'Percakapan Harian, Hobi, Arah, Belanja & YCT Level 2',
+      subtitleEn: 'Conversations, Hobbies, Directions, Shopping & YCT 2',
       ageRange: 'Usia 10 - 12 Thn',
       primaryColor: Color(0xFFAB47BC),
       secondaryColor: Color(0xFFF3E5F5),
