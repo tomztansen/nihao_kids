@@ -275,6 +275,8 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
         ),
       ),
     );
+  },
+);
   }
 
   Widget _buildGradeCard(GradeLevel grade) {

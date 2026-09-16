@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../data/curriculum_data.dart';
+import '../data/curriculum_xingxing.dart';
+import '../data/curriculum_meihua_lower.dart';
+import '../data/curriculum_meihua_upper.dart';
 import '../models/models.dart';
 import '../services/admob_service.dart';
 import '../services/localization_service.dart';
