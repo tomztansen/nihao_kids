@@ -171,6 +171,30 @@ class LocalizationService {
         AppLanguage.id: '🎉 Selamat! Bonus bintang untuk membuka level berikutnya!',
         AppLanguage.en: '🎉 Congrats! Bonus stars to unlock the next level!',
       },
+      'next_level_unlocked': {
+        AppLanguage.id: '🎉 Level berikutnya telah TERBUKA!',
+        AppLanguage.en: '🎉 Next level is now UNLOCKED!',
+      },
+      'level_unlocked_success': {
+        AppLanguage.id: '🎉 Hore! Level berhasil dibuka!',
+        AppLanguage.en: '🎉 Yay! Level successfully unlocked!',
+      },
+      'how_to_unlock': {
+        AppLanguage.id: 'Cara membuka level ini:',
+        AppLanguage.en: 'How to unlock this level:',
+      },
+      'unlock_with_bamboo': {
+        AppLanguage.id: 'Buka dengan 20 Bambu 🎋',
+        AppLanguage.en: 'Unlock with 20 Bamboo 🎋',
+      },
+      'unlock_with_ad': {
+        AppLanguage.id: 'Tonton Video Singkat (Buka Gratis) 🎬',
+        AppLanguage.en: 'Watch Short Video (Unlock Free) 🎬',
+      },
+      'not_enough_bamboo': {
+        AppLanguage.id: 'Bambu tidak cukup! Tonton video atau selesaikan kuis ya.',
+        AppLanguage.en: 'Not enough bamboo! Watch video or complete quizzes.',
+      },
 
       // Quiz
       'quiz_title': {

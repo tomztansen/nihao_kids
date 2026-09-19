@@ -13,22 +13,34 @@ class RewardService {
   static const String _keyXP = 'nh_xp_val';
   static const String _keyPremium = 'nh_premium_val';
   static const String _keyUnlockedLevels = 'nh_unlocked_levels';
+  static const String _keyLessonStars = 'nh_lesson_stars_map_v1';
   static const String _keyChecksum = 'nh_sec_sig_v2';
   
   // Kunci garam rahasia aplikasi untuk mencegah manipulasi data lokal
   static const String _secretSalt = 'NiHaoKidsSecureSalt2026_BaoBaoPremium';
 
+  static const List<String> _defaultUnlocked = [
+    'xx_num1', 'xx_pets',               // PAUD (Level 1 & 2)
+    'xx_tk_num', 'xx_tk_shapes',         // TK (Level 1 & 2)
+    'sd_greetings', 'sd_self_intro',     // SD 1-3 (Level 1 & 2)
+    'sd_upper_intro', 'sd_upper_daily_routine', // SD 4-6 (Level 1 & 2)
+    // Legacy compatibility:
+    'nursery_numbers', 'nursery_animals', 'sd_greetings_adv',
+  ];
+
   int _bamboo = 10;
   int _stars = 15;
   int _xp = 50;
   bool _isPremium = false;
-  List<String> _unlockedLessons = ['nursery_numbers', 'nursery_animals', 'sd_greetings_adv'];
+  List<String> _unlockedLessons = List.from(_defaultUnlocked);
+  Map<String, int> _lessonStars = {};
 
   int get bamboo => _bamboo;
   int get stars => _stars;
   int get xp => _xp;
   bool get isPremium => _isPremium;
   List<String> get unlockedLessons => List.unmodifiable(_unlockedLessons);
+  Map<String, int> get lessonStars => Map.unmodifiable(_lessonStars);
 
   /// Inisialisasi dan verifikasi keaslian data dari HP
   Future<void> initialize() async {
@@ -39,8 +51,19 @@ class RewardService {
       final savedStars = prefs.getInt(_keyStars) ?? 15;
       final savedXP = prefs.getInt(_keyXP) ?? 50;
       final savedPremium = prefs.getBool(_keyPremium) ?? false;
-      final savedLevels = prefs.getStringList(_keyUnlockedLevels) ?? _unlockedLessons;
+      final savedLevels = prefs.getStringList(_keyUnlockedLevels) ?? List<String>.from(_defaultUnlocked);
       final savedChecksum = prefs.getString(_keyChecksum) ?? '';
+
+      // Muat bintang tiap level yang tersimpan
+      final starsJson = prefs.getString(_keyLessonStars);
+      if (starsJson != null) {
+        try {
+          final decoded = jsonDecode(starsJson) as Map<String, dynamic>;
+          _lessonStars = decoded.map((k, v) => MapEntry(k, (v as num).toInt()));
+        } catch (e) {
+          _lessonStars = {};
+        }
+      }
 
       // Hitung checksum validasi
       final expectedChecksum = _generateChecksum(savedBamboo, savedStars, savedXP, savedPremium, savedLevels);
@@ -52,6 +75,7 @@ class RewardService {
         _stars = 15;
         _xp = 50;
         _isPremium = false;
+        _unlockedLessons = List.from(_defaultUnlocked);
         await _persistData(prefs);
       } else {
         // Data sah & otentik
@@ -59,8 +83,21 @@ class RewardService {
         _stars = savedStars;
         _xp = savedXP;
         _isPremium = savedPremium;
-        _unlockedLessons = savedLevels;
-        debugPrint('✅ [RewardService] Data reward sah dimuat: Bambu=$_bamboo, Bintang=$_stars, XP=$_xp, Premium=$_isPremium');
+        _unlockedLessons = List<String>.from(savedLevels);
+
+        // Pastikan level default selalu ada
+        bool hasNewDefaults = false;
+        for (final defId in _defaultUnlocked) {
+          if (!_unlockedLessons.contains(defId)) {
+            _unlockedLessons.add(defId);
+            hasNewDefaults = true;
+          }
+        }
+        if (hasNewDefaults) {
+          await _persistData(prefs);
+        }
+
+        debugPrint('✅ [RewardService] Data reward sah dimuat: Bambu=$_bamboo, Bintang=$_stars, Unlocked=${_unlockedLessons.length}, StarsMap=${_lessonStars.length}');
       }
     } catch (e) {
       debugPrint('Error loading rewards: $e');
@@ -125,16 +162,43 @@ class RewardService {
     return false; // Saldo tidak cukup
   }
 
+  int getLessonStars(String lessonId) {
+    return _lessonStars[lessonId] ?? 0;
+  }
+
   /// Buka level petualangan baru
   Future<void> unlockLesson(String lessonId) async {
     if (!_unlockedLessons.contains(lessonId)) {
       _unlockedLessons.add(lessonId);
       await _save();
+      debugPrint('🔓 [RewardService] Level $lessonId berhasil dibuka!');
     }
   }
 
   bool isLessonUnlocked(String lessonId) {
     return _unlockedLessons.contains(lessonId);
+  }
+
+  /// Simpan progres kuis level: simpan bintang & buka level berikutnya secara otomatis
+  Future<void> saveLessonProgress({
+    required String lessonId,
+    required int starsEarned,
+    String? nextLessonId,
+  }) async {
+    final prev = _lessonStars[lessonId] ?? 0;
+    if (starsEarned > prev) {
+      _lessonStars[lessonId] = starsEarned;
+    }
+    _stars += starsEarned;
+    _xp += starsEarned * 15;
+
+    if (nextLessonId != null && nextLessonId.isNotEmpty) {
+      if (!_unlockedLessons.contains(nextLessonId)) {
+        _unlockedLessons.add(nextLessonId);
+      }
+    }
+    await _save();
+    debugPrint('🎉 [RewardService] Lesson $lessonId selesai ($starsEarned ⭐). Next: $nextLessonId unlocked!');
   }
 
   /// Simpan data dengan tanda tangan digital
@@ -149,6 +213,7 @@ class RewardService {
     await prefs.setInt(_keyXP, _xp);
     await prefs.setBool(_keyPremium, _isPremium);
     await prefs.setStringList(_keyUnlockedLevels, _unlockedLessons);
+    await prefs.setString(_keyLessonStars, jsonEncode(_lessonStars));
     
     // Simpan tanda tangan kriptografi
     final sig = _generateChecksum(_bamboo, _stars, _xp, _isPremium, _unlockedLessons);

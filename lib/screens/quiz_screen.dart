@@ -3,6 +3,7 @@ import '../models/models.dart';
 import '../services/admob_service.dart';
 import '../services/audio_service.dart';
 import '../services/localization_service.dart';
+import '../services/reward_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/kid_button.dart';
 import '../widgets/language_switch_button.dart';
@@ -10,8 +11,13 @@ import '../widgets/panda_avatar.dart';
 
 class QuizScreen extends StatefulWidget {
   final LessonTopic lesson;
+  final String? nextLessonId;
 
-  const QuizScreen({Key? key, required this.lesson}) : super(key: key);
+  const QuizScreen({
+    Key? key,
+    required this.lesson,
+    this.nextLessonId,
+  }) : super(key: key);
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -82,6 +88,22 @@ class _QuizScreenState extends State<QuizScreen> {
 
   void _showCompletionDialog() {
     final loc = LocalizationService();
+
+    // Hitung bintang berdasarkan performa kuis
+    int starsEarned = 1;
+    if (_score == _quizItems.length) {
+      starsEarned = 3;
+    } else if (_score >= (_quizItems.length / 2)) {
+      starsEarned = 2;
+    }
+
+    // Simpan progres ke RewardService secara permanen
+    RewardService().saveLessonProgress(
+      lessonId: widget.lesson.id,
+      starsEarned: starsEarned,
+      nextLessonId: widget.nextLessonId,
+    );
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -121,13 +143,48 @@ class _QuizScreenState extends State<QuizScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(3, (index) {
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
-                      child: Icon(Icons.star_rounded, color: Colors.amber, size: 36),
+                    final isFilled = index < starsEarned;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Icon(
+                        isFilled ? Icons.star_rounded : Icons.star_outline_rounded,
+                        color: isFilled ? Colors.amber : Colors.grey.shade400,
+                        size: 38,
+                      ),
                     );
                   }),
                 ),
-                const SizedBox(height: 20),
+
+                if (widget.nextLessonId != null) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.green.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.green.shade300, width: 1.5),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.lock_open_rounded, color: Colors.green, size: 20),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            loc.t('next_level_unlocked'),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 16),
 
                 // Rewarded Ad Button for bonus stars
                 OutlinedButton.icon(

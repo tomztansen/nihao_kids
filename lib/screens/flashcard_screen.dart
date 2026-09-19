@@ -10,8 +10,13 @@ import 'quiz_screen.dart';
 
 class FlashcardScreen extends StatefulWidget {
   final LessonTopic lesson;
+  final String? nextLessonId;
 
-  const FlashcardScreen({Key? key, required this.lesson}) : super(key: key);
+  const FlashcardScreen({
+    Key? key,
+    required this.lesson,
+    this.nextLessonId,
+  }) : super(key: key);
 
   @override
   State<FlashcardScreen> createState() => _FlashcardScreenState();
@@ -345,7 +350,10 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => QuizScreen(lesson: widget.lesson),
+                                      builder: (context) => QuizScreen(
+                                        lesson: widget.lesson,
+                                        nextLessonId: widget.nextLessonId,
+                                      ),
                                     ),
                                   );
                                 },

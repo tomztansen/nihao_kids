@@ -3962,6 +3962,15 @@
       currentGradeKey = gradeKey;
       const grp = gradeCurriculum[gradeKey] || gradeCurriculum.paud;
       activeLessons = grp.lessons;
+
+      // Pulihkan status level yang sudah dibuka dari localStorage
+      const unlocked = JSON.parse(localStorage.getItem('nh_unlocked_lessons') || '[]');
+      activeLessons.forEach((l, idx) => {
+        if (idx === 0 || idx === 1 || unlocked.includes(l.id)) {
+          l.locked = false;
+        }
+      });
+
       document.getElementById('map-grade-title').textContent = title || grp.title;
       renderMapNodes();
       showScreen('screen-map');
@@ -3982,7 +3991,7 @@
         }
 
         if (lesson.locked) {
-          node.onclick = alertLocked;
+          node.onclick = () => alertLocked(lesson, idx);
           node.innerHTML = `
             <div class="path-node-left">
               <div class="node-badge node-locked-icon">🔒</div>
@@ -4012,8 +4021,11 @@
       });
     }
 
-    function alertLocked() {
-      alert('🔒 Level ini masih terkunci! Kumpulkan bintang dengan menyelesaikan level sebelumnya.');
+    function alertLocked(lesson, idx) {
+      const wantAd = confirm(`🔒 Level ${idx + 1}: ${lesson ? lesson.title : ''} masih terkunci!\n\n💡 Ingin tonton iklan video 5 detik untuk langsung MEMBUKA level ini sekarang?`);
+      if (wantAd) {
+        startAdMobVideoAd();
+      }
     }
 
     /* ============================================================
@@ -4335,10 +4347,27 @@
         btn.classList.add('correct');
         playSuccessChime();
         stars += 1;
+
+        // Buka level berikutnya secara otomatis di peta petualangan
+        let nextUnlockedMsg = '';
+        if (activeLessons && activeLessons[currentLessonIndex]) {
+          activeLessons[currentLessonIndex].starsEarned = 3;
+          if (currentLessonIndex + 1 < activeLessons.length) {
+            const nextL = activeLessons[currentLessonIndex + 1];
+            nextL.locked = false;
+            let unlocked = JSON.parse(localStorage.getItem('nh_unlocked_lessons') || '[]');
+            if (!unlocked.includes(nextL.id)) unlocked.push(nextL.id);
+            localStorage.setItem('nh_unlocked_lessons', JSON.stringify(unlocked));
+            nextUnlockedMsg = `\n🎉 Level berikutnya (${nextL.title}) telah TERBUKA! 🔓`;
+          }
+        }
+
         persistRewards();
+        renderMapNodes();
+
         setTimeout(() => {
           const t = webTranslations[currentWebLang];
-          alert(`🎉 ${t.starsEarned}`);
+          alert(`🎉 ${t.starsEarned}${nextUnlockedMsg}`);
           showScreen('screen-map');
         }, 500);
       } else {
@@ -4399,10 +4428,25 @@
     function claimAdMobReward() {
       bamboo += 5;
       stars += 3;
+
+      // Buka level terkunci pertama jika ada
+      let unlockedNotice = '';
+      if (activeLessons) {
+        const lockedLesson = activeLessons.find(l => l.locked);
+        if (lockedLesson) {
+          lockedLesson.locked = false;
+          let unlocked = JSON.parse(localStorage.getItem('nh_unlocked_lessons') || '[]');
+          if (!unlocked.includes(lockedLesson.id)) unlocked.push(lockedLesson.id);
+          localStorage.setItem('nh_unlocked_lessons', JSON.stringify(unlocked));
+          renderMapNodes();
+          unlockedNotice = `\n🔓 Level baru (${lockedLesson.title}) juga berhasil terbuka!`;
+        }
+      }
+
       persistRewards();
       closeAdMobVideo(false);
       playSuccessChime();
-      alert('🎉 Hore! +5 Bambu & +3 Bintang berhasil ditambahkan dan disimpan permanen!');
+      alert(`🎉 Hore! +5 Bambu & +3 Bintang berhasil diklaim!${unlockedNotice}`);
       renderWardrobe();
     }
 
