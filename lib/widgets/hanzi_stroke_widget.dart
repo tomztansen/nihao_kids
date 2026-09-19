@@ -23,7 +23,7 @@ class _HanziStrokeWidgetState extends State<HanziStrokeWidget> {
   WebViewController? _webViewController;
   bool _isWebViewReady = false;
   bool _isTracingMode = false;
-  double _animSpeed = 1.0;
+  double _animSpeed = 0.5;
   bool _quizCompleted = false;
 
   late List<String> _characters;
@@ -285,7 +285,7 @@ class _HanziStrokeWidgetState extends State<HanziStrokeWidget> {
 
   void _toggleSpeed() {
     setState(() {
-      _animSpeed = (_animSpeed == 1.0) ? 0.5 : 1.0;
+      _animSpeed = (_animSpeed == 0.5) ? 1.0 : 0.5;
     });
     _webViewController?.runJavaScript('setSpeed($_animSpeed);');
   }
@@ -435,11 +435,11 @@ class _HanziStrokeWidgetState extends State<HanziStrokeWidget> {
               ),
               const SizedBox(width: 8),
 
-              // Speed toggle (1x / 0.5x)
+              // Speed toggle (0.5x / 1.0x)
               ActionChip(
                 backgroundColor: const Color(0xFFF5F5F5),
                 label: Text(
-                  _animSpeed == 1.0 ? '⚡ 1.0x' : '⚡ 0.5x (Lambat)',
+                  _animSpeed == 0.5 ? '⚡ 0.5x (Lambat)' : '⚡ 1.0x (Cepat)',
                   style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                 ),
                 onPressed: _toggleSpeed,

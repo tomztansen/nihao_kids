@@ -918,7 +918,7 @@
               🔄 <span id="stroke-btn-replay">Ulangi</span>
             </button>
             <button id="stroke-speed-btn" onclick="toggleStrokeSpeed()" style="padding:8px 10px; background:#E0F2F1; color:#00796B; border:1px solid #80CBC4; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer;">
-              ⚡ 1.0x
+              ⚡ 0.5x
             </button>
             <button onclick="practiceHanziQuiz()" style="flex:1; padding:8px 10px; background:#FF9800; color:white; border:none; border-radius:12px; font-weight:800; font-size:12px; cursor:pointer; box-shadow:0 3px 0 #E65100;">
               ✍️ <span id="stroke-btn-quiz">Latihan Tulis</span>
@@ -4111,7 +4111,7 @@
 
     let currentFcTab = 'vocab';
     let currentHanziWriter = null;
-    let strokeSpeed = 1.0;
+    let strokeSpeed = 0.5;
     let selectedStrokeChar = '';
 
     function switchFcTab(tab) {
@@ -4224,7 +4224,7 @@
     }
 
     function toggleStrokeSpeed() {
-      strokeSpeed = (strokeSpeed === 1.0) ? 0.5 : 1.0;
+      strokeSpeed = (strokeSpeed === 0.5) ? 1.0 : 0.5;
       const btn = document.getElementById('stroke-speed-btn');
       if (btn) btn.textContent = `⚡ ${strokeSpeed.toFixed(1)}x`;
       if (selectedStrokeChar) loadHanziWriter(selectedStrokeChar);
