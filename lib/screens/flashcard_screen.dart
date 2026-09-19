@@ -314,6 +314,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                               const SizedBox(height: 8),
 
                               HanziStrokeWidget(
+                                key: ValueKey(vocab.id),
                                 vocab: vocab,
                                 onPlaySound: _playPronunciation,
                               ),

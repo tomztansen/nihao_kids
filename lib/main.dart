@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/grade_selection_screen.dart';
 import 'services/admob_service.dart';
+import 'services/hanzi_data_service.dart';
 import 'services/reward_service.dart';
 import 'theme/app_theme.dart';
 
@@ -12,6 +13,9 @@ void main() async {
 
   // Inisialisasi Google Mobile Ads SDK dengan setelan ramah anak (COPPA)
   await AdMobService().initialize();
+
+  // Inisialisasi data stroke order kaligrafi Hanzi offline
+  await HanziDataService().init();
 
   runApp(const NiHaoKidsApp());
 }
