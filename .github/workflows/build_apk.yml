@@ -5,6 +5,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Compile Android Release APK & AAB
@@ -62,3 +65,18 @@ jobs:
           name: NiHao-Kids-GooglePlay-AAB
           path: build/app/outputs/bundle/release/app-release.aab
           retention-days: 14
+
+      - name: Publish Direct Download to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main'
+        with:
+          tag_name: latest
+          name: "NiHao Kids Android APK (Latest)"
+          body: "Versi rilis terbaru NiHao Kids APK untuk dipasang langsung di HP Android."
+          draft: false
+          prerelease: false
+          files: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
