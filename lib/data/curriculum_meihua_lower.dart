@@ -98,7 +98,7 @@ class MeiHuaLowerCurriculum {
         starsRequired: 11,
         vocabs: [
           VocabItem(id: 'm25', hanzi: '星期一', pinyin: 'xīngqīyī', meaningId: 'Senin', meaningEn: 'Monday', tone: 1, category: 'Hari', emoji: '1️⃣'),
-          VocabItem(id: 'm26', hanzi: '星期二', pinyin: 'xīngqī\'èr', meaningId: 'Selasa', meaningEn: 'Tuesday', tone: 1, category: 'Hari', emoji: '2️⃣'),
+          VocabItem(id: 'm26', hanzi: '星期二', pinyin: "xīngqī'èr", meaningId: 'Selasa', meaningEn: 'Tuesday', tone: 1, category: 'Hari', emoji: '2️⃣'),
           VocabItem(id: 'm27', hanzi: '星期三', pinyin: 'xīngqīsān', meaningId: 'Rabu', meaningEn: 'Wednesday', tone: 1, category: 'Hari', emoji: '3️⃣'),
           VocabItem(id: 'm28', hanzi: '星期四', pinyin: 'xīngqīsì', meaningId: 'Kamis', meaningEn: 'Thursday', tone: 1, category: 'Hari', emoji: '4️⃣'),
           VocabItem(id: 'm29', hanzi: '星期五', pinyin: 'xīngqīwǔ', meaningId: 'Jumat', meaningEn: 'Friday', tone: 1, category: 'Hari', emoji: '5️⃣'),

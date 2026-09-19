@@ -42,9 +42,10 @@ class AudioService {
 
   Future<void> playHanziVoice(String vocabId, [String? pinyin]) async {
     try {
-      debugPrint('Voice: Pronouncing Mandarin -> $vocabId ($pinyin)');
+      final actualId = vocabId == '你好' ? 'p39' : vocabId;
+      debugPrint('Voice: Pronouncing Mandarin -> $actualId ($pinyin)');
       await _voicePlayer.stop();
-      await _voicePlayer.play(AssetSource('audio/words/$vocabId.mp3'));
+      await _voicePlayer.play(AssetSource('audio/words/$actualId.mp3'));
     } catch (e) {
       debugPrint('Voice Audio error: $e');
     }

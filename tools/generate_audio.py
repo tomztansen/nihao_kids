@@ -69,29 +69,35 @@ def fallback_google_tts(text, target_path):
         return True
     return False
 
+# Custom phonetic mapping for polyphones (duoyinzi) where isolated character TTS picks the wrong reading
+CUSTOM_PRONUNCIATION = {
+    "t45": "常",  # 长 (Panjang) in isolation defaults to zhǎng; 常 is 100% cháng (2nd tone)
+}
+
 async def generate_word_audio(item):
     vocab_id = item["id"]
     hanzi = item["hanzi"]
+    spoken_text = CUSTOM_PRONUNCIATION.get(vocab_id, hanzi)
     target_path = os.path.join(OUTPUT_WORDS_DIR, f"{vocab_id}.mp3")
     preview_path = os.path.join(PREVIEW_WORDS_DIR, f"{vocab_id}.mp3")
 
-    if os.path.exists(target_path) and os.path.getsize(target_path) > 1000:
+    if os.path.exists(target_path) and os.path.getsize(target_path) > 1000 and vocab_id not in CUSTOM_PRONUNCIATION:
         if not os.path.exists(preview_path):
             with open(target_path, "rb") as src, open(preview_path, "wb") as dst:
                 dst.write(src.read())
         return True
 
     try:
-        tts = edge_tts.Communicate(text=hanzi, voice=VOICE_NAME, rate=RATE_ADJUST)
+        tts = edge_tts.Communicate(text=spoken_text, voice=VOICE_NAME, rate=RATE_ADJUST)
         await tts.save(target_path)
         if os.path.exists(target_path) and os.path.getsize(target_path) > 1000:
             with open(target_path, "rb") as src, open(preview_path, "wb") as dst:
                 dst.write(src.read())
             return True
     except Exception as e:
-        print(f"Edge-TTS failed for {hanzi} ({vocab_id}): {e}")
+        print(f"Edge-TTS failed for {spoken_text} ({vocab_id}): {e}")
 
-    success = fallback_google_tts(hanzi, target_path)
+    success = fallback_google_tts(spoken_text, target_path)
     if success:
         with open(target_path, "rb") as src, open(preview_path, "wb") as dst:
             dst.write(src.read())

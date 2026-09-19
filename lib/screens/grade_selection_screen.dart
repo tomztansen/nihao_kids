@@ -55,7 +55,7 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
   }
 
   void _playPandaGreeting() {
-    AudioService().playHanziVoice('你好', 'nǐ hǎo');
+    AudioService().playHanziVoice('p39', 'nǐ hǎo');
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         duration: Duration(seconds: 1),

@@ -761,7 +761,7 @@
 
     <!-- SCREEN 1: GRADE SELECTION (HOME) -->
     <div id="screen-grades" class="screen active">
-      <div class="panda-wrapper" onclick="speakText('Nǐ hǎo! Wǒ shì Bǎobao!')">
+      <div class="panda-wrapper" onclick="playVocabAudio('p39', '你好！我是宝宝！')">
         <div class="speech-bubble">
           Ni Hao! Aku Bao Bao si Panda! 🐼<br>
           <span style="font-size:11px; color:#2E7D32;">(Sentuh aku atau tombol kuning untuk suara!)</span>
@@ -787,7 +787,7 @@
 
       <!-- SOUND & WARDROBE BUTTONS ROW -->
       <div style="display:flex; gap:8px; margin: 2px auto 10px; width: 100%;">
-        <button class="sound-btn-main" style="flex:1; margin:0; font-size:13px; padding:10px 8px;" onclick="speakText('Nǐ hǎo! Nǐ hǎo!')">
+        <button class="sound-btn-main" style="flex:1; margin:0; font-size:13px; padding:10px 8px;" onclick="playVocabAudio('p39', '你好！你好！')">
           <span>🔊 "Ni Hao!"</span>
         </button>
         <button class="sound-btn-main" style="flex:1; margin:0; font-size:13px; padding:10px 8px; background:linear-gradient(180deg, #81D4FA, #29B6F6); border-color:#0288D1; box-shadow:0 4px 0 #0277BD; color:white;" onclick="openPandaWardrobe()">
@@ -1207,7 +1207,7 @@
       // Suara klik tombol dinonaktifkan sesuai permintaan pengguna
     }
 
-    function playVocabAudio(vocabId, fallbackText) {
+    function playVocabAudio(vocabId, fallbackText, onEnded) {
       if (vocabId) {
         try {
           if (currentVoiceAudio) {
@@ -1216,32 +1216,68 @@
           }
           const audio = new Audio(`audio/words/${vocabId}.mp3`);
           currentVoiceAudio = audio;
+          if (onEnded) audio.onended = onEnded;
           audio.play().catch(e => {
-            console.log('Audio file playback fallback to Web Speech:', e);
-            if (fallbackText) fallbackSpeak(fallbackText);
+            console.log('Audio file playback fallback to online Mandarin audio:', e);
+            fallbackSpeak(fallbackText || vocabId, onEnded);
           });
           return;
         } catch (e) {
-          if (fallbackText) fallbackSpeak(fallbackText);
+          fallbackSpeak(fallbackText || vocabId, onEnded);
           return;
         }
       }
-      if (fallbackText) fallbackSpeak(fallbackText);
+      if (fallbackText) fallbackSpeak(fallbackText, onEnded);
     }
 
-    function fallbackSpeak(text) {
+    function fallbackSpeak(text, onEnded) {
+      if (!text) return;
+      // 1. Check if browser SpeechSynthesis has a real Chinese voice installed
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'zh-CN';
-        utterance.rate = 0.82;
-        utterance.pitch = 1.1;
-        window.speechSynthesis.speak(utterance);
+        const voices = window.speechSynthesis.getVoices();
+        const zhVoice = voices.find(v => v.lang && (v.lang.startsWith('zh') || v.lang.includes('cmn') || v.name.includes('Chinese') || v.name.includes('Xiaoxiao') || v.name.includes('Huihui')));
+        if (zhVoice) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.voice = zhVoice;
+          utterance.lang = zhVoice.lang || 'zh-CN';
+          utterance.rate = 0.85;
+          utterance.pitch = 1.05;
+          if (onEnded) utterance.onend = onEnded;
+          window.speechSynthesis.speak(utterance);
+          return;
+        }
+      }
+
+      // 2. High-fidelity web fallback using Google Translate Mandarin TTS stream (never use English voice for Chinese!)
+      try {
+        if (currentVoiceAudio) {
+          currentVoiceAudio.pause();
+          currentVoiceAudio.currentTime = 0;
+        }
+        const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=${encodeURIComponent(text)}`;
+        const gAudio = new Audio(ttsUrl);
+        currentVoiceAudio = gAudio;
+        if (onEnded) gAudio.onended = onEnded;
+        gAudio.play().catch(err => console.warn('Mandarin fallback speech error:', err));
+      } catch (err) {
+        console.warn('Audio fallback error:', err);
       }
     }
 
     function speakText(text) {
+      if (text === 'Nǐ hǎo! Wǒ shì Bǎobao!' || text === 'Nǐ hǎo! Nǐ hǎo!') {
+        playVocabAudio('p39', '你好！');
+        return;
+      }
       fallbackSpeak(text);
+    }
+
+    function playLessonNodeAudio(lessonIdx) {
+      const lesson = currentCurriculum[lessonIdx];
+      if (!lesson || !lesson.cards || lesson.cards.length === 0) return;
+      const firstCard = lesson.cards[0];
+      playVocabAudio(firstCard.id, firstCard.hanzi);
     }
 
     // Anti-Tamper & Persistent Local Storage for NiHao Kids
@@ -2558,7 +2594,7 @@
                               {
                                     "id": "m26",
                                     "hanzi": "星期二",
-                                    "pinyin": "xīngqī\\",
+                                    "pinyin": "xīngqī'èr",
                                     "meaning": "Selasa",
                                     "tone": 1,
                                     "emoji": "2️⃣"
@@ -4013,7 +4049,7 @@
                 <div class="stars-row">${starsHtml} <span style="font-size:11px; color:#78909C;">(${lesson.cards.length} kata)</span></div>
               </div>
             </div>
-            <button class="node-audio-btn" title="Dengar suara" onclick="event.stopPropagation(); speakText('${sampleText}')">🔊</button>
+            <button class="node-audio-btn" title="Dengar suara" onclick="event.stopPropagation(); playLessonNodeAudio(${idx})">🔊</button>
           `;
         }
 

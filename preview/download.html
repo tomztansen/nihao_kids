@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unduh NiHao Kids untuk HP Android - Scan QR & Install</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-yellow: #FFCA28;
+      --secondary-green: #4CAF50;
+      --panda-black: #263238;
+      --coral-orange: #FF7043;
+      --bg-cream: #FFFDF7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Fredoka', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, #FFF9C4 0%, #E8F5E9 100%);
+      color: var(--panda-black);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 28px;
+      padding: 32px 24px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+      border: 3px solid #FFF59D;
+    }
+
+    .panda-badge {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 12px;
+      background: #FFF9C4;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      box-shadow: 0 4px 12px rgba(255, 202, 40, 0.3);
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--panda-black);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #546E7A;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .qr-card {
+      background: #FAFAFA;
+      border: 2px dashed #B0BEC5;
+      border-radius: 20px;
+      padding: 20px;
+      margin: 0 auto 20px;
+      display: inline-block;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .qr-card img {
+      width: 220px;
+      height: 220px;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .qr-hint {
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #37474F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(180deg, #66BB6A 0%, #43A047 100%);
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      border-radius: 20px;
+      box-shadow: 0 5px 0 #2E7D32, 0 8px 16px rgba(76, 175, 80, 0.3);
+      transition: transform 0.1s;
+      margin-bottom: 12px;
+    }
+
+    .btn-download:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #2E7D32;
+    }
+
+    .btn-web {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: #FFF9C4;
+      color: #37474F;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 16px;
+      border: 2px solid #FBC02D;
+      margin-bottom: 24px;
+    }
+
+    .steps-box {
+      background: #F1F8E9;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: left;
+      border-left: 4px solid var(--secondary-green);
+    }
+
+    .steps-box h3 {
+      font-size: 13px;
+      color: #2E7D32;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .step-item {
+      font-size: 12px;
+      color: #37474F;
+      margin-bottom: 6px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.4;
+    }
+
+    .step-num {
+      background: var(--secondary-green);
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #78909C;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="panda-badge">🐼</div>
+    <h1>NiHao Kids (Terbaru)</h1>
+    <p class="subtitle">Belajar Bahasa Mandarin Seru & Interaktif untuk Anak TK dan SD</p>
+
+    <!-- QR CODE BOX -->
+    <div class="qr-card">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=https%3A%2F%2Fgithub.com%2Ftomztansen%2Fnihao_kids%2Freleases%2Flatest%2Fdownload%2Fapp-release.apk" alt="QR Code Unduh NiHao Kids APK">
+      <div class="qr-hint">
+        <span>📸</span>
+        <span>Arahkan kamera HP Anda ke QR Code ini</span>
+      </div>
+    </div>
+
+    <!-- DIRECT DOWNLOAD BUTTON -->
+    <a href="https://github.com/tomztansen/nihao_kids/releases/latest/download/app-release.apk" class="btn-download">
+      <span>📥</span>
+      <span>Unduh APK Terbaru Langsung</span>
+    </a>
+
+    <!-- WEB SIMULATOR BUTTON -->
+    <a href="preview/index.html" class="btn-web">
+      <span>🎮</span>
+      <span>Buka Simulator Web di Browser</span>
+    </a>
+
+    <!-- 3 SIMPLE STEPS -->
+    <div class="steps-box">
+      <h3>📋 Cara Install Cepat di HP Android:</h3>
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div>Scan QR Code di atas dengan kamera HP atau ketuk tombol <b>Unduh APK</b>.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div>Setelah unduhan selesai, ketuk notifikasi unduhan untuk membuka file.</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div>Ketuk <b>Install</b> (jika muncul konfirmasi keamanan Android, pilih <i>"Tetap Install"</i> atau <i>"Izinkan dari sumber ini"</i>). Selesai! 🎉</div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      100% Bebas Iklan Berbahaya • Ramah Keluarga & COPPA Compliant
+    </div>
+  </div>
+
+</body>
+</html>

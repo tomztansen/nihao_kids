@@ -43,6 +43,15 @@ class _QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
     _generateQuestions();
+    Future.delayed(const Duration(milliseconds: 300), _playCurrentQuestionAudio);
+  }
+
+  void _playCurrentQuestionAudio() {
+    if (!mounted) return;
+    if (_questionIndex < _quizItems.length) {
+      final target = _quizItems[_questionIndex].target;
+      AudioService().playHanziVoice(target.id, target.pinyin);
+    }
   }
 
   void _generateQuestions() {
@@ -81,6 +90,7 @@ class _QuizScreenState extends State<QuizScreen> {
         _selectedOptionIndex = null;
         _isCorrect = false;
       });
+      Future.delayed(const Duration(milliseconds: 250), _playCurrentQuestionAudio);
     } else {
       _showCompletionDialog();
     }
@@ -296,7 +306,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           loc.t('quiz_prompt'),
                           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 12),
                         Text(
                           item.target.hanzi,
                           style: const TextStyle(
@@ -304,6 +314,12 @@ class _QuizScreenState extends State<QuizScreen> {
                             fontWeight: FontWeight.bold,
                             color: AppColors.pandaBlack,
                           ),
+                        ),
+                        const SizedBox(height: 8),
+                        IconButton(
+                          icon: const Icon(Icons.volume_up_rounded, color: AppColors.coralOrange, size: 34),
+                          tooltip: loc.t('listen_audio'),
+                          onPressed: _playCurrentQuestionAudio,
                         ),
                       ],
                     ),
