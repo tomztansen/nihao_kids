@@ -3,14 +3,24 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 import 'reward_service.dart';
 
-/// Hybrid Ads Engine: Google AdMob (Prioritas 1) + Unity Ads (Otomatis Fallback jika AdMob kosong/gagal)
+/// Engine Iklan NiHao Kids:
+/// Sesuai permintaan, Google AdMob ditutup sementara dan HANYA Unity Ads yang aktif.
 class AdMobService {
   static final AdMobService _instance = AdMobService._internal();
   factory AdMobService() => _instance;
   AdMobService._internal();
 
   // ==========================================
-  // 1. KONFIGURASI GOOGLE ADMOB
+  // SWITCH JARINGAN IKLAN
+  // ==========================================
+  /// Google AdMob ditutup/dinonaktifkan sementara
+  static const bool enableGoogleAdMob = false;
+
+  /// Unity Ads menjadi penyedia iklan utama aktif
+  static const bool enableUnityAds = true;
+
+  // ==========================================
+  // 1. KONFIGURASI GOOGLE ADMOB (NONAKTIF SEMENTARA)
   // ==========================================
   // App ID Resmi: ca-app-pub-8640638285279807~1310378475
   static const String liveRewardedAdUnitId = 'ca-app-pub-8640638285279807/7637956984';
@@ -18,7 +28,7 @@ class AdMobService {
   static String get rewardedAdUnitId => kReleaseMode ? liveRewardedAdUnitId : testRewardedAdUnitId;
 
   // ==========================================
-  // 2. KONFIGURASI UNITY ADS (FALLBACK)
+  // 2. KONFIGURASI UNITY ADS (AKTIF UTAMA)
   // ==========================================
   // Game ID Resmi NiHao Kids dari Unity Dashboard: 800372977
   static const String unityGameId = '800372977';
@@ -33,45 +43,52 @@ class AdMobService {
   bool _isUnityAdLoaded = false;
   bool _isUnityLoading = false;
 
-  /// Inisialisasi kedua SDK (AdMob + Unity Ads) dengan kepatuhan COPPA & Google Play Families
+  /// Inisialisasi SDK Iklan (Hanya Unity Ads yang diaktifkan)
   Future<void> initialize() async {
-    // 1. Inisialisasi Google AdMob
-    try {
-      final requestConfig = RequestConfiguration(
-        tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
-        maxAdContentRating: MaxAdContentRating.g,
-        testDeviceIds: <String>[],
-      );
-      await MobileAds.instance.updateRequestConfiguration(requestConfig);
-      await MobileAds.instance.initialize();
-      loadAdMobRewardedAd();
-      debugPrint('✅ [AdMob] Inisialisasi berhasil (Prioritas 1).');
-    } catch (e) {
-      debugPrint('⚠️ [AdMob] Gagal inisialisasi: $e');
+    // 1. Google AdMob (Dilewati / Ditutup Sementara)
+    if (enableGoogleAdMob) {
+      try {
+        final requestConfig = RequestConfiguration(
+          tagForChildDirectedTreatment: TagForChildDirectedTreatment.yes,
+          maxAdContentRating: MaxAdContentRating.g,
+          testDeviceIds: <String>[],
+        );
+        await MobileAds.instance.updateRequestConfiguration(requestConfig);
+        await MobileAds.instance.initialize();
+        loadAdMobRewardedAd();
+        debugPrint('✅ [AdMob] Inisialisasi berhasil.');
+      } catch (e) {
+        debugPrint('⚠️ [AdMob] Gagal inisialisasi: $e');
+      }
+    } else {
+      debugPrint('🔒 [Ads Engine] Google AdMob dinonaktifkan sementara. Beroperasi 100% menggunakan Unity Ads.');
     }
 
-    // 2. Inisialisasi Unity Ads (Fallback)
-    try {
-      await UnityAds.init(
-        gameId: unityGameId,
-        testMode: !kReleaseMode,
-        onComplete: () {
-          _isUnityInitialized = true;
-          debugPrint('✅ [Unity Ads] Inisialisasi berhasil (Fallback Cadangan).');
-          loadUnityRewardedAd();
-        },
-        onFailed: (error, message) {
-          _isUnityInitialized = false;
-          debugPrint('⚠️ [Unity Ads] Gagal inisialisasi: $error ($message)');
-        },
-      );
-    } catch (e) {
-      debugPrint('⚠️ [Unity Ads] Exception inisialisasi: $e');
+    // 2. Inisialisasi Unity Ads (Jaringan Iklan Utama)
+    if (enableUnityAds) {
+      try {
+        await UnityAds.init(
+          gameId: unityGameId,
+          testMode: !kReleaseMode,
+          onComplete: () {
+            _isUnityInitialized = true;
+            debugPrint('✅ [Unity Ads] Inisialisasi berhasil (Iklan Utama Aktif). Game ID: $unityGameId');
+            loadUnityRewardedAd();
+          },
+          onFailed: (error, message) {
+            _isUnityInitialized = false;
+            debugPrint('⚠️ [Unity Ads] Gagal inisialisasi: $error ($message)');
+          },
+        );
+      } catch (e) {
+        debugPrint('⚠️ [Unity Ads] Exception inisialisasi: $e');
+      }
     }
   }
 
-  /// Memuat AdMob Rewarded Ad
+  /// Memuat AdMob Rewarded Ad (Dinonaktifkan jika enableGoogleAdMob == false)
   void loadAdMobRewardedAd() {
+    if (!enableGoogleAdMob) return;
     if (_isAdmobLoading || _admobRewardedAd != null) return;
     _isAdmobLoading = true;
 
@@ -87,8 +104,7 @@ class AdMobService {
         onAdFailedToLoad: (error) {
           _admobRewardedAd = null;
           _isAdmobLoading = false;
-          debugPrint('ℹ️ [AdMob] Gagal memuat (${error.message} [Kode: ${error.code}]).');
-          debugPrint('ℹ️ [AdMob] Jika akun/unit iklan masih dalam peninjauan (Under Review), fallback Unity Ads otomatis aktif.');
+          debugPrint('ℹ️ [AdMob] Gagal memuat: ${error.message}');
         },
       ),
     );
@@ -108,12 +124,12 @@ class AdMobService {
       onFailed: (placementId, error, message) {
         _isUnityAdLoaded = false;
         _isUnityLoading = false;
-        debugPrint('ℹ️ [Unity Ads] Load status: $message');
+        debugPrint('ℹ️ [Unity Ads] Load status ($placementId): $message');
       },
     );
   }
 
-  /// Menampilkan Iklan: Google AdMob Dulu -> Jika Gagal/Kosong -> Otomatis Fallback ke Unity Ads!
+  /// Menampilkan Iklan: Langsung menggunakan Unity Ads
   void showRewardedAd({
     required VoidCallback onUserEarnedReward,
     VoidCallback? onAdClosed,
@@ -124,9 +140,9 @@ class AdMobService {
       return;
     }
 
-    // TAHAP 1: Cek apakah Google AdMob siap tayang
-    if (_admobRewardedAd != null) {
-      debugPrint('🎬 [Ads Engine] Menayangkan iklan utama: Google AdMob...');
+    // Jika Google AdMob diaktifkan kembali di kemudian hari
+    if (enableGoogleAdMob && _admobRewardedAd != null) {
+      debugPrint('🎬 [Ads Engine] Menayangkan iklan: Google AdMob...');
       _admobRewardedAd!.fullScreenContentCallback = FullScreenContentCallback(
         onAdDismissedFullScreenContent: (ad) {
           ad.dispose();
@@ -135,7 +151,7 @@ class AdMobService {
           if (onAdClosed != null) onAdClosed();
         },
         onAdFailedToShowFullScreenContent: (ad, error) {
-          debugPrint('⚠️ [AdMob] Gagal tampil saat diputar. Mengalihkan ke Unity Ads (Fallback)...');
+          debugPrint('⚠️ [AdMob] Gagal tampil. Mengalihkan ke Unity Ads...');
           ad.dispose();
           _admobRewardedAd = null;
           loadAdMobRewardedAd();
@@ -153,16 +169,16 @@ class AdMobService {
           onUserEarnedReward();
         },
       );
-    } else {
-      // TAHAP 2: AdMob belum siap / masih dalam review Google / no-fill -> Langsung FALLBACK ke Unity Ads!
-      debugPrint('🔄 [Ads Engine] AdMob belum siap / akun masih di-review. Otomatis beralih ke Unity Ads!');
-      loadAdMobRewardedAd(); // Coba muat AdMob lagi di background untuk penayangan berikutnya
-      _showUnityRewarded(
-        onUserEarnedReward: onUserEarnedReward,
-        onAdClosed: onAdClosed,
-        onAdUnavailable: onAdUnavailable,
-      );
+      return;
     }
+
+    // MODE UTAMA SEKARANG: HANYA UNITY ADS
+    debugPrint('🎬 [Ads Engine] Menayangkan iklan Unity Ads (Game ID: $unityGameId)...');
+    _showUnityRewarded(
+      onUserEarnedReward: onUserEarnedReward,
+      onAdClosed: onAdClosed,
+      onAdUnavailable: onAdUnavailable,
+    );
   }
 
   /// Menayangkan Unity Rewarded Video
