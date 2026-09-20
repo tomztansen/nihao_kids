@@ -107,6 +107,10 @@ class _QuizScreenState extends State<QuizScreen> {
       starsEarned = 2;
     }
 
+    final prevStars = RewardService().getLessonStars(widget.lesson.id);
+    const level1Ids = ['xx_num1', 'xx_tk_num', 'sd_greetings', 'sd_upper_intro'];
+    final isFirstTimeLevel1 = prevStars == 0 && level1Ids.contains(widget.lesson.id);
+
     // Simpan progres ke RewardService secara permanen
     RewardService().saveLessonProgress(
       lessonId: widget.lesson.id,
@@ -164,6 +168,36 @@ class _QuizScreenState extends State<QuizScreen> {
                     );
                   }),
                 ),
+
+                if (isFirstTimeLevel1) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.amber.shade400, width: 1.5),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('🎋', style: TextStyle(fontSize: 18)),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            loc.t('level1_starter_bamboo'),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              color: Colors.brown,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
 
                 if (widget.nextLessonId != null) ...[
                   const SizedBox(height: 12),
@@ -239,9 +273,8 @@ class _QuizScreenState extends State<QuizScreen> {
                   color: AppColors.secondaryGreen,
                   shadowColor: const Color(0xFF2E7D32),
                   onPressed: () {
-                    Navigator.of(ctx).pop(); // Close dialog
-                    Navigator.of(context).pop(); // Close quiz
-                    Navigator.of(context).pop(); // Back to lesson map
+                    Navigator.of(ctx).pop(); // Close completion dialog
+                    _handleExitQuiz();
                   },
                 ),
               ],
@@ -250,6 +283,85 @@ class _QuizScreenState extends State<QuizScreen> {
         },
       ),
     );
+  }
+
+  void _handleExitQuiz() {
+    final adService = AdMobService();
+
+    // Cek apakah iklan otomatis pasca-kuis diizinkan tayang
+    if (adService.canShowAutoAd(lessonId: widget.lesson.id)) {
+      _showChildFriendlyAdTransition();
+    } else {
+      _exitToLessonMap();
+    }
+  }
+
+  void _exitToLessonMap() {
+    if (!mounted) return;
+    Navigator.of(context).pop(); // Close quiz screen
+    Navigator.of(context).pop(); // Back to lesson map
+  }
+
+  void _showChildFriendlyAdTransition() {
+    final loc = LocalizationService();
+
+    // Tampilkan modal transisi ramah anak 1.5 detik (Peringatan & Istirahat minum air)
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (waitCtx) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const PandaAvatar(
+                size: 80,
+                mood: PandaMood.happy,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                loc.t('water_break_title'),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.pandaBlack,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                loc.t('water_break_desc'),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 13, color: Colors.black54),
+              ),
+              const SizedBox(height: 20),
+              const CircularProgressIndicator(
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondaryGreen),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    // Tunggu 1.5 detik agar anak bersiap dan tidak kaget, lalu tampilkan iklan
+    Future.delayed(const Duration(milliseconds: 1500), () {
+      if (!mounted) return;
+      Navigator.of(context, rootNavigator: true).pop(); // Tutup modal transisi
+
+      AdMobService().showAutoInterstitialAd(
+        onAdClosed: () {
+          _exitToLessonMap();
+        },
+        onAdUnavailable: (msg) {
+          _exitToLessonMap();
+        },
+      );
+    });
   }
 
   @override

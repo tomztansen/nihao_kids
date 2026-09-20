@@ -322,7 +322,9 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
               MaterialPageRoute(
                 builder: (context) => LessonMapScreen(gradeLevel: grade),
               ),
-            );
+            ).then((_) {
+              setState(() {});
+            });
           },
           child: Padding(
             padding: const EdgeInsets.all(14),

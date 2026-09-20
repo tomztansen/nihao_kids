@@ -37,11 +37,29 @@ class AdMobService {
   // Cek apakah iklan harus ditampilkan (Pengguna Bao Bao Premium bebas iklan)
   bool get shouldShowAds => !RewardService().isPremium;
 
+  DateTime? _lastAutoAdTime;
+  static const int autoAdCooldownSeconds = 180; // Minimal jeda 3 menit antar-iklan otomatis
+
   RewardedAd? _admobRewardedAd;
   bool _isAdmobLoading = false;
   bool _isUnityInitialized = false;
   bool _isUnityAdLoaded = false;
   bool _isUnityLoading = false;
+
+  /// Cek apakah iklan otomatis pasca-kuis diizinkan tayang saat ini
+  bool canShowAutoAd({String? lessonId}) {
+    if (!shouldShowAds) return false;
+
+    // Level 1 selalu bebas iklan otomatis agar anak tidak terganggu saat onboarding
+    const level1Ids = ['xx_num1', 'xx_tk_num', 'sd_greetings', 'sd_upper_intro'];
+    if (lessonId != null && level1Ids.contains(lessonId)) {
+      return false;
+    }
+
+    if (_lastAutoAdTime == null) return true;
+    final elapsed = DateTime.now().difference(_lastAutoAdTime!).inSeconds;
+    return elapsed >= autoAdCooldownSeconds;
+  }
 
   /// Inisialisasi SDK Iklan (Hanya Unity Ads yang diaktifkan)
   Future<void> initialize() async {
@@ -178,6 +196,32 @@ class AdMobService {
       onUserEarnedReward: onUserEarnedReward,
       onAdClosed: onAdClosed,
       onAdUnavailable: onAdUnavailable,
+    );
+  }
+
+  /// Menayangkan Iklan Otomatis Pasca-Kuis (Auto Interstitial)
+  /// Menggunakan Unity Ads dengan pembatasan frekuensi (cooldown 3 menit) yang aman bagi anak
+  void showAutoInterstitialAd({
+    required VoidCallback onAdClosed,
+    Function(String message)? onAdUnavailable,
+  }) {
+    if (!shouldShowAds) {
+      onAdClosed();
+      return;
+    }
+
+    _lastAutoAdTime = DateTime.now();
+    debugPrint('🎬 [Ads Engine] Menayangkan Auto Interstitial Ad pasca-kuis...');
+
+    _showUnityRewarded(
+      onUserEarnedReward: () {
+        debugPrint('ℹ️ [Unity Ads] Auto Interstitial ad selesai.');
+      },
+      onAdClosed: onAdClosed,
+      onAdUnavailable: (msg) {
+        debugPrint('ℹ️ [Unity Ads] Auto ad unavailable: $msg');
+        onAdUnavailable?.call(msg);
+      },
     );
   }
 

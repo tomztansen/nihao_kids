@@ -190,6 +190,12 @@ class RewardService {
     _stars += starsEarned;
     _xp += starsEarned * 15;
 
+    // Bonus starter energi bambu jika menyelesaikan level pertama (Level 1) pertama kali
+    if (prev == 0 && _defaultUnlocked.contains(lessonId)) {
+      _bamboo += 5;
+      debugPrint('🎁 [RewardService] Selamat! Bonus Starter +5 Bambu diberikan untuk Level 1!');
+    }
+
     if (nextLessonId != null && nextLessonId.isNotEmpty) {
       if (!_unlockedLessons.contains(nextLessonId)) {
         _unlockedLessons.add(nextLessonId);

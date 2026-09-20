@@ -1,14 +1,14 @@
 {
-  "latest_version": "1.0.3",
-  "latest_build_number": 4,
-  "min_required_version": "1.0.3",
-  "min_required_build_number": 4,
+  "latest_version": "1.0.4",
+  "latest_build_number": 5,
+  "min_required_version": "1.0.4",
+  "min_required_build_number": 5,
   "force_update": true,
   "release_date": "2026-09-20",
-  "title": "Pembaruan Langsung Tersedia! 🚀",
-  "title_en": "Direct In-App Update Available! 🚀",
-  "message": "Pembaruan v1.0.3 tersedia! Anda dapat mengunduh dan memasang pembaruan langsung di dalam aplikasi tanpa perlu keluar ke browser.",
-  "message_en": "Version v1.0.3 is available! You can download and install updates directly inside the app without leaving to browser.",
+  "title": "Pembaruan v1.0.4 Tersedia! 🐼🚀",
+  "title_en": "Update v1.0.4 Available! 🐼🚀",
+  "message": "Pembaruan v1.0.4 tersedia! Termasuk fitur stamina energi kuis, bonus bambu pemula, dan transisi ramah anak.",
+  "message_en": "Version v1.0.4 is available! Includes quiz stamina energy, starter bamboo rewards, and child-friendly transitions.",
   "apk_download_url": "https://github.com/tomztansen/nihao_kids/releases/latest/download/app-release.apk",
   "web_download_page": "https://tomztansen.github.io/nihao_kids/download.html"
 }

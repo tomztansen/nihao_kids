@@ -297,6 +297,39 @@ class LocalizationService {
         AppLanguage.id: 'Lihat Hasil! 🏆',
         AppLanguage.en: 'See Results! 🏆',
       },
+      // Stamina Gate & Auto-Ad Break
+      'stamina_empty_title': {
+        AppLanguage.id: 'Bambu Habis! 🎋',
+        AppLanguage.en: 'Out of Bamboo! 🎋',
+      },
+      'stamina_empty_desc': {
+        AppLanguage.id: 'Bao Bao butuh 1 energi bambu untuk kuis! Tonton video singkat untuk isi ulang +5 Bambu & langsung lanjut kuis?',
+        AppLanguage.en: 'Bao Bao needs 1 bamboo energy for quiz! Watch a short video to refill +5 Bamboo and start quiz immediately?',
+      },
+      'watch_ad_refill_btn': {
+        AppLanguage.id: 'Tonton Video & Lanjut Kuis 🎬 (+5 🎋)',
+        AppLanguage.en: 'Watch Video & Start Quiz 🎬 (+5 🎋)',
+      },
+      'stamina_used_toast': {
+        AppLanguage.id: '🎋 -1 Energi Bambu digunakan untuk Kuis!',
+        AppLanguage.en: '🎋 -1 Bamboo energy used for Quiz!',
+      },
+      'later_btn': {
+        AppLanguage.id: 'Nanti Saja',
+        AppLanguage.en: 'Later',
+      },
+      'water_break_title': {
+        AppLanguage.id: 'Istirahat Minum Air Dulu Ya! 🐼💧',
+        AppLanguage.en: 'Time for a Quick Water Break! 🐼💧',
+      },
+      'water_break_desc': {
+        AppLanguage.id: 'Bao Bao bangga padamu! Bersiap dalam sekejap...',
+        AppLanguage.en: 'Bao Bao is proud of you! Getting ready in a moment...',
+      },
+      'level1_starter_bamboo': {
+        AppLanguage.id: '🎁 Bonus Pemula: +5 Bambu Energi Kuis!',
+        AppLanguage.en: '🎁 Starter Bonus: +5 Bamboo Quiz Energy!',
+      },
 
       // Shop & Wardrobe
       'wardrobe_title': {

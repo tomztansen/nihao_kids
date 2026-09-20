@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import '../models/models.dart';
+import '../services/admob_service.dart';
 import '../services/audio_service.dart';
 import '../services/localization_service.dart';
+import '../services/reward_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/hanzi_stroke_widget.dart';
 import '../widgets/kid_button.dart';
 import '../widgets/language_switch_button.dart';
+import '../widgets/panda_avatar.dart';
 import 'quiz_screen.dart';
 
 class FlashcardScreen extends StatefulWidget {
@@ -60,6 +63,144 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
         duration: const Duration(milliseconds: 1500),
         backgroundColor: AppColors.secondaryGreen,
         content: Text('${loc.t('audio_playing')} ${_currentVocab.hanzi} (${_currentVocab.pinyin})'),
+      ),
+    );
+  }
+
+  void _handleStartQuiz() {
+    final reward = RewardService();
+    final loc = LocalizationService();
+
+    // Level 1 selalu 100% GRATIS tanpa biaya bambu untuk onboarding
+    const level1Ids = ['xx_num1', 'xx_tk_num', 'sd_greetings', 'sd_upper_intro'];
+    final isLevel1 = level1Ids.contains(widget.lesson.id);
+
+    if (reward.isPremium || isLevel1) {
+      _navigateToQuiz();
+      return;
+    }
+
+    // Level 2+: Cek apakah memiliki energi bambu (>= 1)
+    if (reward.bamboo >= 1) {
+      reward.spendBamboo(1);
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          backgroundColor: AppColors.secondaryGreen,
+          content: Text(loc.t('stamina_used_toast')),
+        ),
+      );
+      _navigateToQuiz();
+      return;
+    }
+
+    // Jika Bambu 0: Buka dialog isi ulang stamina bambu dengan video berhadiah
+    _showBambooRefillDialog();
+  }
+
+  void _navigateToQuiz() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuizScreen(
+          lesson: widget.lesson,
+          nextLessonId: widget.nextLessonId,
+        ),
+      ),
+    );
+  }
+
+  void _showBambooRefillDialog() {
+    final loc = LocalizationService();
+    final reward = RewardService();
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => ValueListenableBuilder<AppLanguage>(
+        valueListenable: loc.languageNotifier,
+        builder: (context, lang, _) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+            contentPadding: const EdgeInsets.all(24),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const PandaAvatar(
+                  size: 90,
+                  mood: PandaMood.sleepy,
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  loc.t('stamina_empty_title'),
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    color: AppColors.pandaBlack,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  loc.t('stamina_empty_desc'),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 14, color: Colors.black87, height: 1.3),
+                ),
+                const SizedBox(height: 20),
+                KidButton(
+                  text: loc.t('watch_ad_refill_btn'),
+                  color: AppColors.coralOrange,
+                  shadowColor: const Color(0xFFD84315),
+                  onPressed: () {
+                    Navigator.of(ctx).pop(); // Tutup dialog
+                    AdMobService().showRewardedAd(
+                      onUserEarnedReward: () async {
+                        // Tambah saldo +5 bambu
+                        await reward.addRewardFromAd(bambooReward: 5, starReward: 0);
+                        // Gunakan 1 bambu untuk kuis ini
+                        await reward.spendBamboo(1);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: AppColors.secondaryGreen,
+                            content: Text(
+                              loc.isEnglish
+                                  ? '🎉 +5 Bamboo refilled! -1 Bamboo used for Quiz.'
+                                  : '🎉 +5 Bambu terisi! -1 Bambu digunakan untuk Kuis.',
+                            ),
+                          ),
+                        );
+                        // Langsung otomatis lanjut masuk kuis tanpa klik lagi!
+                        _navigateToQuiz();
+                      },
+                      onAdUnavailable: (msg) {
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.orange.shade800,
+                            content: Text(msg, style: const TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: Text(
+                    loc.t('later_btn'),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -346,17 +487,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
                                 text: loc.t('quiz'),
                                 color: AppColors.coralOrange,
                                 shadowColor: const Color(0xFFD84315),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => QuizScreen(
-                                        lesson: widget.lesson,
-                                        nextLessonId: widget.nextLessonId,
-                                      ),
-                                    ),
-                                  );
-                                },
+                                onPressed: _handleStartQuiz,
                               )
                             : KidButton(
                                 text: loc.t('next'),
