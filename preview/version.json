@@ -1,14 +1,14 @@
 {
-  "latest_version": "1.0.1",
-  "latest_build_number": 2,
-  "min_required_version": "1.0.1",
-  "min_required_build_number": 2,
-  "force_update": false,
+  "latest_version": "1.0.2",
+  "latest_build_number": 3,
+  "min_required_version": "1.0.2",
+  "min_required_build_number": 3,
+  "force_update": true,
   "release_date": "2026-09-20",
   "title": "Pembaruan Wajib Tersedia! 🚀",
   "title_en": "Mandatory Update Available! 🚀",
-  "message": "Versi terbaru NiHao Kids telah dirilis dengan peningkatan audio Mandarin dan stabilitas sistem. Silakan perbarui aplikasi sekarang untuk melanjutkan petualangan belajar!",
-  "message_en": "A new version of NiHao Kids has been released with Mandarin audio calibration and enhancements. Please update now to continue your learning journey!",
+  "message": "Uji Coba Auto-Update Berhasil! 🎉 Versi v1.0.2 telah tersedia dengan pembaruan sistem terbaru. Silakan ketuk tombol di bawah untuk memperbarui langsung!",
+  "message_en": "Auto-Update Test Succeeded! 🎉 Version v1.0.2 is available with the latest updates. Tap below to update directly!",
   "apk_download_url": "https://github.com/tomztansen/nihao_kids/releases/latest/download/app-release.apk",
   "web_download_page": "https://tomztansen.github.io/nihao_kids/download.html"
 }
