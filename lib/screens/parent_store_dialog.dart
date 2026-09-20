@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../services/reward_service.dart';
 import '../theme/app_theme.dart';
 
@@ -20,7 +20,104 @@ class ParentStoreDialog extends StatefulWidget {
 }
 
 class _ParentStoreDialogState extends State<ParentStoreDialog> {
+  /// =========================================================================
+  /// KONFIGURASI SAKLAR FITUR PEMBAYARAN
+  /// =========================================================================
+  /// [isPaymentReady]
+  /// - `false` : (Mode Saat Ini) Fitur pembayaran ditandai "Masih Dalam Pengembangan".
+  ///             Semua tombol pembelian akan menampilkan modal pemberitahuan ramah
+  ///             bahwa sistem pembayaran sedang disiapkan.
+  /// - `true`  : Fitur pembayaran aktif.
+  ///
+  /// 💡 JIKA NANTI SUDAH SIAP DITERAPKAN:
+  /// 1. Ubah nilai di bawah menjadi `true`.
+  /// 2. Pasang alur pembayaran yang Anda inginkan (WhatsApp / Kode Voucher / Gateway)
+  ///    pada fungsi [_buyPremium] & [_buyBambooPack].
+  static const bool isPaymentReady = false;
+
   bool _loading = false;
+
+  /// Handler perantara ketika orang tua menekan tombol pembayaran
+  void _onPurchaseTapped({
+    required String productName,
+    required VoidCallback onProceed,
+  }) {
+    if (!isPaymentReady) {
+      _showUnderDevelopmentDialog(productName);
+      return;
+    }
+    // Jika sistem pembayaran sudah diaktifkan (true), lanjutkan proses pembelian:
+    onProceed();
+  }
+
+  /// Dialog informasi ramah bahwa fitur pembayaran masih dalam pengembangan
+  void _showUnderDevelopmentDialog(String productName) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        title: const Row(
+          children: [
+            Text('🛠️', style: TextStyle(fontSize: 26)),
+            SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Masih Dalam Pengembangan',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.amber.shade50,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.amber.shade300),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, color: Colors.orange, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Pilihan: $productName',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: Color(0xFF4E342E),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Fitur pembayaran resmi saat ini masih dalam tahap pengembangan dan akan segera hadir pada pembaruan mendatang.\n\nSaat ini anak Anda tetap dapat menikmati seluruh materi belajar secara 100% gratis!\n\nTerima kasih banyak atas antusiasme dan dukungan Ayah & Bunda! ❤️',
+              style: TextStyle(fontSize: 13, height: 1.45, color: Color(0xFF37474F)),
+            ),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.secondaryGreen,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ),
+            child: const Text('Baik, Saya Mengerti', style: TextStyle(fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+  }
 
   void _buyPremium() async {
     setState(() => _loading = true);
@@ -110,6 +207,34 @@ class _ParentStoreDialogState extends State<ParentStoreDialog> {
               ),
               const SizedBox(height: 10),
 
+              // Banner Pemberitahuan: Masih Dalam Pengembangan
+              if (!isPaymentReady)
+                Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF8E1),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: const Color(0xFFFFB300), width: 1.2),
+                  ),
+                  child: const Row(
+                    children: [
+                      Text('🛠️', style: TextStyle(fontSize: 20)),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Fitur pembayaran saat ini masih dalam tahap pengembangan (Segera Hadir).',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF5D4037),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
               // Hero Card: Bao Bao Premium
               Container(
                 padding: const EdgeInsets.all(16),
@@ -179,19 +304,31 @@ class _ParentStoreDialogState extends State<ParentStoreDialog> {
                       )
                     else
                       ElevatedButton(
-                        onPressed: _loading ? null : _buyPremium,
+                        onPressed: _loading
+                            ? null
+                            : () => _onPurchaseTapped(
+                                  productName: 'Paket Bao Bao Premium (Rp49.000)',
+                                  onProceed: _buyPremium,
+                                ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFD84315),
+                          backgroundColor: isPaymentReady ? const Color(0xFFD84315) : const Color(0xFFE65100),
                           foregroundColor: Colors.white,
                           elevation: 3,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text('Rp49.000 ', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
-                            Text('(Hemat Rp30.000)', style: TextStyle(fontSize: 11, color: Color(0xFFFFCCBC))),
+                            const Text('Rp49.000 ', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 16)),
+                            Text(
+                              isPaymentReady ? '(Hemat Rp30.000)' : '(Dalam Pengembangan)',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: isPaymentReady ? const Color(0xFFFFCCBC) : const Color(0xFFFFE082),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -228,7 +365,13 @@ class _ParentStoreDialogState extends State<ParentStoreDialog> {
               // Restore Button & Transparency Note
               Center(
                 child: TextButton.icon(
-                  onPressed: _restorePurchases,
+                  onPressed: () {
+                    if (!isPaymentReady) {
+                      _showUnderDevelopmentDialog('Pulihkan Pembelian');
+                      return;
+                    }
+                    _restorePurchases();
+                  },
                   icon: const Icon(Icons.refresh, size: 16, color: Colors.blueGrey),
                   label: const Text(
                     'Pulihkan Pembelian (Restore)',
@@ -236,10 +379,12 @@ class _ParentStoreDialogState extends State<ParentStoreDialog> {
                   ),
                 ),
               ),
-              const Text(
-                '🔒 Diproses resmi lewat Google Play Billing. Materi belajar anak 100% gratis tanpa pembelian ini.',
+              Text(
+                isPaymentReady
+                    ? '🔒 Diproses resmi lewat Google Play Billing. Materi belajar anak 100% gratis tanpa pembelian ini.'
+                    : '🛠️ Fitur pembayaran masih dalam tahap pengembangan. Seluruh materi belajar anak 100% gratis!',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10, color: Colors.grey),
+                style: const TextStyle(fontSize: 10, color: Colors.grey),
               ),
             ],
           ),
@@ -270,15 +415,23 @@ class _ParentStoreDialogState extends State<ParentStoreDialog> {
             ],
           ),
           ElevatedButton(
-            onPressed: _loading ? null : () => _buyBambooPack(amount, price),
+            onPressed: _loading
+                ? null
+                : () => _onPurchaseTapped(
+                      productName: '$name ($price)',
+                      onProceed: () => _buyBambooPack(amount, price),
+                    ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: color,
+              backgroundColor: isPaymentReady ? color : Colors.blueGrey.shade600,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
               elevation: 0,
             ),
-            child: Text(price, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+            child: Text(
+              isPaymentReady ? price : '$price • Segera',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+            ),
           ),
         ],
       ),

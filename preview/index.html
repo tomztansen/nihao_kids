@@ -1088,6 +1088,12 @@
           <button onclick="closeParentStore()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #90A4AE;">✕</button>
         </div>
 
+        <!-- Under Development Banner -->
+        <div style="background: #FFF8E1; border: 1.5px solid #FFB300; border-radius: 14px; padding: 10px 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">🛠️</span>
+          <span style="font-size: 11px; font-weight: 700; color: #5D4037;">Fitur pembayaran saat ini masih dalam tahap pengembangan (Segera Hadir).</span>
+        </div>
+
         <!-- Bao Bao Premium Hero Card -->
         <div style="background: linear-gradient(135deg, #FFF8E1, #FFECB3); border: 2px solid #FFB300; border-radius: 20px; padding: 14px; margin-bottom: 14px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -1101,8 +1107,8 @@
             • ⚡ +20% Bonus XP Belajar & Lencana Emas
           </div>
           <div id="premium-status-btn-container">
-            <button onclick="simulateBuyPremium()" style="width: 100%; padding: 10px; border: none; background: #D84315; border-radius: 12px; color: white; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 3px 0 #BF360C;">
-              Beli Rp49.000 (Launch Special)
+            <button onclick="simulateBuyPremium()" style="width: 100%; padding: 10px; border: none; background: #E65100; border-radius: 12px; color: white; font-weight: 900; font-size: 13px; cursor: pointer; box-shadow: 0 3px 0 #BF360C;">
+              Rp49.000 (Dalam Pengembangan)
             </button>
           </div>
         </div>
@@ -4796,7 +4802,14 @@
       playPop();
     }
 
+    // Konfigurasi Status Pembayaran: false = Masih Dalam Pengembangan
+    const isPaymentReady = false;
+
     function simulateBuyPremium() {
+      if (!isPaymentReady) {
+        alert('🛠️ Fitur Masih Dalam Pengembangan\n\nSistem pembayaran untuk Paket Bao Bao Premium saat ini masih dalam tahap pengembangan dan akan segera hadir pada pembaruan berikutnya.\n\nSaat ini seluruh materi belajar anak tetap 100% gratis! Terima kasih atas dukungan Ayah & Bunda! ❤️');
+        return;
+      }
       if (confirm('Simulasi Google Play Billing:\n\nKonfirmasi Pembelian "Bao Bao Premium" seharga Rp49.000 (Sekali bayar seumur hidup)?')) {
         isPremium = true;
         bamboo += 100;
@@ -4813,6 +4826,10 @@
     }
 
     function simulateBuyBamboo(amount, priceStr) {
+      if (!isPaymentReady) {
+        alert(`🛠️ Fitur Masih Dalam Pengembangan\n\nSistem Top Up ${amount} Bambu (${priceStr}) saat ini masih dalam tahap pengembangan.\n\nTerima kasih atas pengertiannya! ❤️`);
+        return;
+      }
       if (confirm(`Simulasi Google Play Billing:\n\nBeli Top Up ${amount} Bambu seharga ${priceStr}?`)) {
         bamboo += amount;
         persistRewards();
@@ -4823,6 +4840,10 @@
     }
 
     function simulateRestore() {
+      if (!isPaymentReady) {
+        alert('🛠️ Fitur Masih Dalam Pengembangan\n\nSistem riwayat pembelian saat ini masih dalam tahap pengembangan.\n\nSeluruh fitur materi belajar anak tetap 100% gratis!');
+        return;
+      }
       if (isPremium) {
         alert('✅ Pembelian "Bao Bao Premium" telah aktif pada akun Google Play ini!');
       } else {
