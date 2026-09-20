@@ -5,7 +5,9 @@ import '../services/admob_service.dart';
 import '../services/audio_service.dart';
 import '../services/localization_service.dart';
 import '../services/reward_service.dart';
+import '../services/update_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/force_update_dialog.dart';
 import '../widgets/language_switch_button.dart';
 import '../widgets/panda_avatar.dart';
 import 'lesson_map_screen.dart';
@@ -21,6 +23,22 @@ class GradeSelectionScreen extends StatefulWidget {
 class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
   int get _bambooCount => RewardService().bamboo;
   int get _starsCount => RewardService().stars;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAppUpdate();
+    });
+  }
+
+  Future<void> _checkAppUpdate() async {
+    final updateInfo = await UpdateService().checkForUpdate();
+    if (!mounted) return;
+    if (updateInfo.isForceUpdate) {
+      ForceUpdateDialog.show(context, updateInfo);
+    }
+  }
 
   void _watchAdForBamboo() {
     final loc = LocalizationService();

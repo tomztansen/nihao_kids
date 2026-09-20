@@ -15,7 +15,7 @@ class MeiHuaLowerCurriculum {
         emoji: '🤝',
         themeColor: Color(0xFF00ACC1),
         isUnlocked: true,
-        starsEarned: 3,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 'm1', hanzi: '我', pinyin: 'wǒ', meaningId: 'Saya / Aku', meaningEn: 'I / Me', tone: 3, category: 'Ganti', emoji: '🙋‍♂️', exampleSentenceHanzi: '我是小学生。', exampleSentencePinyin: 'Wǒ shì xiǎoxuéshēng.', exampleSentenceId: 'Saya adalah murid SD.', exampleSentenceEn: 'I am an elementary school student.'),
           VocabItem(id: 'm2', hanzi: '你', pinyin: 'nǐ', meaningId: 'Kamu', meaningEn: 'You', tone: 3, category: 'Ganti', emoji: '👉', exampleSentenceHanzi: '你好吗？', exampleSentencePinyin: 'Nǐ hǎo ma?', exampleSentenceId: 'Apa kabarmu?', exampleSentenceEn: 'How are you?'),
@@ -34,8 +34,8 @@ class MeiHuaLowerCurriculum {
         subtitleEn: 'Saying age and numbers over ten',
         emoji: '🎂',
         themeColor: Color(0xFF5E35B1),
-        isUnlocked: true,
-        starsEarned: 2,
+        isUnlocked: false,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 'm7', hanzi: '十一', pinyin: 'shíyī', meaningId: 'Sebelas', meaningEn: 'Eleven', tone: 2, category: 'Angka', emoji: '1️⃣1️⃣'),
           VocabItem(id: 'm8', hanzi: '二十', pinyin: 'èrshí', meaningId: 'Dua Puluh', meaningEn: 'Twenty', tone: 4, category: 'Angka', emoji: '2️⃣0️⃣'),

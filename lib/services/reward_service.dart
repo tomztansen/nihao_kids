@@ -20,17 +20,15 @@ class RewardService {
   static const String _secretSalt = 'NiHaoKidsSecureSalt2026_BaoBaoPremium';
 
   static const List<String> _defaultUnlocked = [
-    'xx_num1', 'xx_pets',               // PAUD (Level 1 & 2)
-    'xx_tk_num', 'xx_tk_shapes',         // TK (Level 1 & 2)
-    'sd_greetings', 'sd_self_intro',     // SD 1-3 (Level 1 & 2)
-    'sd_upper_intro', 'sd_upper_daily_routine', // SD 4-6 (Level 1 & 2)
-    // Legacy compatibility:
-    'nursery_numbers', 'nursery_animals', 'sd_greetings_adv',
+    'xx_num1',        // PAUD (Level 1)
+    'xx_tk_num',      // TK (Level 1)
+    'sd_greetings',   // SD 1-3 (Level 1)
+    'sd_upper_intro', // SD 4-6 (Level 1)
   ];
 
-  int _bamboo = 10;
-  int _stars = 15;
-  int _xp = 50;
+  int _bamboo = 0;
+  int _stars = 0;
+  int _xp = 0;
   bool _isPremium = false;
   List<String> _unlockedLessons = List.from(_defaultUnlocked);
   Map<String, int> _lessonStars = {};
@@ -47,9 +45,9 @@ class RewardService {
     try {
       final prefs = await SharedPreferences.getInstance();
       
-      final savedBamboo = prefs.getInt(_keyBamboo) ?? 10;
-      final savedStars = prefs.getInt(_keyStars) ?? 15;
-      final savedXP = prefs.getInt(_keyXP) ?? 50;
+      final savedBamboo = prefs.getInt(_keyBamboo) ?? 0;
+      final savedStars = prefs.getInt(_keyStars) ?? 0;
+      final savedXP = prefs.getInt(_keyXP) ?? 0;
       final savedPremium = prefs.getBool(_keyPremium) ?? false;
       final savedLevels = prefs.getStringList(_keyUnlockedLevels) ?? List<String>.from(_defaultUnlocked);
       final savedChecksum = prefs.getString(_keyChecksum) ?? '';

@@ -59,8 +59,8 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
     // 2. Tentukan status unlock setiap level
     for (int i = 0; i < _lessons.length; i++) {
       final lesson = _lessons[i];
-      // Level 1 dan Level 2 selalu terbuka sejak awal
-      if (i == 0 || i == 1) {
+      // Level 1 selalu terbuka sejak awal
+      if (i == 0) {
         lesson.isUnlocked = true;
       } else {
         final prevLesson = _lessons[i - 1];
@@ -68,11 +68,13 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
         final metStarsReq = lesson.starsRequired > 0 && _totalGradeStars >= lesson.starsRequired;
         final explicitlyUnlocked = reward.isLessonUnlocked(lesson.id);
 
-        if (prevCompleted || metStarsReq || explicitlyUnlocked || lesson.isUnlocked) {
+        if (prevCompleted || metStarsReq || explicitlyUnlocked) {
           lesson.isUnlocked = true;
           if (!explicitlyUnlocked) {
             reward.unlockLesson(lesson.id);
           }
+        } else {
+          lesson.isUnlocked = false;
         }
       }
     }

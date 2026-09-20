@@ -15,7 +15,7 @@ class MeiHuaUpperCurriculum {
         emoji: '🧭',
         themeColor: Color(0xFF1E88E5),
         isUnlocked: true,
-        starsEarned: 3,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 'u1', hanzi: '上面', pinyin: 'shàngmiàn', meaningId: 'Sebelah Atas', meaningEn: 'Above / Top', tone: 4, category: 'Arah', emoji: '⬆️', exampleSentenceHanzi: '小猫在桌子上面。', exampleSentencePinyin: 'Xiǎomāo zài zhuōzi shàngmiàn.', exampleSentenceId: 'Kucing kecil ada di atas meja.', exampleSentenceEn: 'The little cat is on the table.'),
           VocabItem(id: 'u2', hanzi: '下面', pinyin: 'xiàmiàn', meaningId: 'Sebelah Bawah', meaningEn: 'Below / Under', tone: 4, category: 'Arah', emoji: '⬇️', exampleSentenceHanzi: '小狗在椅子下面。', exampleSentencePinyin: 'Xiǎogǒu zài yǐzi xiàmiàn.', exampleSentenceId: 'Anjing kecil ada di bawah kursi.', exampleSentenceEn: 'The little dog is under the chair.'),
@@ -34,8 +34,8 @@ class MeiHuaUpperCurriculum {
         subtitleEn: 'Drawing, singing, dancing & reading',
         emoji: '🎨',
         themeColor: Color(0xFFD81B60),
-        isUnlocked: true,
-        starsEarned: 2,
+        isUnlocked: false,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 'u7', hanzi: '画画', pinyin: 'huàhuà', meaningId: 'Menggambar / Melukis', meaningEn: 'Drawing / Painting', tone: 4, category: 'Hobi', emoji: '🎨', exampleSentenceHanzi: '我的爱好是画画。', exampleSentencePinyin: 'Wǒ de àihào shì huàhuà.', exampleSentenceId: 'Hobiku adalah menggambar.', exampleSentenceEn: 'My hobby is drawing.'),
           VocabItem(id: 'u8', hanzi: '唱歌', pinyin: 'chànggē', meaningId: 'Bernyanyi', meaningEn: 'Singing', tone: 4, category: 'Hobi', emoji: '🎤'),

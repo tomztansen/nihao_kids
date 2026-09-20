@@ -1,7 +1,7 @@
 name: nihao_kids
 description: Aplikasi Belajar Bahasa Mandarin Interaktif untuk Anak TK dan SD
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -16,6 +16,7 @@ dependencies:
   unity_ads_plugin: ^0.5.0
   shared_preferences: ^2.2.2
   webview_flutter: ^4.10.0
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

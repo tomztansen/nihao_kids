@@ -16,7 +16,7 @@ class XingxingCurriculum {
         emoji: '🔢',
         themeColor: Color(0xFFFF7043),
         isUnlocked: true,
-        starsEarned: 3,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 'p1', hanzi: '一', pinyin: 'yī', meaningId: 'Satu', meaningEn: 'One', tone: 1, category: 'Angka', emoji: '1️⃣'),
           VocabItem(id: 'p2', hanzi: '二', pinyin: 'èr', meaningId: 'Dua', meaningEn: 'Two', tone: 4, category: 'Angka', emoji: '2️⃣'),
@@ -34,8 +34,8 @@ class XingxingCurriculum {
         subtitleEn: 'Cats, dogs, fish & birds!',
         emoji: '🐾',
         themeColor: Color(0xFF26A69A),
-        isUnlocked: true,
-        starsEarned: 2,
+        isUnlocked: false,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 'p6', hanzi: '猫', pinyin: 'māo', meaningId: 'Kucing', meaningEn: 'Cat', tone: 1, category: 'Hewan', emoji: '🐱'),
           VocabItem(id: 'p7', hanzi: '狗', pinyin: 'gǒu', meaningId: 'Anjing', meaningEn: 'Dog', tone: 3, category: 'Hewan', emoji: '🐶'),
@@ -176,7 +176,7 @@ class XingxingCurriculum {
         emoji: '🔟',
         themeColor: Color(0xFF8E24AA),
         isUnlocked: true,
-        starsEarned: 3,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 't1', hanzi: '六', pinyin: 'liù', meaningId: 'Enam', meaningEn: 'Six', tone: 4, category: 'Angka', emoji: '6️⃣'),
           VocabItem(id: 't2', hanzi: '七', pinyin: 'qī', meaningId: 'Tujuh', meaningEn: 'Seven', tone: 1, category: 'Angka', emoji: '7️⃣'),
@@ -194,8 +194,8 @@ class XingxingCurriculum {
         subtitleEn: 'Apple, banana, watermelon & grape',
         emoji: '🍎',
         themeColor: Color(0xFF43A047),
-        isUnlocked: true,
-        starsEarned: 2,
+        isUnlocked: false,
+        starsEarned: 0,
         vocabs: [
           VocabItem(id: 't6', hanzi: '苹果', pinyin: 'píngguǒ', meaningId: 'Apel', meaningEn: 'Apple', tone: 2, category: 'Buah', emoji: '🍎'),
           VocabItem(id: 't7', hanzi: '香蕉', pinyin: 'xiāngjiāo', meaningId: 'Pisang', meaningEn: 'Banana', tone: 1, category: 'Buah', emoji: '🍌'),
