@@ -129,7 +129,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
               children: [
                 const PandaAvatar(
                   size: 90,
-                  mood: PandaMood.sleepy,
+                  mood: PandaMood.thinking,
                 ),
                 const SizedBox(height: 14),
                 Text(
