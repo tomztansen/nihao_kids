@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:open_filex/open_filex.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../config/app_config.dart';
 
@@ -33,6 +35,26 @@ class UpdateInfo {
   factory UpdateInfo.noUpdate() => const UpdateInfo(status: UpdateStatus.upToDate);
   bool get isForceUpdate => status == UpdateStatus.forceUpdateRequired;
   bool get hasUpdate => status != UpdateStatus.upToDate;
+}
+
+class DownloadProgress {
+  final double progress; // 0.0 to 1.0
+  final int receivedBytes;
+  final int totalBytes;
+  final bool isCompleted;
+  final String? error;
+
+  const DownloadProgress({
+    this.progress = 0.0,
+    this.receivedBytes = 0,
+    this.totalBytes = 0,
+    this.isCompleted = false,
+    this.error,
+  });
+
+  String get receivedMB => (receivedBytes / (1024 * 1024)).toStringAsFixed(1);
+  String get totalMB => totalBytes > 0 ? (totalBytes / (1024 * 1024)).toStringAsFixed(1) : '...';
+  int get percent => (progress * 100).clamp(0, 100).toInt();
 }
 
 class UpdateService {
@@ -99,7 +121,108 @@ class UpdateService {
     return UpdateInfo.noUpdate();
   }
 
-  /// Membuka tautan download APK atau browser external
+  /// Mengunduh file APK langsung di dalam aplikasi dengan streaming progress
+  Stream<DownloadProgress> downloadApk({
+    required String downloadUrl,
+    String fileName = 'nihao_kids_update.apk',
+  }) async* {
+    HttpClient? client;
+    IOSink? sink;
+    File? tempFile;
+
+    try {
+      final tempDir = await getTemporaryDirectory();
+      tempFile = File('${tempDir.path}/$fileName');
+      if (await tempFile.exists()) {
+        try {
+          await tempFile.delete();
+        } catch (_) {}
+      }
+
+      client = HttpClient()
+        ..autoUncompress = true;
+
+      // Ikuti pengalihan URL (GitHub Releases -> AWS/CDN)
+      Uri targetUri = Uri.parse(downloadUrl);
+      HttpClientRequest request = await client.getUrl(targetUri);
+      request.followRedirects = true;
+      request.maxRedirects = 5;
+
+      HttpClientResponse response = await request.close();
+
+      while (response.isRedirect) {
+        final location = response.headers.value(HttpHeaders.locationHeader);
+        if (location == null) break;
+        targetUri = Uri.parse(location);
+        request = await client.getUrl(targetUri);
+        request.followRedirects = true;
+        request.maxRedirects = 5;
+        response = await request.close();
+      }
+
+      if (response.statusCode != 200) {
+        yield DownloadProgress(
+          error: 'Server mengembalikan status HTTP ${response.statusCode}',
+        );
+        return;
+      }
+
+      final totalBytes = response.contentLength;
+      int receivedBytes = 0;
+      sink = tempFile.openWrite();
+
+      await for (final chunk in response) {
+        sink.add(chunk);
+        receivedBytes += chunk.length;
+        final progress = totalBytes > 0 ? (receivedBytes / totalBytes) : 0.0;
+        yield DownloadProgress(
+          progress: progress,
+          receivedBytes: receivedBytes,
+          totalBytes: totalBytes,
+        );
+      }
+
+      await sink.flush();
+      await sink.close();
+      sink = null;
+
+      yield DownloadProgress(
+        progress: 1.0,
+        receivedBytes: receivedBytes,
+        totalBytes: totalBytes,
+        isCompleted: true,
+      );
+    } catch (e) {
+      debugPrint('Error downloading update APK: $e');
+      yield DownloadProgress(
+        error: 'Gagal mengunduh pembaruan: $e',
+      );
+    } finally {
+      try {
+        await sink?.close();
+      } catch (_) {}
+      client?.close();
+    }
+  }
+
+  /// Membuka file APK dan memicu pemasangan langsung (Android Package Installer)
+  Future<OpenResult> installDownloadedApk({String fileName = 'nihao_kids_update.apk'}) async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/$fileName');
+      if (await file.exists()) {
+        return await OpenFilex.open(
+          file.path,
+          type: 'application/vnd.android.package-archive',
+        );
+      }
+    } catch (e) {
+      debugPrint('Error installing APK: $e');
+    }
+    return OpenResult(type: ResultType.fileNotFound, message: 'File APK tidak ditemukan');
+  }
+
+  /// Membuka tautan download APK atau browser external (fallback)
   Future<bool> openUpdateUrl(String urlString) async {
     try {
       final uri = Uri.parse(urlString);
