@@ -35,13 +35,30 @@ jobs:
           mkdir -p /tmp/android_backup
           cp android/app/src/main/AndroidManifest.xml /tmp/android_backup/AndroidManifest.xml
           cp -r android/app/src/main/res /tmp/android_backup/res
+          if [ -f android/key.properties ]; then
+            cp android/key.properties /tmp/android_backup/key.properties
+          fi
+          if [ -f android/upload-keystore.jks ]; then
+            cp android/upload-keystore.jks /tmp/android_backup/upload-keystore.jks
+          fi
+
           flutter create --platforms=android --org com.example .
+
           cp /tmp/android_backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
           cp -r /tmp/android_backup/res/* android/app/src/main/res/
+          if [ -f /tmp/android_backup/key.properties ]; then
+            cp /tmp/android_backup/key.properties android/key.properties
+          fi
+          if [ -f /tmp/android_backup/upload-keystore.jks ]; then
+            cp /tmp/android_backup/upload-keystore.jks android/upload-keystore.jks
+          fi
+
           sed -i -E 's/id "org\.jetbrains\.kotlin\.android" version "[^"]+"/id "org.jetbrains.kotlin.android" version "2.1.0"/' android/settings.gradle || true
           if [ -f android/build.gradle ]; then
             sed -i -E "s/ext\.kotlin_version = '[^']+'/ext.kotlin_version = '2.1.0'/" android/build.gradle || true
           fi
+
+          python3 tools/configure_signing.py
 
       - name: Install Dependencies
         run: flutter pub get

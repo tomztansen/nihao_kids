@@ -1,14 +1,14 @@
 {
-  "latest_version": "1.0.5",
-  "latest_build_number": 6,
-  "min_required_version": "1.0.5",
-  "min_required_build_number": 6,
+  "latest_version": "1.0.6",
+  "latest_build_number": 7,
+  "min_required_version": "1.0.6",
+  "min_required_build_number": 7,
   "force_update": true,
   "release_date": "2026-09-20",
-  "title": "Pembaruan v1.0.5 Tersedia! 🐼✨",
-  "title_en": "Update v1.0.5 Available! 🐼✨",
-  "message": "Perbaikan tampilan teks terpotong pada kartu jenjang kelas, penyesuaian bahasa lencana usia, dan tata letak responsif.",
-  "message_en": "Fixed text clipping on grade selection cards, localized age badges, and responsive layout optimizations.",
+  "title": "Pembaruan Resmi v1.0.6 Tersedia! 🐼🔑",
+  "title_en": "Official Update v1.0.6 Available! 🐼🔑",
+  "message": "Rilis v1.0.6 dengan sertifikat rilis permanen resmi (keystore) untuk menjamin update aplikasi berjalan mulus tanpa konflik paket selamanya.",
+  "message_en": "Version v1.0.6 with official permanent release certificate (keystore) to ensure seamless updates without package conflicts forever.",
   "apk_download_url": "https://github.com/tomztansen/nihao_kids/releases/latest/download/app-release.apk",
   "web_download_page": "https://tomztansen.github.io/nihao_kids/download.html"
 }
