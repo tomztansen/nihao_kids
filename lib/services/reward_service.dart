@@ -69,9 +69,9 @@ class RewardService {
       if (savedChecksum.isNotEmpty && savedChecksum != expectedChecksum) {
         // PERINGATAN: File di HP telah dimanipulasi secara ilegal (Cheat/Root edit)!
         debugPrint('⚠️ [KEAMANAN] Terdeteksi manipulasi data lokal! Mereset ke saldo aman.');
-        _bamboo = 10;
-        _stars = 15;
-        _xp = 50;
+        _bamboo = 0;
+        _stars = 0;
+        _xp = 0;
         _isPremium = false;
         _unlockedLessons = List.from(_defaultUnlocked);
         await _persistData(prefs);
