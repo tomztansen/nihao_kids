@@ -10,30 +10,96 @@ class LocalizationService {
   LocalizationService._internal();
 
   static const String _prefKey = 'nh_app_language';
-  final ValueNotifier<AppLanguage> languageNotifier = ValueNotifier<AppLanguage>(AppLanguage.id);
+  static const String _manualOverrideKey = 'nh_lang_manual_override';
+
+  late final ValueNotifier<AppLanguage> languageNotifier = ValueNotifier<AppLanguage>(detectSystemLanguage());
+  bool _isManualOverride = false;
 
   AppLanguage get currentLanguage => languageNotifier.value;
   bool get isEnglish => currentLanguage == AppLanguage.en;
+  bool get isManualOverride => _isManualOverride;
 
   /// Inisialisasi preferensi bahasa saat aplikasi pertama kali dijalankan
   Future<void> initialize() async {
     try {
       final prefs = await SharedPreferences.getInstance();
+      _isManualOverride = prefs.getBool(_manualOverrideKey) ?? false;
       final savedLang = prefs.getString(_prefKey);
 
-      if (savedLang != null) {
+      if (_isManualOverride && savedLang != null && (savedLang == 'en' || savedLang == 'id')) {
         languageNotifier.value = savedLang == 'en' ? AppLanguage.en : AppLanguage.id;
+        debugPrint('🌐 [LocalizationService] Menggunakan preferensi manual tersimpan: ${languageNotifier.value.name.toUpperCase()}');
       } else {
-        // Smart Auto-Detect: baca bahasa sistem perangkat
-        final systemLocale = ui.PlatformDispatcher.instance.locale.languageCode.toLowerCase();
-        if (systemLocale == 'id' || systemLocale == 'in') {
-          languageNotifier.value = AppLanguage.id;
-        } else {
-          languageNotifier.value = AppLanguage.en;
-        }
+        // Smart Auto-Detect: baca bahasa sistem perangkat HP
+        final detected = detectSystemLanguage();
+        languageNotifier.value = detected;
+        debugPrint('🌐 [LocalizationService] Smart Auto-Detect sistem: ${detected.name.toUpperCase()}');
       }
+
+      // Dengarkan jika bahasa sistem HP diubah di Settings saat aplikasi berjalan
+      ui.PlatformDispatcher.instance.onLocaleChanged = () {
+        _onSystemLocaleChanged();
+      };
     } catch (e) {
       debugPrint('⚠️ [LocalizationService] Gagal memuat preferensi bahasa: $e');
+    }
+  }
+
+  /// Deteksi bahasa sistem perangkat HP secara pintar (Smart Detection)
+  static AppLanguage detectSystemLanguage() {
+    try {
+      // 1. Cek dari daftar urutan bahasa yang dipasang di HP Android
+      final locales = ui.PlatformDispatcher.instance.locales;
+      if (locales.isNotEmpty) {
+        for (final loc in locales) {
+          final code = loc.languageCode.toLowerCase();
+          if (code == 'id' || code == 'in') {
+            return AppLanguage.id;
+          } else if (code == 'en') {
+            return AppLanguage.en;
+          }
+        }
+        final firstCode = locales.first.languageCode.toLowerCase();
+        if (firstCode == 'id' || firstCode == 'in') {
+          return AppLanguage.id;
+        } else if (firstCode.isNotEmpty && firstCode != 'und') {
+          return AppLanguage.en;
+        }
+      }
+
+      // 2. Cek dari primary locale HP
+      final primaryCode = ui.PlatformDispatcher.instance.locale.languageCode.toLowerCase();
+      if (primaryCode == 'id' || primaryCode == 'in') {
+        return AppLanguage.id;
+      } else if (primaryCode.isNotEmpty && primaryCode != 'und') {
+        return AppLanguage.en;
+      }
+    } catch (e) {
+      debugPrint('⚠️ [LocalizationService] Error detecting system locale: $e');
+    }
+    return AppLanguage.id;
+  }
+
+  void _onSystemLocaleChanged() async {
+    if (!_isManualOverride) {
+      final detected = detectSystemLanguage();
+      languageNotifier.value = detected;
+      debugPrint('🌐 [LocalizationService] Bahasa sistem HP berubah -> disesuaikan ke: ${detected.name.toUpperCase()}');
+    }
+  }
+
+  /// Reset ke Smart Auto-Detect (Mengikuti bahasa sistem HP lagi)
+  Future<void> resetToAutoDetect() async {
+    _isManualOverride = false;
+    final detected = detectSystemLanguage();
+    languageNotifier.value = detected;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_prefKey);
+      await prefs.setBool(_manualOverrideKey, false);
+      debugPrint('🌐 [LocalizationService] Preferensi direset ke Smart Auto-Detect: ${detected.name.toUpperCase()}');
+    } catch (e) {
+      debugPrint('⚠️ [LocalizationService] Gagal mereset ke Auto-Detect: $e');
     }
   }
 
@@ -45,11 +111,13 @@ class LocalizationService {
 
   /// Menyetel bahasa secara eksplisit dan menyimpannya secara persisten
   Future<void> setLanguage(AppLanguage language) async {
+    _isManualOverride = true;
     languageNotifier.value = language;
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_prefKey, language == AppLanguage.en ? 'en' : 'id');
-      debugPrint('🌐 [LocalizationService] Bahasa diubah ke: ${language.name.toUpperCase()}');
+      await prefs.setBool(_manualOverrideKey, true);
+      debugPrint('🌐 [LocalizationService] Bahasa disetel manual ke: ${language.name.toUpperCase()}');
     } catch (e) {
       debugPrint('⚠️ [LocalizationService] Gagal menyimpan preferensi bahasa: $e');
     }

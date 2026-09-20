@@ -15,14 +15,35 @@ class LanguageSwitchButton extends StatelessWidget {
       builder: (context, lang, _) {
         final isEn = lang == AppLanguage.en;
 
-        return InkWell(
-          onTap: () => loc.toggleLanguage(),
-          borderRadius: BorderRadius.circular(20),
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: compact ? 8 : 12,
-              vertical: compact ? 4 : 6,
-            ),
+        return Tooltip(
+          message: loc.isManualOverride
+              ? (isEn ? 'Tap to switch to ID, hold to reset to Auto' : 'Ketuk ganti EN, tahan untuk reset Otomatis')
+              : (isEn ? 'Smart Auto-Detect (System EN). Tap to switch' : 'Smart Auto-Detect (Sistem ID). Ketuk ganti'),
+          child: InkWell(
+            onTap: () => loc.toggleLanguage(),
+            onLongPress: () async {
+              await loc.resetToAutoDetect();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    duration: const Duration(seconds: 2),
+                    backgroundColor: const Color(0xFF1E88E5),
+                    content: Text(
+                      loc.isEnglish
+                          ? '🌐 Smart Auto-Detect: Following device language (${loc.currentLanguage.name.toUpperCase()})'
+                          : '🌐 Smart Auto-Detect: Mengikuti bahasa sistem HP (${loc.currentLanguage.name.toUpperCase()})',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                );
+              }
+            },
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: compact ? 8 : 12,
+                vertical: compact ? 4 : 6,
+              ),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),

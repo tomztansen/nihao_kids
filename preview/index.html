@@ -1317,9 +1317,148 @@
       }
     }
 
+    // SMART LANGUAGE DETECTION & LOCALIZATION FOR WEB SIMULATOR
+    function getAutoLanguage() {
+      try {
+        const navLang = (navigator.language || (navigator.languages && navigator.languages[0]) || '').toLowerCase();
+        if (navLang.startsWith('id') || navLang.startsWith('in')) {
+          return 'id';
+        }
+        return 'en';
+      } catch(e) {
+        return 'id';
+      }
+    }
+
+    let webLang = localStorage.getItem('nh_web_language') || getAutoLanguage();
+
+    const i18n = {
+      id: {
+        appSubtitle: "Pilih Kelas Sekolahmu:",
+        installHp: "Pasang di HP",
+        watchAd: "Tonton Iklan (+5🎋)",
+        pandaSpeech: "Ni Hao! Aku Bao Bao si Panda! 🐼<br><span style='font-size:11px; color:#2E7D32;'>(Sentuh aku atau tombol kuning untuk suara!)</span>",
+        voiceBtn: "🔊 \"Ni Hao!\"",
+        wardrobeBtn: "👗 Kostum Panda",
+        mapTitle: "Peta Petualangan",
+        tabVocab: "Kartu Kata",
+        tabStroke: "Urutan Goresan",
+        soundBtn: "DENGARKAN SUARA",
+        prevBtn: "◀ Sebelumnya",
+        nextBtn: "Berikutnya ▶",
+        quizTitle: "Kuis NiHao Kids 🎯",
+        quizQuestion: "Apa arti kata ini?",
+        strokeHint: "Ikuti goresan animasi untuk belajar menulis Hanzi!",
+        strokeReplay: "Ulangi",
+        strokeQuiz: "Latihan Tulis",
+        grades: {
+          paud: { title: "Bintang Cilik (PAUD) <span class='age-pill'>3 - 4 Thn</span>", desc: "Piktogram Visual, Bunyi Nada & Angka Jari" },
+          tk: { title: "Tunas Ceria (TK A/B) <span class='age-pill'>5 - 6 Thn</span>", desc: "Pinyin, Buah, Sayur, Hewan & Perintah Kelas" },
+          sdLower: { title: "Penjelajah (SD 1 - 3) <span class='age-pill' style='background:#E1F5FE; color:#0288D1;'>7 - 9 Thn</span>", desc: "Kurikulum SD: Jam, Hari, Benda Kelas & YCT 1" },
+          sdUpper: { title: "Pendekar YCT (SD 4 - 6) <span class='age-pill'>10 - 12 Thn</span>", desc: "Percakapan Harian, Hobi, Arah, Belanja & YCT 2" }
+        }
+      },
+      en: {
+        appSubtitle: "Select Your Grade Level:",
+        installHp: "Install on Phone",
+        watchAd: "Watch Ad (+5🎋)",
+        pandaSpeech: "Ni Hao! I am Bao Bao the Panda! 🐼<br><span style='font-size:11px; color:#2E7D32;'>(Tap me or yellow button for voice!)</span>",
+        voiceBtn: "🔊 \"Ni Hao!\"",
+        wardrobeBtn: "👗 Panda Costumes",
+        mapTitle: "Adventure Map",
+        tabVocab: "Word Cards",
+        tabStroke: "Stroke Order",
+        soundBtn: "LISTEN AUDIO",
+        prevBtn: "◀ Previous",
+        nextBtn: "Next ▶",
+        quizTitle: "NiHao Kids Quiz 🎯",
+        quizQuestion: "What does this word mean?",
+        strokeHint: "Follow the stroke animations to practice writing Hanzi!",
+        strokeReplay: "Replay",
+        strokeQuiz: "Practice Writing",
+        grades: {
+          paud: { title: "Little Stars (Pre-K) <span class='age-pill'>3 - 4 Yrs</span>", desc: "Visual Pictograms, Tone Sounds & Finger Counting" },
+          tk: { title: "Happy Sprouts (Kindergarten) <span class='age-pill'>5 - 6 Yrs</span>", desc: "Pinyin, Fruits, Veggies, Animals & Classroom" },
+          sdLower: { title: "Explorers (Grades 1 - 3) <span class='age-pill' style='background:#E1F5FE; color:#0288D1;'>7 - 9 Yrs</span>", desc: "Elementary Curriculum: Time, Calendar, Objects & YCT 1" },
+          sdUpper: { title: "YCT Champions (Grades 4 - 6) <span class='age-pill'>10 - 12 Yrs</span>", desc: "Daily Dialogues, Hobbies, Directions, Shopping & YCT 2" }
+        }
+      }
+    };
+
+    function updateWebLanguageUI() {
+      const t = i18n[webLang] || i18n.id;
+      const toggleBtn = document.getElementById('web-lang-toggle');
+      if (toggleBtn) toggleBtn.innerHTML = webLang === 'en' ? '🇬🇧 EN' : '🇮🇩 ID';
+
+      const subEl = document.querySelector('.app-subtitle');
+      if (subEl) subEl.textContent = t.appSubtitle;
+
+      const adLabel = document.getElementById('ad-btn-label');
+      if (adLabel) adLabel.textContent = t.watchAd;
+
+      const speechEl = document.querySelector('.speech-bubble');
+      if (speechEl) speechEl.innerHTML = t.pandaSpeech;
+
+      const wardrobeBtn = document.getElementById('btn-wardrobe-label');
+      if (wardrobeBtn) wardrobeBtn.textContent = t.wardrobeBtn;
+
+      const mapTitle = document.getElementById('map-grade-title');
+      if (mapTitle && (mapTitle.textContent.includes('Peta Petualangan') || mapTitle.textContent.includes('Adventure Map'))) {
+        mapTitle.textContent = t.mapTitle;
+      }
+
+      const tabVocab = document.getElementById('fc-tab-vocab-text');
+      if (tabVocab) tabVocab.textContent = t.tabVocab;
+
+      const tabStroke = document.getElementById('fc-tab-stroke-text');
+      if (tabStroke) tabStroke.textContent = t.tabStroke;
+
+      const soundBtnText = document.getElementById('fc-sound-btn-text');
+      if (soundBtnText) soundBtnText.textContent = t.soundBtn;
+
+      const prevBtn = document.getElementById('btn-fc-prev');
+      if (prevBtn) prevBtn.textContent = t.prevBtn;
+
+      const nextBtn = document.getElementById('btn-fc-next');
+      if (nextBtn) nextBtn.textContent = t.nextBtn;
+
+      const strokeReplay = document.getElementById('stroke-btn-replay');
+      if (strokeReplay) strokeReplay.textContent = t.strokeReplay;
+
+      const strokeQuiz = document.getElementById('stroke-btn-quiz');
+      if (strokeQuiz) strokeQuiz.textContent = t.strokeQuiz;
+
+      const strokeHint = document.getElementById('stroke-hint-text');
+      if (strokeHint) strokeHint.textContent = t.strokeHint;
+
+      const gradeCards = document.querySelectorAll('#screen-grades .grade-card');
+      const keys = ['paud', 'tk', 'sdLower', 'sdUpper'];
+      gradeCards.forEach((card, idx) => {
+        const k = keys[idx];
+        if (k && t.grades[k]) {
+          const info = card.querySelector('.grade-info');
+          if (info) {
+            info.innerHTML = `<h3>${t.grades[k].title}</h3><p>${t.grades[k].desc}</p>`;
+          }
+        }
+      });
+    }
+
+    function toggleWebLanguage() {
+      webLang = webLang === 'en' ? 'id' : 'en';
+      localStorage.setItem('nh_web_language', webLang);
+      updateWebLanguageUI();
+    }
+
     // Inisialisasi tampilan saldo dari penyimpanan lokal
-    document.addEventListener('DOMContentLoaded', persistRewards);
-    setTimeout(persistRewards, 100);
+    document.addEventListener('DOMContentLoaded', () => {
+      persistRewards();
+      updateWebLanguageUI();
+    });
+    setTimeout(() => {
+      persistRewards();
+      updateWebLanguageUI();
+    }, 100);
 
     let currentGradeKey = 'paud';
     let activeLessons = [];
