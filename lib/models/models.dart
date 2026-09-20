@@ -15,6 +15,7 @@ class GradeLevel {
   final String subtitle;
   final String? subtitleEn;
   final String ageRange;
+  final String? ageRangeEn;
   final Color primaryColor;
   final Color secondaryColor;
   final String icon;
@@ -26,6 +27,7 @@ class GradeLevel {
     required this.subtitle,
     this.subtitleEn,
     required this.ageRange,
+    this.ageRangeEn,
     required this.primaryColor,
     required this.secondaryColor,
     required this.icon,
@@ -33,6 +35,7 @@ class GradeLevel {
 
   String get localizedTitle => LocalizationService().isEnglish ? (titleEn ?? title) : title;
   String get localizedSubtitle => LocalizationService().isEnglish ? (subtitleEn ?? subtitle) : subtitle;
+  String get localizedAgeRange => LocalizationService().isEnglish ? (ageRangeEn ?? ageRange) : ageRange;
 }
 
 class VocabItem {

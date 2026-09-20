@@ -161,7 +161,7 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                         ),
                         icon: const Icon(Icons.play_circle_fill, color: Colors.deepOrange, size: 16),
                         label: Text(
-                          loc.isEnglish ? 'Free 🎋' : 'Bambu Gratis 🎁',
+                          loc.isEnglish ? 'Free 🎋' : 'Gratis 🎋',
                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
                         ),
                       ),
@@ -350,24 +350,27 @@ class _GradeSelectionScreenState extends State<GradeSelectionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                            grade.localizedTitle,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.pandaBlack,
+                          Expanded(
+                            child: Text(
+                              grade.localizedTitle,
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.pandaBlack,
+                              ),
                             ),
                           ),
-                          const SizedBox(width: 6),
+                          const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                             decoration: BoxDecoration(
                               color: grade.primaryColor.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(6),
+                              borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
-                              grade.ageRange,
+                              grade.localizedAgeRange,
                               style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,

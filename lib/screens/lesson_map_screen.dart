@@ -469,7 +469,7 @@ class _LessonMapScreenState extends State<LessonMapScreen> {
             Text(
               lesson.localizedTitle,
               textAlign: TextAlign.center,
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 14,
