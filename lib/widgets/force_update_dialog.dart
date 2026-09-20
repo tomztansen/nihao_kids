@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../config/app_config.dart';
-import '../constants/colors.dart';
+import '../theme/app_theme.dart';
 import '../services/update_service.dart';
 import 'kid_button.dart';
 import 'panda_avatar.dart';
