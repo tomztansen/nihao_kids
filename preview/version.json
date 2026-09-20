@@ -1,14 +1,14 @@
 {
-  "latest_version": "1.0.6",
-  "latest_build_number": 7,
-  "min_required_version": "1.0.6",
-  "min_required_build_number": 7,
+  "latest_version": "1.0.7",
+  "latest_build_number": 8,
+  "min_required_version": "1.0.7",
+  "min_required_build_number": 8,
   "force_update": true,
   "release_date": "2026-09-20",
-  "title": "Pembaruan Resmi v1.0.6 Tersedia! 🐼🔑",
-  "title_en": "Official Update v1.0.6 Available! 🐼🔑",
-  "message": "Rilis v1.0.6 dengan sertifikat rilis permanen resmi (keystore) untuk menjamin update aplikasi berjalan mulus tanpa konflik paket selamanya.",
-  "message_en": "Version v1.0.6 with official permanent release certificate (keystore) to ensure seamless updates without package conflicts forever.",
+  "title": "Pembaruan Resmi v1.0.7 Tersedia! \ud83d\udc3c\ud83d\ude80",
+  "title_en": "Official Update v1.0.7 Available! \ud83d\udc3c\ud83d\ude80",
+  "message": "Pembaruan v1.0.7 telah dirilis dan siap dipasang langsung di dalam aplikasi.",
+  "message_en": "Version v1.0.7 is available and ready to update directly inside the app.",
   "apk_download_url": "https://github.com/tomztansen/nihao_kids/releases/latest/download/app-release.apk",
   "web_download_page": "https://tomztansen.github.io/nihao_kids/download.html"
 }
