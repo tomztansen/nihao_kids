@@ -55,16 +55,7 @@ class _FlashcardScreenState extends State<FlashcardScreen> {
   }
 
   void _playPronunciation() {
-    final loc = LocalizationService();
     AudioService().playHanziVoice(_currentVocab.id, _currentVocab.pinyin);
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(milliseconds: 1500),
-        backgroundColor: AppColors.secondaryGreen,
-        content: Text('${loc.t('audio_playing')} ${_currentVocab.hanzi} (${_currentVocab.pinyin})'),
-      ),
-    );
   }
 
   void _handleStartQuiz() {

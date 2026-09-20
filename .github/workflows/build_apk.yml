@@ -97,3 +97,37 @@ jobs:
             build/app/outputs/bundle/release/app-release.aab
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update version.json ONLY AFTER APK is successfully uploaded
+        if: github.ref == 'refs/heads/main'
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | sed 's/+.*//' | tr -d '[:space:]')
+          BUILD_NUM=$(grep '^version:' pubspec.yaml | sed 's/.*+//' | tr -d '[:space:]')
+          echo "Updating version.json to v$VERSION (Build $BUILD_NUM) after confirmed APK release..."
+          cat <<EOF > version.json
+{
+  "latest_version": "$VERSION",
+  "latest_build_number": $BUILD_NUM,
+  "min_required_version": "$VERSION",
+  "min_required_build_number": $BUILD_NUM,
+  "force_update": true,
+  "release_date": "$(date +%Y-%m-%d)",
+  "title": "Pembaruan Resmi v$VERSION Tersedia! 🐼🚀",
+  "title_en": "Official Update v$VERSION Available! 🐼🚀",
+  "message": "Pembaruan v$VERSION telah dirilis dan siap dipasang langsung di dalam aplikasi.",
+  "message_en": "Version v$VERSION is available and ready to update directly inside the app.",
+  "apk_download_url": "https://github.com/tomztansen/nihao_kids/releases/latest/download/app-release.apk",
+  "web_download_page": "https://tomztansen.github.io/nihao_kids/download.html"
+}
+EOF
+          cp version.json preview/version.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add version.json preview/version.json
+          if ! git diff --quiet || ! git diff --staged --quiet; then
+            git commit -m "chore(release): publish version.json v$VERSION+$BUILD_NUM [skip ci]"
+            git push origin main
+            echo "✅ version.json successfully published to GitHub Pages!"
+          else
+            echo "ℹ️ version.json already up-to-date."
+          fi
