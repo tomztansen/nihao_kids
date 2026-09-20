@@ -44,7 +44,7 @@ class LanguageSwitchButton extends StatelessWidget {
                 horizontal: compact ? 8 : 12,
                 vertical: compact ? 4 : 6,
               ),
-            decoration: BoxDecoration(
+              decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
@@ -84,8 +84,9 @@ class LanguageSwitchButton extends StatelessWidget {
               ],
             ),
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
 }
